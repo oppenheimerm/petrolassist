@@ -1,0 +1,104 @@
+﻿.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.dialog {
+    width: 752px;
+    background-color: var(--black-1);
+    color: var(--pa-white);
+    border-radius: 8px;
+    box-shadow: var(--light-box-shadow);
+    padding: 1rem;
+    z-index: 10;
+}
+
+.dialog .dialog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+.dialog-close-btn-wrap{}
+
+.dialog .dialog-body {
+    padding: 1rem;
+}
+
+.dialog-body .dialog-row{
+    display: flex;
+    flex-direction: row;    
+    min-width: 100%;
+    min-height: 100%;
+}
+
+
+.dialog-row .map-container{
+    flex-grow:0; /* don't get wider */
+    flex-shrink: 0; /* don't get smaller */
+    flex-basis: 55%; /* set iniitial value */
+    /* flex: 0 0 55% shorthand for above */
+    height: 300px;
+    border: 1px solid red
+}
+.dialog-row .right-content {
+    height: 300px;
+    border: 1px solid green;
+    flex-grow: 1; /* Grow wider by any factor */
+    flex-shrink: 1; /* Grow smaller by any factor */
+    flex-basis: auto; /* Auto compute initial */
+    /* flex: 1 1 auto; shorthand for the above */
+}
+
+.right-content .right-content-wrap{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.right-content-wrap .item-line {
+    margin-bottom: var(--mb-0-5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: space-between;
+    color: var(--pa-white);
+}
+
+.right-content-wrap .item-line .label{
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.right-content-wrap .item-line .item-value{
+    font-weight: normal;
+    font-size: 12px;
+}
+
+
+.dialog .dialog-footer {
+    padding: 1rem;
+}
+
+
+.close {
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+
+

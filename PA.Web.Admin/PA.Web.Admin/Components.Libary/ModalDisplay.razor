@@ -1,0 +1,42 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+
+
+@code {
+    [Parameter] public string? Title { get; set; }
+    /*
+     *  RenderFragment represents a piece of UI. Blazor uses these RenderFragments to
+     *  output the final HTML in the browser.
+     */
+    [Parameter] public RenderFragment? BodyContent { get; set; }
+    [Parameter] public RenderFragment? FooterContent { get; set; }
+    [Parameter] public EventCallback<MouseEventArgs> OnCloseDialogClickCallback { get; set; }
+    //[Parameter] public EventCallback OnSubmit { get; set; }
+
+}
+
+<div class="overlay">
+    <div class="dialog">
+        <div class="dialog-header">
+            <div>
+                <h2>@Title</h2>
+            </div>
+
+            <div>
+                <button class="close" @onclick="OnCloseDialogClickCallback">
+                    <span class="material-symbols-sharp">
+                        close
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <div class="dialog-body">
+            @BodyContent
+        </div>
+
+        <div class="dialog-footer">
+            @FooterContent
+        </div>
+    </div>
+</div>
+

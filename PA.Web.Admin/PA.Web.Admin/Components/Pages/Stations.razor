@@ -1,0 +1,172 @@
+﻿@page "/stations"
+@rendermode InteractiveServer
+@inject IConfiguration Configuration;
+@using PA.Core.Models.ApiRequestResponse;
+@using PA.Web.Admin.Helpers;
+@using PA.Web.Admin.Components.Shared;
+@using System.Globalization;
+
+<PageTitle>Stations</PageTitle>
+
+@code {
+	<!--
+	Blazor provides a preconfigured HttpClient through dependency injection
+	that is already setup with the correct base address. Use the inject
+	directive to inject an HttpClient into the Index component.
+	-->
+	@inject HttpClient HttpClient
+	
+
+	//	to enable console.log output
+	[Inject]
+	public IJSRuntime? JSRuntime { get; set; }
+
+	IQueryable<StationLite>? PetrolStations { get; set; }
+
+	bool showEditStationDialog;
+	StationLite? thisStation;
+	PaginationState pagination = new PaginationState { ItemsPerPage = 8 };
+
+	protected override async Task OnInitializedAsync()
+	{
+		var url = Helpers.StringHelpers.ServerBaseUrl + "stations/all";
+		var stationsQuery = await HttpClient.GetFromJsonAsync<List<StationLite>>(url);
+		PetrolStations = stationsQuery?.AsQueryable();
+	}
+
+	/// <summary>
+	/// Helper method to write to browser console
+	/// </summary>
+	/// <param name="message"></param>
+	public async void ConsoleLog(string message)
+	{
+		await JSRuntime.InvokeVoidAsync("console.log", message);
+	}
+
+	void CloseEditStationDialog()
+	{
+		thisStation = null;
+		showEditStationDialog = false;
+		ConsoleLog("CloseEditStationDialog() called! ");
+	}
+
+	void ShowEditStationDialog(StationLite station)
+	{
+		thisStation = station;
+		showEditStationDialog = true;
+	}
+
+
+}
+
+
+<div class="stations">
+	
+	<div class="table-wrap">
+		<div class="table-head">
+			<div class="tbl-head-inner">
+				<span class="table-title">Stations</span>
+				<button>Add a new Station</button>
+			</div>
+		</div>
+
+		@if(PetrolStations == null)
+		{
+			<h1>LOADING...</h1>
+		}else
+		{
+		<QuickGrid Items="@PetrolStations" Pagination="@pagination" Theme="std-table">
+
+			<TemplateColumn Title="Id" Align="Align.Left" Sortable="true">
+					@{
+						<span>@context.Id</span>
+					}
+			</TemplateColumn>
+			<TemplateColumn Title="Address" Align="Align.Left" Sortable="true">
+				<span>
+					@{
+						@StringHelpers.ShortenAndFormatText(context.StationAddress, 15);
+					}
+				</span>
+			</TemplateColumn>
+			<TemplateColumn Title="PostCode" Align="Align.Left" Sortable="false">
+				@{
+					@context.StationPostcode;
+				}
+			</TemplateColumn>
+			<TemplateColumn Title="Country" Align="Align.Left">
+				@{
+					@context.Country;
+				}
+			</TemplateColumn>
+			<TemplateColumn Title="Added" Align="Align.Left" Sortable="true">
+				@{
+					@context.Added.Value.ToString("yyyy-MM-dd", CultureInfo.CreateSpecificCulture("en-GB"));
+				}
+			</TemplateColumn>
+			<TemplateColumn Title="Logo" Align="Align.Left">
+				@{
+					<img class="tbl-img-logo" src="@StringHelpers.GetVendorLogo(context.Logo, VendorLogoSize.Small) " />
+				}
+				
+			</TemplateColumn>
+			<TemplateColumn Title="Online" Align="Align.Center" Sortable="false">
+				@{
+					if (context.StationOnline)
+					{
+						<span class="material-symbols-sharp">
+							done
+						</span>
+					}
+					else
+					{
+						<span class="material-symbols-sharp">
+							close
+						</span>
+					}
+				}
+				<PropertyColumn Property="@( s => s.StationAddress)" Sortable="true" />
+			</TemplateColumn>
+
+			<TemplateColumn Title="Actions">
+				<div class="table-actions-wrap">
+						<button class="btn btn-default btn-primary btn-icon" @onclick="@( () => ShowEditStationDialog(context))">
+							<span class="material-symbols-sharp">
+								visibility
+							</span>
+
+					</button>
+						<button class="btn btn-default btn-warning btn-icon">
+						<span class="material-symbols-sharp">
+							delete
+						</span>
+
+					</button>
+				</div>
+			</TemplateColumn>
+		</QuickGrid>
+		}
+
+		<Paginator State="@pagination" />
+	</div>
+
+
+
+	<!--
+		The ModalDialog is styled to overlay the current page, so it doesn't really matter
+		where you put this code block.
+	-->
+
+	@if (showEditStationDialog)
+	{
+		<ViewStationDialog Station="@thisStation" OnCloseDialogClickCallback="@CloseEditStationDialog">
+
+			<FooterContent>
+				<h1>Hi, I'm the footer</h1>
+			</FooterContent>
+		</ViewStationDialog>
+
+		
+	}
+
+</div>
