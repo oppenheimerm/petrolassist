@@ -1,21 +1,24 @@
 //using Asp.Versioning;
-using Asp.Versioning;
+//using Asp.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 using PA.Datastore.EFCore;
 using PA.Datastore.EFCore.Interfaces;
 using PA.Datastore.EFCore.Repositories;
 using PA.UseCases.Interfaces;
+using PA.UseCases.MemberUseCase;
 using PA.UseCases.PetrolStationUseCase;
+using PA.UtilityLibary;
+using PA.UtilityLibary.FIleService;
+using PA.UtilityLibary.ImageService;
 using PA.Web.API.Authorization;
 using PA.Web.API.Authorization.Interfaces;
 using PA.Web.API.Authorization.MiddleWare;
 using PA.Web.API.Filters;
-using PA.Web.API.Helpers;
 using PA.Web.API.Repositories;
-using PA.Web.API.Repositories.Interfaces;
-using System.Text.Json.Serialization;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,12 +47,12 @@ builder.Services.AddCors();
 builder.Services.AddControllers()
     .AddJsonOptions(x => x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull);
 
-builder.Services.AddApiVersioning(x =>
+/*builder.Services.AddApiVersioning(x =>
 {
     x.DefaultApiVersion = new ApiVersion(1, 0);
     x.AssumeDefaultVersionWhenUnspecified = true;
     x.ReportApiVersions = true;
-});
+});*/
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -61,7 +64,7 @@ builder.Services.AddSwaggerGen(options =>
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
-        Title = "PetrolAssist User Web API",
+        Title = "PetrolAssist Users Web API",
         Description = "PetrolSist user API for mobile access ",
         TermsOfService = new Uri("https://example.com/terms"),
         Contact = new OpenApiContact
@@ -79,18 +82,19 @@ builder.Services.AddSwaggerGen(options =>
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
     {
         Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey,
+        Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
         Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter yourJWt token in the text input below.",
     });
+
     options.AddSecurityRequirement(new OpenApiSecurityRequirement {
         {
             new OpenApiSecurityScheme {
                 Reference = new OpenApiReference {
                     Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer"
+                        Id = "bearer"
                 }
             },
             new string[] {}
@@ -114,7 +118,8 @@ builder.Services.AddSingleton<ImageProcessor>();
 
 //  Repositories
 builder.Services.AddScoped<IPetrolStationRepository, PetrolStationRepository>();
-builder.Services.AddScoped<IWebApiUserRepository, WebApiUserRepository>();
+builder.Services.AddScoped<IMembersRepository, MembersRepository>();
+//builder.Services.AddScoped<IWebApiUserRepository, WebApiUserRepository>();
 builder.Services.AddScoped<IMembersRepository, MembersRepository>();
 
 //builder.Services.AddTransient<,>();
@@ -122,6 +127,10 @@ builder.Services.AddScoped<IMembersRepository, MembersRepository>();
 //  UseCases
 builder.Services.AddTransient<IGetAllPetrolStationsFlatUseCase, GetAllPetrolStationsFlatUseCase>();
 builder.Services.AddTransient<IGetAllStationNearLatLongPoint, GetAllStationNearLatLongPoint>();
+builder.Services.AddTransient<IMemberRegisterUseCase, MemberRegisterUseCase>();
+builder.Services.AddTransient<IMemberAuthenticateUserCase, MemberAuthenticateUserCase>();
+builder.Services.AddTransient<IMemberGetByRefreshTokenUseCase,  MemberGetByRefreshTokenUseCase>();
+
 
 builder.Services.AddScoped<IPhotoFileRepository, PhotoFileRepository>();
 
@@ -147,7 +156,7 @@ app.UseSwaggerUI(options =>
     //https://learn.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-7.0&tabs=visual-studio
     //  To serve the Swagger UI at the app's root (https://localhost:<port>/),
     //  set the RoutePrefix property to an empty string:
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "PS.API v1");
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "PA.Web.API v1");
     options.RoutePrefix = string.Empty;
 
 });

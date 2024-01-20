@@ -1,6 +1,7 @@
-﻿using SkiaSharp;
+﻿
+using SkiaSharp;
 
-namespace PA.Web.API.Helpers
+namespace PA.UtilityLibary.ImageService
 {
     public class ImageProcessor
     {

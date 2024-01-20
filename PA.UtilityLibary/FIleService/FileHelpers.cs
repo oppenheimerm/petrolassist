@@ -1,4 +1,7 @@
-﻿namespace PA.Web.API.Helpers
+﻿
+using Microsoft.AspNetCore.Http;
+
+namespace PA.UtilityLibary.FIleService
 {
     public static class FileHelpers
     {

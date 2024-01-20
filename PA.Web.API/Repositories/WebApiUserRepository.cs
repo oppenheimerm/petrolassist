@@ -8,7 +8,8 @@ using PA.Core.Helpers;
 using BC = BCrypt.Net.BCrypt;
 using PA.Core.Models.ApiRequestResponse;
 using System.Net;
-using PA.Web.API.Helpers;
+using PA.UtilityLibary;
+using PA.UtilityLibary.FIleService;
 
 
 namespace PA.Web.API.Repositories
@@ -270,18 +271,19 @@ namespace PA.Web.API.Repositories
 
         //  TODO - Change response type
         //  This will cause a bottle-neck so we will pass this out to a queue
-        public async Task<UploadPhotoResponse> UploadUPhoto(string token, IFormFile imageFile)
+        public async Task<UploadPhotoResponse> UploadUPhoto(string token, string rootDitrcotry, IFormFile imageFile)
         {
             var response = await GetUserByRefreshTokenAsync(token);
             if (response.Success)
             {
                 //folderEntity.AbsolutePath = Path.Combine(Environment.WebRootPath, Core.Helpers.Constants.RootDirectory, folderStatus.directoryInfo.Name);
-                var absolutePath = Path.Combine(Environment.WebRootPath, Helpers.Constants.RootDirectory);
+                //  TODO - add local constants with root directory
+                var absolutePath = Path.Combine(Environment.WebRootPath, rootDitrcotry);
                 // Is valid file?
                 if (FileHelpers.ValidImageFile(imageFile))
                 {
                     //var addPhoto = await PhotoFileRepository.AddPhotoAsync(NewPhoto.Photo, folderDbEntity.folderDBEntity.FolderName)
-                    var addPhoto = await PhotoFileRepository.AddPhotoAsync(imageFile, absolutePath);
+                    var addPhoto = await PhotoFileRepository.AddPhotoAsync(imageFile, rootDitrcotry, absolutePath);
                     if (addPhoto.Success)
                     {
                         return new UploadPhotoResponse()

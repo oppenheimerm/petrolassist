@@ -20,7 +20,7 @@ namespace PA.Web.API.Controllers.V1
 
         // GET: api/Stations
         [HttpGet]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public List<StationLite> GetStations()
         {
             return GetAllPetrolStationsFlatUseCase.Execute().ToList();

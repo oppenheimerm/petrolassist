@@ -23,10 +23,15 @@ namespace PA.Core.Models.ApiRequestResponse
 		[MinLength(7)]
 		public string Password { get; set; } = string.Empty;
 
-		[Range(typeof(bool), "true", "true", ErrorMessage = "To use this service, you must agree to our terms of service.")]
+        [Required(ErrorMessage ="Comfirm password is requires and must match.")]
+        [Compare("Password")]
+        [MinLength(7)] 
+        public string ConfirmPassword { get; set; } = string.Empty;
+
+        [Range(typeof(bool), "true", "true", ErrorMessage = "To register for this service, you must agree to our terms of service.")]
 		public bool AcceptTerms { get; set; } = false;
 
-		[Required]
+		[Required(ErrorMessage ="A valid mobile phone number is required for this appplication.")]
 		public string MobileNumber { get; set; } = string.Empty;
 	}
 }

@@ -1,7 +1,10 @@
-﻿using PA.Web.API.Helpers;
-using PA.Web.API.Repositories.Interfaces;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using PA.UtilityLibary.ImageService;
 
-namespace PA.Web.API.Repositories
+
+namespace PA.UtilityLibary.FIleService
 {
     public class PhotoFileRepository : IPhotoFileRepository
     {
@@ -16,7 +19,8 @@ namespace PA.Web.API.Repositories
             Logger = logger;
         }
 
-        public async Task<(FileInfo fileInfo, bool Success, string ErrorMessage)> AddPhotoAsync(IFormFile file, string path)
+        // root directory i.e: usersImages
+        public async Task<(FileInfo fileInfo, bool Success, string ErrorMessage)> AddPhotoAsync(IFormFile file, string rootDirectory, string path)
         {
 
             try
@@ -24,7 +28,7 @@ namespace PA.Web.API.Repositories
                 //  We'll be creating a new file name
                 var fileNameExt = Path.GetExtension(file.FileName).ToLower();
                 string newFileName = Guid.NewGuid().ToString("N") + fileNameExt;
-                string filePath = Path.Combine(Environment.WebRootPath, Helpers.Constants.RootDirectory, Path.GetFileName(newFileName));
+                string filePath = Path.Combine(Environment.WebRootPath, rootDirectory, Path.GetFileName(newFileName));
 
                 if (File.Exists(filePath))
                 {

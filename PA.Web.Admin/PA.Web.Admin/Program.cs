@@ -57,7 +57,7 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 
 //  Repositories
 builder.Services.AddScoped<IPetrolStationRepository, PetrolStationRepository>();
-builder.Services.AddScoped<IInitRepository, InitRepository>();
+//builder.Services.AddScoped<IInitRepository, InitRepository>();
 
 //  A server-side app doesn't include an HttpClient service by default. Provide an HttpClient
 //  to the app using the HttpClient factory infrastructure.

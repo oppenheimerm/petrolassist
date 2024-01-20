@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -25,6 +25,7 @@
     <ProjectReference Include="..\PA.Core\PA.Core.csproj" />
     <ProjectReference Include="..\PA.Datastore.EFCore\PA.Datastore.EFCore.csproj" />
     <ProjectReference Include="..\PA.UseCases\PA.UseCases.csproj" />
+    <ProjectReference Include="..\PA.UtilityLibary\PA.UtilityLibary.csproj" />
   </ItemGroup>
 
 </Project>
