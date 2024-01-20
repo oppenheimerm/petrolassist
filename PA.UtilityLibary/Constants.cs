@@ -1,4 +1,5 @@
-﻿namespace PA.Web.API.Helpers
+﻿
+namespace PA.UtilityLibary
 {
     public static class Constants
     {

@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PA.Core\PA.Core.csproj" />
+    <ProjectReference Include="..\PA.UtilityLibary\PA.UtilityLibary.csproj" />
   </ItemGroup>
 
 </Project>

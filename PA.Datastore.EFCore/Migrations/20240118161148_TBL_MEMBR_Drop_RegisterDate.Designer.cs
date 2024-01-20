@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PA.Datastore.EFCore;
 
@@ -11,9 +12,11 @@ using PA.Datastore.EFCore;
 namespace PA.Datastore.EFCore.Migrations
 {
     [DbContext(typeof(ApplicationManagmentDbContext))]
-    partial class ApplicationManagmentDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240118161148_TBL_MEMBR_Drop_RegisterDate")]
+    partial class TBL_MEMBR_Drop_RegisterDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

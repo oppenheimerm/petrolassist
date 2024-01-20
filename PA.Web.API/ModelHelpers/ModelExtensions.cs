@@ -18,7 +18,8 @@ namespace PA.Web.API.ModelHelpers
                     LasttName = registerRequest.LastName,
                     EmailAddress = registerRequest.EmailAddress.ToLowerInvariant(),
                     AcceptTerms = registerRequest.AcceptTerms,
-                    MobileNumber = registerRequest.MobileNumber
+                    MobileNumber = registerRequest.MobileNumber,
+                    LastLogIn = DateTime.Now
                 };
             }
         }

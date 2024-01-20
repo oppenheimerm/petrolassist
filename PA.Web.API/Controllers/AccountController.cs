@@ -1,44 +1,72 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PA.Core.Models.ApiRequestResponse;
-using PA.Web.API.Repositories.Interfaces;
+using PA.UseCases.Interfaces;
+using System.Net;
 
-namespace PA.Web.API.Controllers.V1
+
+namespace PA.Web.API.Controllers
 {
     //  Base account controller: https://github.com/cornflourblue/aspnet-core-3-signup-verification-api/blob/master/Controllers/BaseController.cs
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class AccountController : ControllerBase
     {
-        private readonly IWebApiUserRepository WebApiUserRepository;
+        private readonly IMemberRegisterUseCase MemberRegisterUC;
+        private readonly IMemberAuthenticateUserCase MemberAuthenticateUC;
+        private readonly IMemberGetByRefreshTokenUseCase MemberRefreshTokenUC;
 
-        public UsersController(IWebApiUserRepository webApiUserRepository)
+        public AccountController(IMemberRegisterUseCase memberRegisterUseCase, IMemberAuthenticateUserCase memberAuthenticateUserCase,
+            IMemberGetByRefreshTokenUseCase memberRefreshTokenUC)
         {
-            WebApiUserRepository = webApiUserRepository;
+            MemberRegisterUC = memberRegisterUseCase;
+            MemberAuthenticateUC = memberAuthenticateUserCase;
+            MemberRefreshTokenUC = memberRefreshTokenUC;
         }
+
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(RegisterRequest model)
+        {
+            var response = await  MemberRegisterUC.ExecuteAsync(model, ipAddress());
+            if(response.Success)
+            {
+                return Ok(new { message = "Registration successful, please check your email for verification instructions" });
+
+            }
+            else
+            {
+                return BadRequest(new { message = response.ErrorMessage });
+            }
+        }
+
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
         public async Task<IActionResult> Authenticate(AuthenticateRequest model)
         {
-            var response = await WebApiUserRepository.LogInAsync(model, ipAddress());
+            var response = await MemberAuthenticateUC.ExecuteAsync(model, ipAddress());
             setTokenCookie(response.RefreshToken);
-            return Ok(response);
+            return Ok(response);            
         }
-        
+
 
         [AllowAnonymous]
         [HttpPost("refresh-token")]
         public async Task<ActionResult<AuthenticateResponse>> RefreshToken()
         {
             var refreshToken = Request.Cookies["refreshToken"];
-            var response = await WebApiUserRepository.RefreshTokenAsync(refreshToken, ipAddress());
+            var response = await  MemberRefreshTokenUC.ExecuteAsync(refreshToken, ipAddress());
             setTokenCookie(response.RefreshToken);
-            return Ok(response);
+            if (response.StatusCode == 401)
+            {
+                return Unauthorized();
+            }
+            else {
+                return Ok(response);
+            }
         }
-
-
 
         #region Helpers
         private string ipAddress()

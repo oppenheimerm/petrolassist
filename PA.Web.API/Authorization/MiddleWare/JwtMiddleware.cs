@@ -1,5 +1,5 @@
-﻿using PA.Web.API.Authorization.Interfaces;
-using PA.Web.API.Repositories;
+﻿using PA.Datastore.EFCore.Interfaces;
+using PA.Web.API.Authorization.Interfaces;
 using PA.Web.API.Repositories.Interfaces;
 
 namespace PA.Web.API.Authorization.MiddleWare
@@ -13,7 +13,7 @@ namespace PA.Web.API.Authorization.MiddleWare
             _next = next;
         }
 
-        public async Task Invoke(HttpContext context, IWebApiUserRepository WebApiUserRepository, IJwtUtils jwtUtils)
+        public async Task Invoke(HttpContext context, IMembersRepository MembersRepository, IJwtUtils jwtUtils)
         {
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
             var userId = jwtUtils.ValidateJwtToken(token);
@@ -21,7 +21,7 @@ namespace PA.Web.API.Authorization.MiddleWare
             {
                 // attach user to context on successful jwt validation
                 //var user = WebApiUserRepository.GetMemberByIdAsync(userId.Value);
-                context.Items["User"] = await WebApiUserRepository.GetMemberByIdAsync(userId.Value);//userService.GetById(userId.Value);
+                context.Items["User"] = await MembersRepository.GetMemberByIdAsync(userId.Value);//userService.GetById(userId.Value);
             }
 
             await _next(context);

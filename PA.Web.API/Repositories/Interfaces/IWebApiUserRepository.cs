@@ -38,7 +38,7 @@ namespace PA.Web.API.Repositories.Interfaces
         /// <param name="token"></param>
         /// <returns></returns>
         Task<(bool Success, string ErrorMessage)> VerifyEmailAsync(string token);
-        Task<UploadPhotoResponse> UploadUPhoto(string token, IFormFile imageFile);
+        //Task<UploadPhotoResponse> UploadUPhoto(string token, IFormFile imageFile);
         //Task<AuthenticateResponse> RefreshTokenAsync(string token, string ipAddress);
         //Task RevokeTokenAsync(string token, string ipAddress);
 

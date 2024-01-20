@@ -60,7 +60,7 @@ namespace PA.Core.Models
 		public string MemberPhoto { get; set; } = string.Empty;
 
 		//https://github.com/cornflourblue/aspnet-core-3-signup-verification-api/blob/master/Entities/Account.cs
-		public DateTime? RegisteredDate { get; set; } = DateTime.Now;
+		
 		public DateTime? LastLogIn { get; set; }
 
 		public ICollection<StationRating>? StationRatings { get; set; }
