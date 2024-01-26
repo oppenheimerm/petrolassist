@@ -1,0 +1,96 @@
+﻿﻿
+
+@code {
+    [Parameter] public StationLite? Station { get; set; }
+    [Parameter] public RenderFragment? FooterContent { get; set; }
+    [Parameter] public EventCallback<MouseEventArgs> OnCloseDialogClickCallback { get; set; }
+    //[Parameter] public EventCallback OnSubmit { get; set; }
+
+    // Internal field holding checkbox state
+    private bool stationOnLineIsChecked;
+
+
+    // updates the internal value whwenever the component is updated
+    // You may not want that??
+    protected override void OnParametersSet()
+    {
+        stationOnLineIsChecked = this.Station.StationOnline;
+    }
+
+    private void IsOnlineCheckboxChanged(ChangeEventArgs e)
+    {
+        // get the checkbox state
+        var value = e.Value;
+        Console.WriteLine($"Checkbox changed {Station.StationOnline}");
+    }
+}
+
+<div class="overlay">
+    <div class="dialog">
+        <div class="dialog-header">
+            <div>
+                <h2>
+                    @StringHelpers.ShortenAndFormatText(Station.StationName, 44)
+                </h2>
+            </div>
+
+            <div class="dialog-close-btn-wrap">
+                <button class="btn btn-primary close" @onclick="OnCloseDialogClickCallback">
+                    <span class="material-symbols-sharp">
+                        close
+                    </span>
+                </button>
+            </div>
+        </div>
+
+
+        <div class="dialog-body">
+            <div class="dialog-column">
+                <form>
+                    <fieldset class="dialog-fieldset">
+                        <legend class="dialog-legend ">Add New Station </legend>
+
+                        <div class="item-line">
+                            <label class="form-label">
+                                Station
+                            </label>
+                            <input class="form-control" type="text" value="@StringHelpers.ShortenAndFormatText(Station.StationName, 30)" />
+                        </div>
+
+                        <div class="item-line">
+                            <label class="form-label">
+                                Address
+                            </label>
+                            <input class="form-control" type="text" value="@Station.StationAddress" />
+                        </div>
+                        <div class="item-line">
+                            <label class="form-label">
+                                Country
+                            </label>
+                            <input class="form-control" type="text" value="@Station.Country" />
+                        </div>
+                        <div class="item-line">
+                            <label class="form-label">
+                                PostCode
+                            </label>
+                            <input class="form-control" type="text" value="@Station.StationPostcode" />
+                        </div>
+
+                        <div class="item-line">
+                            <div class="form-control-chkbx">
+                                <label class="form-label">
+                                    Currently online
+                                </label>
+                                <input class="form-control-chkbx" type="checkbox" checked="@stationOnLineIsChecked" @oninput="IsOnlineCheckboxChanged">
+                            </div>
+                        </div>
+                        <div class="dialog-form-actions-wrap">
+                            <button class="btn btn-default btn-primary">Submit</button>
+                        </div>
+                    </fieldset>
+                </form>                
+             </div>
+            </div>
+        </div>
+
+</div>

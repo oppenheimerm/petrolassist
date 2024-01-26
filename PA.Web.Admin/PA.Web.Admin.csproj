@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>aspnet-PA.Web.Admin-b2f7f7c1-7a35-406a-b677-abad751bcb9b</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid" Version="8.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PA.Core\PA.Core.csproj" />
+    <ProjectReference Include="..\PA.Datastore.EFCore\PA.Datastore.EFCore.csproj" />
+    <ProjectReference Include="..\PA.UseCases\PA.UseCases.csproj" />
+  </ItemGroup>
+
+</Project>
