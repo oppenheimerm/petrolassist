@@ -1,0 +1,204 @@
+﻿@page "/stations"
+
+@using PA.Web.Admin.Shared
+
+<PageTitle>Stations</PageTitle>
+
+@code {
+	<!--
+	Blazor provides a preconfigured HttpClient through dependency injection
+	that is already setup with the correct base address. Use the inject
+	directive to inject an HttpClient into the Index component.
+	-->
+	@inject HttpClient HttpClient
+	@inject NavigationManager NavigationManager;
+
+	@inject IConfiguration Configuration;
+	//	to enable console.log output
+	@inject IJSRuntime JSRuntime;
+	@inject  IConfiguration Configuration;
+
+	IQueryable<StationLite> PetrolStations { get; set; }
+
+	bool showEditStationDialog;
+	bool showAddNewStationdialog;
+	StationLite thisStation;
+	Station newStation;
+	PaginationState pagination = new PaginationState { ItemsPerPage = 8 };
+	//  Since a Blazor Server app is usually prerendering, JavaScript is not yet available, so you have to wait
+	//  until your app is rendered, and only then call JavaScript functions.
+	//
+	//  See: protected override async Task OnAfterRenderAsync(bool firstRender)
+	bool preRenderRun = false;
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		//var url = Helpers.StringHelpers.ServerBaseUrl + "stations/all";
+		var stationsQuery = await HttpClient.GetFromJsonAsync<List<StationLite>>($"{NavigationManager.BaseUri}api/stations/all");
+		PetrolStations = stationsQuery?.AsQueryable();		
+	}
+
+	//	https://stackoverflow.com/questions/61438796/javascript-interop-error-when-calling-javascript-from-oninitializedasync-blazor
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			await JSRuntime.InvokeVoidAsync("initMap", Configuration["GoogleServices:ApiKey"]);
+			StateHasChanged();
+			preRenderRun = true;
+		}
+
+	}
+
+
+	/// <summary>
+	/// Helper method to write to browser console
+	/// </summary>
+	/// <param name="message"></param>
+	public async void ConsoleLog(string message)
+	{
+		await JSRuntime.InvokeVoidAsync("console.log", message);
+	}
+
+	private void CloseEditStationDialog()
+	{
+		thisStation = null;
+		showEditStationDialog = false;
+		ConsoleLog("CloseEditStationDialog() called! ");
+	}
+
+	void ShowEditStationDialog(StationLite station)
+	{
+		thisStation = station;
+		showEditStationDialog = true;
+	}
+
+	void ShowAddNewStationDialog()
+	{
+		if (preRenderRun){
+			newStation = new Station();
+			showAddNewStationdialog = true;
+		}		
+	}
+
+	public void CloseAddnewStationDialog()
+	{
+		showAddNewStationdialog = false;
+	}
+
+
+}
+
+<div class="stations">
+
+	<input type="hidden" id="mapHolder"/>
+
+	<div class="table-wrap">
+		<div class="table-head">
+			<div class="tbl-head-inner">
+				<span class="table-title">Stations</span>
+				<button class="@((preRenderRun == true)? "btn btn-default btn-primary" :"btn btn-default btn-disabled")" @onclick="@(() => ShowAddNewStationDialog())">Add a new Station</button>
+			</div>
+		</div>
+
+		@if(PetrolStations == null)
+		{
+			<h1>LOADING...</h1>
+		}else
+		{
+		<QuickGrid Items="@PetrolStations" Pagination="@pagination" Theme="std-table">
+
+			<TemplateColumn Title="Id" Align="Align.Left" Sortable="true">
+					@{
+						<span>@context.Id</span>
+					}
+			</TemplateColumn>
+			<TemplateColumn Title="Address" Align="Align.Left" Sortable="true">
+				<span>
+					@{
+						@StringHelpers.ShortenAndFormatText(context.StationAddress, 15);
+					}
+				</span>
+			</TemplateColumn>
+			<TemplateColumn Title="PostCode" Align="Align.Left" Sortable="false">
+				@{
+					@context.StationPostcode;
+				}
+			</TemplateColumn>
+			<TemplateColumn Title="Country" Align="Align.Left">
+				@{
+					@context.Country;
+				}
+			</TemplateColumn>
+			<TemplateColumn Title="Added" Align="Align.Left" Sortable="true">
+				@{
+					@context.Added.Value.ToString("yyyy-MM-dd", CultureInfo.CreateSpecificCulture("en-GB"));
+				}
+			</TemplateColumn>
+			<TemplateColumn Title="Logo" Align="Align.Left">
+				@{
+					<img class="tbl-img-logo" src="@StringHelpers.GetVendorLogo(context.Logo, VendorLogoSize.Small) " />
+				}
+				
+			</TemplateColumn>
+			<TemplateColumn Title="Online" Align="Align.Center" Sortable="false">
+				@{
+					if (context.StationOnline)
+					{
+						<span class="material-symbols-sharp">
+							done
+						</span>
+					}
+					else
+					{
+						<span class="material-symbols-sharp">
+							close
+						</span>
+					}
+				}
+				<PropertyColumn Property="@( s => s.StationAddress)" Sortable="true" />
+			</TemplateColumn>
+
+			<TemplateColumn Title="Actions">
+				<div class="table-actions-wrap">
+					<button class="btn btn-default btn-primary btn-icon" @onclick="@( () => ShowEditStationDialog(context))">
+						<span class="material-symbols-sharp">
+							visibility
+						</span>
+					</button>
+					<button class="btn btn-default btn-warning btn-icon">
+						<span class="material-symbols-sharp">
+							delete
+						</span>
+					</button>
+				</div>
+			</TemplateColumn>
+		</QuickGrid>
+		}
+
+		<Paginator State="@pagination" />
+	</div>
+
+
+
+	<!--
+		The ModalDialog is styled to overlay the current page, so it doesn't really matter
+		where you put this code block.
+	-->
+
+	@if (showEditStationDialog)
+	{
+		<ViewStationDialog Station="@thisStation" OnCloseDialogClickCallback="@CloseEditStationDialog">
+		</ViewStationDialog>
+		
+	}
+
+	@if (showAddNewStationdialog)
+	{
+		<AddStationDialog OnCloseDialogClickCallback="@CloseAddnewStationDialog" NewStation="newStation">
+
+		</AddStationDialog>
+	}
+
+</div>

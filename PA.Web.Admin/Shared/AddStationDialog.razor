@@ -1,0 +1,246 @@
+﻿@inject HttpClient HttpClient
+@using Newtonsoft.Json
+
+@code {
+    [Parameter] public EventCallback<MouseEventArgs> OnCloseDialogClickCallback { get; set; }
+    [Parameter, EditorRequired] public Station NewStation { get; set; } = new();
+    //[Parameter] public EventCallback OnSubmit { get; set; }
+    @inject NavigationManager NavigationManager;
+    @inject  IConfiguration Configuration;
+    @inject IJSRuntime JSRuntime;
+
+
+
+    List<Country> Countries { get; set; }
+    List<Vendor> Vendors { get; set; }
+
+    // Internal field holding checkbox state, initial state is false
+    private bool stationOnLineIsChecked = false;
+    private bool payByAppIsChecked = false;
+    private bool payAtPumpIsChecked = false;
+    string googleApiKey;
+    string? postcodeInputValue;
+    double? stationLong;
+    double? stationLat;
+   
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var countriesQuery = await HttpClient.GetFromJsonAsync<List<Country>>($"{NavigationManager?.BaseUri}api/stations/countries");
+        var vendorsQuery = await HttpClient.GetFromJsonAsync<List<Vendor>>($"{NavigationManager?.BaseUri}api/vendors/all");
+
+        Countries = countriesQuery!.ToList();
+        Vendors = vendorsQuery!.ToList();
+    }
+
+
+    private void IsOnlineCheckboxChanged(ChangeEventArgs e)
+    {
+        // get the checkbox state
+        NewStation.StationOnline = bool.Parse(e.Value.ToString());
+        Console.WriteLine($"Checkbox changed {NewStation.StationOnline}");
+    }
+
+    private void CanPayViaAppCheckboxChanged(ChangeEventArgs e)
+    {
+        NewStation.PayByApp = bool.Parse(e.Value.ToString());
+    }
+
+    private void CanPayAtPumpCheckboxChanged(ChangeEventArgs e)
+    {
+        NewStation.PayAtPump = bool.Parse(e.Value.ToString());
+    }
+
+
+    //  https://www.c-sharpcorner.com/article/creating-custom-drop-down-component-in-blazor-3-2-wasm/
+    private void OnCountryValueChaned(ChangeEventArgs e)
+    {
+        NewStation.CountryId = int.Parse(e.Value?.ToString());
+    }
+
+    private void OnVendorValueChaned(ChangeEventArgs e)
+    {
+        NewStation.VendorId = int.Parse(e.Value?.ToString());
+    }
+
+    void Submit()
+    {
+        Console.WriteLine($"New station: {NewStation.StationName}, Station addres: {NewStation.StationAddress}, and Country: {NewStation.CountryId}, and Latitude: {NewStation.Latitude.ToString()}.");
+    }
+
+
+    //  Need to get the lat / long values
+    /*async Task OnLeavePostCodeInput(FocusEventArgs e)
+    {
+
+        //https://stackoverflow.com/questions/58301986/blazor-get-input-value-from-javascript-created-dom-element
+        var data  = await JSRuntime.InvokeAsync<string>("getCoordinates", postcodeInputValue);
+        var c = Newtonsoft.Json.JsonConvert.DeserializeObject<CoordinateRequest>(data);
+    }*/
+
+    //  Does not work
+    /*private void OnStationInputLatEvent(ChangeEventArgs changeEvent)
+    {
+        var value = (string)changeEvent.Value;
+        CoordinateRequest.latitude = value;
+        NewStation.Latitude = CoordinateRequest.GetLatitude();
+    }*/
+
+    private async Task OnPostCodeInputEvent(ChangeEventArgs changeEventArgs)
+    {
+        //https://stackoverflow.com/questions/58301986/blazor-get-input-value-from-javascript-created-dom-element
+        CoordinateRequest coordinateRequest = new CoordinateRequest();
+        postcodeInputValue = (string)changeEventArgs.Value;
+        if(postcodeInputValue.Length >= 2)
+        {
+            // Response will be a lat/long or "ZERO_RESULTS"
+            var rsp = await JSRuntime.InvokeAsync<Object>("getCoordinates", postcodeInputValue);
+            if(rsp != null){
+                // Convert it
+                //  Finally have it!
+                var coordinates = getCoordinates(rsp.ToString());
+
+            }
+            Console.WriteLine(rsp.ToString());
+        }
+
+        else
+        {
+            return;
+        }
+
+    }
+
+    CoordinateRequest? getCoordinates(string? response)
+    {
+        if(response != null)
+        {
+            return JsonConvert.DeserializeObject<CoordinateRequest>(response);
+        }
+        else
+        {
+            return null;
+        }
+    }
+}
+
+<div class="overlay">
+    <div class="dialog">
+        <div class="dialog-header">
+            <div>
+                <h2>
+                    @StringHelpers.ShortenAndFormatText(NewStation.StationName, 44)
+                </h2>
+            </div>
+
+            <div class="dialog-close-btn-wrap">
+                <button class="btn btn-primary close" @onclick="OnCloseDialogClickCallback">
+                    <span class="material-symbols-sharp">
+                        close
+                    </span>
+                </button>
+            </div>
+        </div>
+
+
+        <div class="dialog-body">
+            <div class="dialog-column">
+                <fieldset class="dialog-fieldset">
+                    <legend class="dialog-legend ">Add New Station </legend>
+
+                    <input type="hidden" id="station-lat" />
+                    <input type="hidden" id="station-long" @bind="stationLong"/>
+                    
+                    <input type="hidden" id="mapScripLoaded" value="false" />
+
+                    <div class="item-line">
+                        <label class="form-label">
+                            Station Name
+                        </label>
+                        <input class="form-control" type="text" @bind="NewStation.StationName" />
+                    </div>
+
+                    <div class="item-line">
+                        <label class="form-label">
+                            Address
+                        </label>
+                        <input class="form-control" type="text"  @bind="NewStation.StationAddress" />
+                    </div>
+                    <div class="item-line">
+                        <label class="form-label" >
+                            Post Code
+                        </label>
+                        <input class="form-control" type="text" @oninput="OnPostCodeInputEvent" @bind="@postcodeInputValue" />
+                    </div>
+                    <div class="item-line">
+                        <label class="form-label">
+                            Vendor
+                        </label>
+                        @if (Vendors == null)
+                        {
+                            <p>
+                                <em>Loading</em>
+                            </p>
+                        }
+                        else
+                        {
+                            <select class="form-select-list" @onchange="OnVendorValueChaned" title="Country is required">
+                                <option value="Select" selected disabled="disabled">(Choose Vendor)></option>
+                                @foreach (var vendor in Vendors)
+                                {
+                                    <option value="@vendor.Id">@vendor.VendorName</option>
+                                }
+                            </select>
+                        }
+                    </div>
+                    <div class="item-line">
+                        <label class="form-label">
+                            Country
+                        </label>
+                        @if (Countries == null)
+                        {
+                            <p>
+                                <em>Loading</em>
+                            </p>
+                        }
+                        else
+                        {
+                            <select class="form-select-list" @onchange="OnCountryValueChaned" title="Country is required">
+                                <option value="Select" selected disabled="disabled">(Choose Country)></option>
+                                @foreach (var country in Countries)
+                                {
+                                    <option value="@country.Id">@country.CountryName</option>
+                                }
+                            </select>
+                        }
+
+                    </div>
+                    <div class="item-line">
+                        <div class="form-control-chkbx">
+                            <label class="form-label">
+                                Pay via app
+                            </label>
+                            <input class="form-control-chkbx" type="checkbox" checked="@payByAppIsChecked" @oninput="CanPayViaAppCheckboxChanged">
+                        </div>
+                    </div>
+
+
+                    <div class="item-line">
+                        <label class="form-label">
+                            Pay At Pump 
+                        </label>
+                        <input class="form-control-chkbx" type="checkbox" checked="@payAtPumpIsChecked" @oninput="CanPayAtPumpCheckboxChanged">
+                    </div>
+
+
+                    <div class="dialog-form-actions-wrap">
+                        <button class="btn btn-default btn-primary" @onclick="@( () => Submit())">Submit</button>
+                    </div>
+                </fieldset>
+             </div>
+            </div>
+        </div>
+ </div>
+
