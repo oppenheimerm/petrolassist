@@ -27,12 +27,12 @@ namespace PA.Datastore.EFCore.Interfaces
         /// </summary>
         /// <param name="countryId"></param>
         /// <returns></returns>
-        IQueryable<StationLite> GetAll(int? countryId);
-		/// <summary>
-		/// Returns a subset(flat) list of <see cref="Station"/> Properties.  Used with the public API
-		/// </summary>
-		/// <returns></returns>
-		IQueryable<StationLite> GetAllFlat();
+        IQueryable<Station> GetAll(int? countryId);
+        /// <summary>
+        /// Returns a IQuerable list of <see cref="Station"/> 
+        /// </summary>
+        /// <returns></returns>
+        IQueryable<StationLite> GetAllFlat(int? countryId);
         /// <summary>
         /// Returns a <see cref="PagedList{T}"/> of <see cref="StationLite"/> objects ordered by distance
         /// </summary>

@@ -68,7 +68,29 @@ namespace PA.Datastore.EFCore.Repositories
 
         }
 
-        public IQueryable<StationLite> GetAll(int? countryId)
+        public IQueryable<Station> GetAll(int? countryId) {
+            if(countryId == null )
+            {
+
+				var stations = Context.PetrolStations
+					.Include(v => v.Vendor)
+					.Include(r => r.StationRatings)
+					.Include(h => h.StationRatings).AsNoTracking();
+				return stations;
+			}
+            else
+            {
+				var stations = Context.PetrolStations
+					.Where(s => s.CountryId == countryId)
+					.Include(v => v.Vendor)
+					.Include(r => r.StationRatings)
+					.Include(h => h.StationRatings).AsNoTracking();
+				return stations;
+            }
+            
+        }
+
+        public IQueryable<StationLite> GetAllFlat(int? countryId)
         {
             if (countryId == null) {
                 var query = from station in Context.PetrolStations
@@ -214,30 +236,6 @@ namespace PA.Datastore.EFCore.Repositories
             Logger.LogInformation($"Found {stations.Count} near user.");
 
             return stations;
-        }
-
-        public IQueryable<StationLite> GetAllFlat()
-        {
-            var query = from station in Context.PetrolStations
-                        join country in Context.Countries on station.CountryId equals country.Id
-                        join vendor in Context.PetrolVendors on station.VendorId equals vendor.Id
-                        select new StationLite
-                        {
-                            Id = station.Id,
-                            StationName = station.StationName,
-                            StationAddress = station.StationAddress,
-                            StationPostcode = station.StationPostcode,
-                            Latitude = station.Latitude,
-                            Longitude = station.Longitude,
-                            StationOnline = station.StationOnline,
-                            VendorName = vendor.VendorName,
-                            Country = country.CountryName,
-                            Logo = vendor.VendorLogo
-                        };
-            //
-            query.OrderBy(s => s.StationName);
-            query.Cast<object>().ToList();
-            return query;
         }
 
         public async Task<Station?> GetStationById(int id)

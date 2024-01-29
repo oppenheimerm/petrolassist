@@ -129,11 +129,9 @@
 <div class="overlay">
     <div class="dialog">
         <div class="dialog-header">
-            <div>
-                <h2>
-                    @StringHelpers.ShortenAndFormatText(NewStation.StationName, 44)
-                </h2>
-            </div>
+            <h2 class="dialog-title">
+                Add A New Station
+            </h2>
 
             <div class="dialog-close-btn-wrap">
                 <button class="btn btn-primary close" @onclick="OnCloseDialogClickCallback">
@@ -146,100 +144,109 @@
 
 
         <div class="dialog-body">
-            <div class="dialog-column">
-                <fieldset class="dialog-fieldset">
-                    <legend class="dialog-legend ">Add New Station </legend>
+            <form>
+                <div class="dialog-row dialog-fieldset">
+                    <div class="dialog-row-column">
+                        <input type="hidden" id="station-lat" />
+                        <input type="hidden" id="station-long" @bind="stationLong" />
+                        <input type="hidden" id="mapScripLoaded" value="false" />
 
-                    <input type="hidden" id="station-lat" />
-                    <input type="hidden" id="station-long" @bind="stationLong"/>
-                    
-                    <input type="hidden" id="mapScripLoaded" value="false" />
-
-                    <div class="item-line">
-                        <label class="form-label">
-                            Station Name
-                        </label>
-                        <input class="form-control" type="text" @bind="NewStation.StationName" />
-                    </div>
-
-                    <div class="item-line">
-                        <label class="form-label">
-                            Address
-                        </label>
-                        <input class="form-control" type="text"  @bind="NewStation.StationAddress" />
-                    </div>
-                    <div class="item-line">
-                        <label class="form-label" >
-                            Post Code
-                        </label>
-                        <input class="form-control" type="text" @oninput="OnPostCodeInputEvent" @bind="@postcodeInputValue" />
-                    </div>
-                    <div class="item-line">
-                        <label class="form-label">
-                            Vendor
-                        </label>
-                        @if (Vendors == null)
-                        {
-                            <p>
-                                <em>Loading</em>
-                            </p>
-                        }
-                        else
-                        {
-                            <select class="form-select-list" @onchange="OnVendorValueChaned" title="Country is required">
-                                <option value="Select" selected disabled="disabled">(Choose Vendor)></option>
-                                @foreach (var vendor in Vendors)
-                                {
-                                    <option value="@vendor.Id">@vendor.VendorName</option>
-                                }
-                            </select>
-                        }
-                    </div>
-                    <div class="item-line">
-                        <label class="form-label">
-                            Country
-                        </label>
-                        @if (Countries == null)
-                        {
-                            <p>
-                                <em>Loading</em>
-                            </p>
-                        }
-                        else
-                        {
-                            <select class="form-select-list" @onchange="OnCountryValueChaned" title="Country is required">
-                                <option value="Select" selected disabled="disabled">(Choose Country)></option>
-                                @foreach (var country in Countries)
-                                {
-                                    <option value="@country.Id">@country.CountryName</option>
-                                }
-                            </select>
-                        }
-
-                    </div>
-                    <div class="item-line">
-                        <div class="form-control-chkbx">
+                        <div class="item-line">
                             <label class="form-label">
-                                Pay via app
+                                Station Name
                             </label>
-                            <input class="form-control-chkbx" type="checkbox" checked="@payByAppIsChecked" @oninput="CanPayViaAppCheckboxChanged">
+                            <input class="form-control" type="text" @bind="NewStation.StationName" />
                         </div>
+
+                        <div class="item-line">
+                            <label class="form-label">
+                                Address
+                            </label>
+                            <input class="form-control" type="text" @bind="NewStation.StationAddress" />
+                        </div>
+
+                        <div class="item-line">
+                            <label class="form-label">
+                                Post Code
+                            </label>
+                            <input class="form-control" type="text" @oninput="OnPostCodeInputEvent" @bind="@postcodeInputValue" />
+                        </div>
+
                     </div>
 
+                    <div class="dialog-row-column">
 
-                    <div class="item-line">
-                        <label class="form-label">
-                            Pay At Pump 
-                        </label>
-                        <input class="form-control-chkbx" type="checkbox" checked="@payAtPumpIsChecked" @oninput="CanPayAtPumpCheckboxChanged">
+                        <div class="item-line">
+                            <label class="form-label">
+                                Vendor
+                            </label>
+                            @if (Vendors == null)
+                            {
+                                <p>
+                                    <em>Loading</em>
+                                </p>
+                            }
+                            else
+                            {
+                                <select class="form-select-list" @onchange="OnVendorValueChaned" title="Country is required">
+                                    <option value="Select" selected disabled="disabled">(Choose Vendor)></option>
+                                    @foreach (var vendor in Vendors)
+                                    {
+                                        <option value="@vendor.Id">@vendor.VendorName</option>
+                                    }
+                                </select>
+                            }
+                        </div>
+
+                        <div class="item-line">
+                            <label class="form-label">
+                                Country
+                            </label>
+                            @if (Countries == null)
+                            {
+                                <p>
+                                    <em>Loading</em>
+                                </p>
+                            }
+                            else
+                            {
+                                <select class="form-select-list" @onchange="OnCountryValueChaned" title="Country is required">
+                                    <option value="Select" selected disabled="disabled">(Choose Country)></option>
+                                    @foreach (var country in Countries)
+                                    {
+                                        <option value="@country.Id">@country.CountryName</option>
+                                    }
+                                </select>
+                            }
+
+                        </div>
+
+                        <div class="item-line">
+                            <div class="form-control-chkbx">
+                                <label class="form-label">
+                                    Pay via app
+                                </label>
+                                <input class="form-control-chkbx" type="checkbox" checked="@payByAppIsChecked" @oninput="CanPayViaAppCheckboxChanged">
+                            </div>
+                        </div>
+
+                        <div class="item-line">
+                            <div class="form-control-chkbx">
+                                <label class="form-label">
+                                    Pay At Pump
+                                </label>
+                                <input class="form-control-chkbx" type="checkbox" checked="@payAtPumpIsChecked" @oninput="CanPayAtPumpCheckboxChanged">
+                            </div>
+                        </div>
+
                     </div>
-
-
+                </div>
+                <div class="dialog-row">
                     <div class="dialog-form-actions-wrap">
                         <button class="btn btn-default btn-primary" @onclick="@( () => Submit())">Submit</button>
                     </div>
-                </fieldset>
-             </div>
+                </div>
+            </form>
             </div>
         </div>
  </div>

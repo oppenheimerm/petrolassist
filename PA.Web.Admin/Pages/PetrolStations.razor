@@ -1,30 +1,36 @@
-﻿@page "/stations"
+﻿@page "/petrolstations"
+@using PA.Web.Admin.Helpers
 
-@using PA.Web.Admin.Shared
+<PageTitle>Petrol Stations</PageTitle>
 
-<PageTitle>Stations</PageTitle>
+
+<!--
+Blazor provides a preconfigured HttpClient through dependency injection
+that is already setup with the correct base address. Use the inject
+directive to inject an HttpClient into the Index component.
+-->
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager;
+@inject IConfiguration Configuration;
+
+<!--
+	to enable console.log output
+-->
+@inject IJSRuntime JSRuntime;
+@inject IConfiguration Configuration;
+
+
 
 @code {
-	<!--
-	Blazor provides a preconfigured HttpClient through dependency injection
-	that is already setup with the correct base address. Use the inject
-	directive to inject an HttpClient into the Index component.
-	-->
-	@inject HttpClient HttpClient
-	@inject NavigationManager NavigationManager;
 
-	@inject IConfiguration Configuration;
-	//	to enable console.log output
-	@inject IJSRuntime JSRuntime;
-	@inject  IConfiguration Configuration;
-
-	IQueryable<StationLite> PetrolStations { get; set; }
-
+	IQueryable<Station>? Stations { get; set; }
 	bool showEditStationDialog;
 	bool showAddNewStationdialog;
-	StationLite thisStation;
-	Station newStation;
+	PA.Core.Models.Station? thisStation;
+	PA.Core.Models.Station? newStation;
 	PaginationState pagination = new PaginationState { ItemsPerPage = 8 };
+
+
 	//  Since a Blazor Server app is usually prerendering, JavaScript is not yet available, so you have to wait
 	//  until your app is rendered, and only then call JavaScript functions.
 	//
@@ -35,11 +41,12 @@
 	protected override async Task OnInitializedAsync()
 	{
 		//var url = Helpers.StringHelpers.ServerBaseUrl + "stations/all";
-		var stationsQuery = await HttpClient.GetFromJsonAsync<List<StationLite>>($"{NavigationManager.BaseUri}api/stations/all");
-		PetrolStations = stationsQuery?.AsQueryable();		
+		var stationsQuery = await HttpClient.GetFromJsonAsync<IQueryable<Station>>($"{NavigationManager.BaseUri}api/stations/all");
+		Stations = stationsQuery.AsQueryable();
 	}
 
 	//	https://stackoverflow.com/questions/61438796/javascript-interop-error-when-calling-javascript-from-oninitializedasync-blazor
+
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if (firstRender)
@@ -65,10 +72,10 @@
 	{
 		thisStation = null;
 		showEditStationDialog = false;
-		ConsoleLog("CloseEditStationDialog() called! ");
+		//ConsoleLog("CloseEditStationDialog() called! ");
 	}
 
-	void ShowEditStationDialog(StationLite station)
+	void ShowEditStationDialog(Station station)
 	{
 		thisStation = station;
 		showEditStationDialog = true;
@@ -76,10 +83,13 @@
 
 	void ShowAddNewStationDialog()
 	{
-		if (preRenderRun){
+		if (preRenderRun)
+		{
 			newStation = new Station();
 			showAddNewStationdialog = true;
-		}		
+		}else{
+			return;
+		}
 	}
 
 	public void CloseAddnewStationDialog()
@@ -102,12 +112,16 @@
 			</div>
 		</div>
 
-		@if(PetrolStations == null)
+		@if(Stations == null)
 		{
 			<h1>LOADING...</h1>
 		}else
 		{
-		<QuickGrid Items="@PetrolStations" Pagination="@pagination" Theme="std-table">
+			/*
+			Use sime paging
+			https://www.c-sharpcorner.com/UploadFile/4b0136/perform-paging-searching-sorting-in-Asp-Net-mvc-5/
+			*/
+		<QuickGrid Items="@Stations" Pagination="@pagination" Theme="std-table">
 
 			<TemplateColumn Title="Id" Align="Align.Left" Sortable="true">
 					@{
@@ -117,7 +131,7 @@
 			<TemplateColumn Title="Address" Align="Align.Left" Sortable="true">
 				<span>
 					@{
-						@StringHelpers.ShortenAndFormatText(context.StationAddress, 15);
+						@StringHelpers.ShortenAndFormatText(@context.StationAddress, 15);
 					}
 				</span>
 			</TemplateColumn>
@@ -128,7 +142,7 @@
 			</TemplateColumn>
 			<TemplateColumn Title="Country" Align="Align.Left">
 				@{
-					@context.Country;
+					@context.CountryCode;
 				}
 			</TemplateColumn>
 			<TemplateColumn Title="Added" Align="Align.Left" Sortable="true">
@@ -138,13 +152,13 @@
 			</TemplateColumn>
 			<TemplateColumn Title="Logo" Align="Align.Left">
 				@{
-					<img class="tbl-img-logo" src="@StringHelpers.GetVendorLogo(context.Logo, VendorLogoSize.Small) " />
+					<img class="tbl-img-logo" src="@StringHelpers.GetVendorLogo(@context.Vendor.VendorLogo, VendorLogoSize.Small) " />
 				}
 				
 			</TemplateColumn>
 			<TemplateColumn Title="Online" Align="Align.Center" Sortable="false">
 				@{
-					if (context.StationOnline)
+					@if (@context.StationOnline)
 					{
 						<span class="material-symbols-sharp">
 							done

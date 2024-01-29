@@ -1,7 +1,11 @@
-﻿﻿
+﻿<!--
+    The NavigationManager lets you interact with URIs and navigation state. It has methods
+    to get the current URL, to navigate to a different one, and more.
+-->
+@inject NavigationManager NavigationManager﻿
 
 @code {
-    [Parameter] public StationLite? Station { get; set; }
+    [Parameter] public Station? Station { get; set; }
     [Parameter] public RenderFragment? FooterContent { get; set; }
     [Parameter] public EventCallback<MouseEventArgs> OnCloseDialogClickCallback { get; set; }
     //[Parameter] public EventCallback OnSubmit { get; set; }
@@ -23,16 +27,18 @@
         var value = e.Value;
         Console.WriteLine($"Checkbox changed {Station.StationOnline}");
     }
+
+    private void ViewDetails(int id){
+        NavigationManager.NavigateTo($"station/{id}");
+    }
 }
 
 <div class="overlay">
     <div class="dialog">
         <div class="dialog-header">
-            <div>
-                <h2>
-                    @StringHelpers.ShortenAndFormatText(Station.StationName, 44)
-                </h2>
-            </div>
+            <h2 class="dialog-title">
+                @StringHelpers.ShortenAndFormatText(Station.StationName, 44)
+            </h2>            
 
             <div class="dialog-close-btn-wrap">
                 <button class="btn btn-primary close" @onclick="OnCloseDialogClickCallback">
@@ -43,54 +49,62 @@
             </div>
         </div>
 
-
         <div class="dialog-body">
-            <div class="dialog-column">
-                <form>
-                    <fieldset class="dialog-fieldset">
-                        <legend class="dialog-legend ">Add New Station </legend>
+            <div class="dialog-row dialog-fieldset">
+                <div class="dialog-row-column">
 
-                        <div class="item-line">
-                            <label class="form-label">
-                                Station
-                            </label>
-                            <input class="form-control" type="text" value="@StringHelpers.ShortenAndFormatText(Station.StationName, 30)" />
-                        </div>
+                    <div class="item-line">
+                        <label class="form-label">
+                            Station
+                        </label>
+                        <input class="form-control disabled" type="text" value="@StringHelpers.ShortenAndFormatText(Station.StationName, 30)" />
+                    </div>
 
-                        <div class="item-line">
-                            <label class="form-label">
-                                Address
-                            </label>
-                            <input class="form-control" type="text" value="@Station.StationAddress" />
-                        </div>
-                        <div class="item-line">
-                            <label class="form-label">
-                                Country
-                            </label>
-                            <input class="form-control" type="text" value="@Station.Country" />
-                        </div>
-                        <div class="item-line">
-                            <label class="form-label">
-                                PostCode
-                            </label>
-                            <input class="form-control" type="text" value="@Station.StationPostcode" />
-                        </div>
+                    <div class="item-line">
+                        <label class="form-label">
+                            Address
+                        </label>
+                        <input class="form-control disabled" type="text" value="@Station.StationAddress" />
+                    </div>
 
-                        <div class="item-line">
-                            <div class="form-control-chkbx">
-                                <label class="form-label">
-                                    Currently online
-                                </label>
-                                <input class="form-control-chkbx" type="checkbox" checked="@stationOnLineIsChecked" @oninput="IsOnlineCheckboxChanged">
-                            </div>
+                    <div class="item-line">
+                        <label class="form-label">
+                            Country
+                        </label>
+                        <input class="form-control disabled" type="text" value="@Station.CountryId" />
+                    </div>
+
+                </div>
+
+
+                <div class="dialog-row-column">
+                    <div class="item-line">
+                        <label class="form-label">
+                            PostCode
+                        </label>
+                        <input class="form-control disabled" type="text" value="@Station.StationPostcode" />
+                    </div>
+
+                    <div class="item-line">
+                        <div class="form-control-chkbx">
+                            <label class="form-label">
+                                Currently online
+                            </label>
+                            <input class="form-control-chkbx" type="checkbox" checked="@stationOnLineIsChecked" @oninput="IsOnlineCheckboxChanged">
                         </div>
-                        <div class="dialog-form-actions-wrap">
-                            <button class="btn btn-default btn-primary">Submit</button>
-                        </div>
-                    </fieldset>
-                </form>                
+                    </div>
+                </div>
+
+
              </div>
+
+            <div class="dialog-row">
+                <div class="dialog-form-actions-wrap">
+                    <button class="btn btn-default btn-primary" @onclick="@( () => ViewDetails(Station.Id))">View Full Details</button>
+                </div>
             </div>
         </div>
+
+     </div>
 
 </div>

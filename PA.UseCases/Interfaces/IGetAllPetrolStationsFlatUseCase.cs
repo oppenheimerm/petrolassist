@@ -6,10 +6,9 @@ namespace PA.UseCases.Interfaces
     public interface IGetAllPetrolStationsFlatUseCase
     {
         /// <summary>
-        /// Usecase for returning a list of <see cref="StationLite"/> with subset of
-        /// <see cref="Core.Models.Station"/>properties only
+        /// Usecase for returning a IQuerable list of <see cref="StationLite"/>.
         /// </summary>
         /// <returns></returns>
-        IQueryable<StationLite> Execute();
+        IQueryable<StationLite> Execute(int? countryId);
     }
 }

@@ -35,7 +35,9 @@
     --warning-colour-hover: #9e291c;
     --error-colour: #C0392B;
     --dialog-colour: #7F8C8D;
-    --disabled-colour: #e5e5e5;
+    --disabled-colour: #f8f8f8;
+    --input-background: #BDC3C7;
+    --input-disabled: #FFCD02;
     /*========== 
         Margins Bottom 
     ==========*/
@@ -144,8 +146,8 @@ h4 {
 .btn-disabled,
 .btn-disabled:hover {
     background-color: var(--disabled-colour);
-    border: 1px solid var(--pa-white);
-    color: var(--black-1);
+    border: 1px solid #e5e5e5;
+    color: #999;
 }
 
 

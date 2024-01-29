@@ -11,21 +11,21 @@ namespace PA.Web.Admin.Controllers
     // [Authorize]
     public class StationsController : ControllerBase
     {
-        private readonly IPetrolStationRepository PetrolStationsRepo;
         private readonly IGetAllCountriesUseCase GetAllCountriesUseCase;
+        private readonly IGetAllStationsUseCase GetAllStationsUseCase;
 
-        public StationsController(IPetrolStationRepository petrolStationRepository, IGetAllCountriesUseCase getAllCountriesUseCase)
+        public StationsController(IGetAllCountriesUseCase getAllCountriesUseCase, IGetAllStationsUseCase getAllStationsUseCase)
         {
-            PetrolStationsRepo = petrolStationRepository;
             GetAllCountriesUseCase = getAllCountriesUseCase;
+            GetAllStationsUseCase = getAllStationsUseCase;
         }
 
 
         [HttpGet("all")]
-        public IQueryable<StationLite> GetStations(int? countryCode)
+        public IQueryable<Station> GetStations(int? countryCode)
         {
             // nullable parameter, we want all.
-            var stations = PetrolStationsRepo.GetAll(null);
+            var stations = GetAllStationsUseCase.Execute(countryCode);
             return stations;
         }
 

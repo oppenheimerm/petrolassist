@@ -9,6 +9,7 @@ using PA.Datastore.EFCore.Repositories;
 using PA.UseCases.CountriesUseCase;
 using PA.UseCases.Interfaces;
 using PA.UseCases.VendorsUseCase;
+using PA.UseCases.PetrolStationUseCase;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +53,8 @@ builder.Services.AddScoped<ICountryRepository, CountryRepository>();
 // UseCases
 builder.Services.AddTransient<IGetAllCountriesUseCase, GetAllCountriesUseCase>();
 builder.Services.AddTransient<IGetAllVendorsUseCase, GetAllVendorsUseCase>();
+builder.Services.AddTransient<IGetAllStationsUseCase, GetAllStationsUseCase>();
+builder.Services.AddTransient<IGetAllPetrolStationsFlatUseCase, GetAllPetrolStationsFlatUseCase>();
 
 var app = builder.Build();
 

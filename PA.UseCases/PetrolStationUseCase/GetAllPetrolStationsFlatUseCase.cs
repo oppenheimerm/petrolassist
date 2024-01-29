@@ -13,10 +13,9 @@ namespace PA.UseCases.PetrolStationUseCase
             PetrolStationRepository = petrolStationRepository;
         }
 
-        public IQueryable<StationLite> Execute()
+        public IQueryable<StationLite> Execute(int? countryId)
         {
-            //return PetrolStationRepository.GetAllFlat();
-            return PetrolStationRepository.GetAll(null);
+            return PetrolStationRepository.GetAllFlat(countryId);
         }
     }
 }

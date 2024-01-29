@@ -18,7 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PA.UseCases", "PA.UseCases\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PA.UtilityLibary", "PA.UtilityLibary\PA.UtilityLibary.csproj", "{9F7FFB21-E49D-4EEE-8271-6E1BFF200CCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PA.Web.Admin", "PA.Web.Admin\PA.Web.Admin.csproj", "{1354054B-5DE5-4CA8-B90E-3E3C0FF41370}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PA.Web.Admin", "PA.Web.Admin\PA.Web.Admin.csproj", "{1354054B-5DE5-4CA8-B90E-3E3C0FF41370}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
