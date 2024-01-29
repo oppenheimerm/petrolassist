@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PA.Core.Models.ApiRequestResponse;
+using PA.Core.Models;
 using PA.UseCases.Interfaces;
 
 namespace PA.Web.API.Controllers.V1
@@ -10,20 +10,19 @@ namespace PA.Web.API.Controllers.V1
     [Authorization.Attributes.Authorize]
     public class StationsController : ControllerBase
     {
-        //public IList<Station> Stations { get; set; } = default!;
-        public readonly IGetAllPetrolStationsFlatUseCase GetAllPetrolStationsFlatUseCase;
+        readonly IGetAllStationsUseCase GetPetrolStationsUseCase;
 
-        public StationsController(IGetAllPetrolStationsFlatUseCase getAllPetrolStationsFlatUseCase)
+        public StationsController(IGetAllStationsUseCase getAllStationsUseCase)
         {
-            GetAllPetrolStationsFlatUseCase = getAllPetrolStationsFlatUseCase;
+            GetPetrolStationsUseCase = getAllStationsUseCase;
         }
 
         // GET: api/Stations
         [HttpGet]
         //[AllowAnonymous]
-        public List<StationLite> GetStations()
+        public IQueryable<Station> GetStations(int? countryId)
         {
-            return GetAllPetrolStationsFlatUseCase.Execute().ToList();
+            return GetPetrolStationsUseCase.Execute(countryId);
         }
     }
 }

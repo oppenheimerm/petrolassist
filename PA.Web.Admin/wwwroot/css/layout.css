@@ -133,7 +133,8 @@ aside .content-wrap {
 }
 
 .dialog {
-    width: 752px;
+    width: 75%;
+    margin-top: 4%;
     background-color: var(--black-1);
     color: var(--pa-white);
     border-radius: 8px;
@@ -146,32 +147,40 @@ aside .content-wrap {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem;
+    padding: 0.5rem; /* 8px */
+}
+
+.dialog-title{
+    color: var(--pa-white);
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .dialog-close-btn-wrap{}
 
 .dialog .dialog-body {
-    padding: 1rem;
+    padding: 0.5rem; /* 8px*/
     overflow-y: auto;
 }
 
-.dialog-body .dialog-column,
-.dialog-column .dialog-fieldset {
+.dialog-body .dialog-column {
     display: flex;
     flex-direction: column;
     min-width: 100%;
-    max-height: 460px;    
-    padding-right:20px;
 }
 
-.dialog-body .dialog-column {
-    overflow-y: scroll;
+.dialog-body .dialog-row {
+    display: flex;
+    flex-direction: row;
+    min-height: 100%;
+    min-width: 100%;
 }
-.dialog-column .dialog-fieldset {
-    margin: 0;
-    border: 0;
+
+.dialog-row-column{
+    flex: 1 1 50%;
+    min-height: 40px;
 }
+
 
 .close {
     height: 40px;

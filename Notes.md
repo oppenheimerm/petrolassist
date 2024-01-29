@@ -32,7 +32,6 @@
 [Admin template 2](https://demos.creative-tim.com/marketplace/soft-ui-dashboard-pro/pages/applications/datatables.html)
 [Admin template 3](https://seantheme.com/color-admin/admin/html/index_v3.html)
 [Flat UI Colours](https://materialui.co/flatuicolors/)
-[AdminDesk](https://demo.dashboardpack.com/admindek-html/index.html)
 [Admin Lite 3](https://adminlte.io/themes/v3/index3.html)
 
 #### Notes
