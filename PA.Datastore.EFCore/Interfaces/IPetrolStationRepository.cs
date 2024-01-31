@@ -22,17 +22,23 @@ namespace PA.Datastore.EFCore.Interfaces
         /// <returns></returns>
         Task<(Station station, bool success, string ErrorMessage)> Edit(Station station);
 
-        /// <summary>
-        /// GetAll staions.  Optional paramater countryId
-        /// </summary>
-        /// <param name="countryId"></param>
-        /// <returns></returns>
-        IQueryable<Station> GetAll(int? countryId);
-        /// <summary>
-        /// Returns a IQuerable list of <see cref="Station"/> 
-        /// </summary>
-        /// <returns></returns>
-        IQueryable<StationLite> GetAllFlat(int? countryId);
+		/// <summary>
+		/// Returns <see cref="PagedList"/> collection of <see cref="Station"/> with sort and paging functionality
+		/// </summary>
+		/// <param name="countryId"></param>
+		/// <param name="sortingOrder"></param>
+		/// <param name="pagingParameters"></param>
+		/// <returns></returns>
+		PagedList<Station> GetAll(int? countryId, int? sortingOrder, PagingParameters pagingParameters);
+
+		/// <summary>
+		/// Returns  <see cref="PagedList"/>y collection of <see cref="StationLite"/> with sort and paging functionality
+		/// </summary>
+		/// <param name="countryId"></param>
+		/// <param name="sortingOrder"></param>
+		/// <param name="pagingParameters"></param>
+		/// <returns></returns>
+		PagedList<StationLite> GetAllFlat(int? countryId, int? sortingOrder, PagingParameters pagingParameters);
         /// <summary>
         /// Returns a <see cref="PagedList{T}"/> of <see cref="StationLite"/> objects ordered by distance
         /// </summary>

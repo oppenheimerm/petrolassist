@@ -1,4 +1,5 @@
-﻿using PA.Core.Models.ApiRequestResponse;
+﻿using PA.Core.Helpers.Paging;
+using PA.Core.Models.ApiRequestResponse;
 using PA.Datastore.EFCore.Interfaces;
 using PA.UseCases.Interfaces;
 
@@ -13,9 +14,9 @@ namespace PA.UseCases.PetrolStationUseCase
             PetrolStationRepository = petrolStationRepository;
         }
 
-        public IQueryable<StationLite> Execute(int? countryId)
+        public PagedList<StationLite> Execute(int? countryId, int? sortingOrder, PagingParameters pagingParameters)
         {
-            return PetrolStationRepository.GetAllFlat(countryId);
+            return PetrolStationRepository.GetAllFlat(countryId, sortingOrder, pagingParameters);
         }
     }
 }

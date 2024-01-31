@@ -78,7 +78,7 @@ namespace PA.Datastore.EFCore.Repositories
             }
         }
 
-        public async Task<Country?> GetCountry(int id)
+        public async Task<Country?> GetCountryByIdAsync(int id)
         {
             return await Context.Countries.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
         }

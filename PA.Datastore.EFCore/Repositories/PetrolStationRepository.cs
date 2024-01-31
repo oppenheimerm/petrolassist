@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PA.Core.Helpers;
@@ -68,15 +69,42 @@ namespace PA.Datastore.EFCore.Repositories
 
         }
 
-        public IQueryable<Station> GetAll(int? countryId) {
-            if(countryId == null )
+        public PagedList<Station> GetAll(int? countryId, int? sortingOrder, PagingParameters pagingParameters) {
+
+			// Get Enum sort type
+			var sortOrder = sortingOrder.HasValue ? PaginHelpers.GetStationSortOrder(sortingOrder.Value) : StationSortOrder.Id;
+
+			if (countryId == null )
             {
 
 				var stations = Context.PetrolStations
 					.Include(v => v.Vendor)
 					.Include(r => r.StationRatings)
 					.Include(h => h.StationRatings).AsNoTracking();
-				return stations;
+
+				// nullable parameter, we want all.
+				switch (sortOrder)
+				{
+					case StationSortOrder.Id:
+                        stations = stations.OrderBy(i => i.Id);
+						break;
+					case StationSortOrder.StationName:
+						stations = stations.OrderBy(n => n.StationName);
+						break;
+					case StationSortOrder.AddedDate:
+						stations = stations.OrderBy(d => d.Added);
+						break;
+					case StationSortOrder.StationPostCode:
+						stations = stations.OrderBy(p => p.StationPostcode);
+						break;
+					default:
+						stations = stations.OrderBy(i => i.Id);
+						break;
+				}
+
+                //return stations;
+                return PagedList<Station>.ToPagedList(stations, pagingParameters.PageNumber, pagingParameters.PageSize);
+
 			}
             else
             {
@@ -85,14 +113,40 @@ namespace PA.Datastore.EFCore.Repositories
 					.Include(v => v.Vendor)
 					.Include(r => r.StationRatings)
 					.Include(h => h.StationRatings).AsNoTracking();
-				return stations;
-            }
+
+
+				// nullable parameter, we want all.
+				switch (sortOrder)
+				{
+					case StationSortOrder.Id:
+						stations = stations.OrderBy(i => i.Id);
+						break;
+					case StationSortOrder.StationName:
+						stations = stations.OrderBy(n => n.StationName);
+						break;
+					case StationSortOrder.AddedDate:
+						stations = stations.OrderBy(d => d.Added);
+						break;
+					case StationSortOrder.StationPostCode:
+						stations = stations.OrderBy(p => p.StationPostcode);
+						break;
+					default:
+						stations = stations.OrderBy(i => i.Id);
+						break;
+				}
+
+				//return stations;
+				return PagedList<Station>.ToPagedList(stations, pagingParameters.PageNumber, pagingParameters.PageSize); 
+			}
             
         }
 
-        public IQueryable<StationLite> GetAllFlat(int? countryId)
+        public PagedList<StationLite> GetAllFlat(int? countryId, int? sortingOrder, PagingParameters pagingParameters)
         {
-            if (countryId == null) {
+			// Get Enum sort type
+			var sortOrder = sortingOrder.HasValue ? PaginHelpers.GetStationSortOrder(sortingOrder.Value) : StationSortOrder.Id;
+
+			if (countryId == null) {
                 var query = from station in Context.PetrolStations
                             join country in Context.Countries on station.CountryId equals country.Id
                             join vendor in Context.PetrolVendors on station.VendorId equals vendor.Id
@@ -114,7 +168,28 @@ namespace PA.Datastore.EFCore.Repositories
                                 Added = station.Added
 							};
 
-				return query;
+
+				switch (sortOrder)
+				{
+					case StationSortOrder.Id:
+						query = query.OrderBy(i => i.Id);
+						break;
+					case StationSortOrder.StationName:
+						query = query.OrderBy(n => n.StationName);
+						break;
+					case StationSortOrder.AddedDate:
+						query = query.OrderBy(d => d.Added);
+						break;
+					case StationSortOrder.StationPostCode:
+						query = query.OrderBy(p => p.StationPostcode);
+						break;
+					default:
+						query = query.OrderBy(i => i.Id);
+						break;
+				}
+
+				//return query;
+				return PagedList<StationLite>.ToPagedList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
 			}
             else {
 				var query = from station in Context.PetrolStations
@@ -138,7 +213,27 @@ namespace PA.Datastore.EFCore.Repositories
 								AccessibleToiletNearby = station.AccessibleToiletNearby
 							};
 
-				return query;
+				switch (sortOrder)
+				{
+					case StationSortOrder.Id:
+						query = query.OrderBy(i => i.Id);
+						break;
+					case StationSortOrder.StationName:
+						query = query.OrderBy(n => n.StationName);
+						break;
+					case StationSortOrder.AddedDate:
+						query = query.OrderBy(d => d.Added);
+						break;
+					case StationSortOrder.StationPostCode:
+						query = query.OrderBy(p => p.StationPostcode);
+						break;
+					default:
+						query = query.OrderBy(i => i.Id);
+						break;
+				}
+
+				//return query;
+				return PagedList<StationLite>.ToPagedList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
 			}
 
 		}

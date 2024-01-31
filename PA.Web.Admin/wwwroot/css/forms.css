@@ -29,11 +29,6 @@
     background: var(--input-background);
 }
 
-.item-line input.form-control,  .disabled {
-    background: var(--input-disabled);
-}
-
-
 /* Checkbox */
 .item-line .form-control-chkbx{
     display: flex;

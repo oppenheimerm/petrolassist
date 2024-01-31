@@ -1,4 +1,5 @@
 ﻿
+using PA.Core.Helpers.Paging;
 using PA.Core.Models;
 using PA.Datastore.EFCore.Interfaces;
 using PA.UseCases.Interfaces;
@@ -14,9 +15,9 @@ namespace PA.UseCases.PetrolStationUseCase
             PetrolStationRepository = petrolStationRepository;
         }
 
-        public IQueryable<Station> Execute(int? countryId)
+        public PagedList<Station> Execute(int? countryId, int? sortingOrder, PagingParameters pagingParameters)
         {
-            return PetrolStationRepository.GetAll(countryId);
+            return PetrolStationRepository.GetAll(countryId, sortingOrder, pagingParameters);
         }
     }
 }

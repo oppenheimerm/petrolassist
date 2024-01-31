@@ -38,4 +38,6 @@
 [CodePen Home Fixed Column and Stretchy Column with Flexbox](https://codepen.io/juliat/pen/qZJEMQ)
 [Sortable Table Using Vanilla JavaScript (Sort an HTML Table)](https://www.youtube.com/watch?v=WbkPGesI-OY)
 [Pure JavaScript Pagination: Real Life Implementation](https://www.youtube.com/watch?v=accGIMdeMt8)
+[Blazor WebAssembly Pagination with ASP.NET Core Web API](https://code-maze.com/blazor-webassembly-pagination/)
+[Paging, Searching And Sorting In ASP.NET MVC 5](https://www.c-sharpcorner.com/UploadFile/4b0136/perform-paging-searching-sorting-in-Asp-Net-mvc-5/)
 
