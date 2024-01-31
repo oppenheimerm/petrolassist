@@ -10,7 +10,7 @@ namespace PA.Datastore.EFCore.Interfaces
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<Country?> GetCountry(int id);
+        Task<Country?> GetCountryByIdAsync(int id);
         /// <summary>
         /// Get all <see cref="Country"/> as IQuerable list.
         /// </summary>

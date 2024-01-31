@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PA.Core.Models.ApiRequestResponse;
 using PA.Core.Models;
-using PA.Datastore.EFCore.Interfaces;
 using PA.UseCases.Interfaces;
+using PA.Core.Helpers.Paging;
+using Newtonsoft.Json;
 
 namespace PA.Web.Admin.Controllers
 {
@@ -22,11 +22,31 @@ namespace PA.Web.Admin.Controllers
 
 
         [HttpGet("all")]
-        public IQueryable<Station> GetStations(int? countryCode)
+        public IActionResult GetStations(int? countryCode, int? sortingOrder, int pageNumber, int pageSize)
         {
-            // nullable parameter, we want all.
-            var stations = GetAllStationsUseCase.Execute(countryCode);
-            return stations;
+            // TODO Catch Null
+            //  pageNumber
+            //  pageSize
+
+            PagingParameters pagingParameters = new()
+            {
+                PageSize = pageSize,
+                PageNumber = pageNumber
+            };
+
+			// Get Enum sort type
+			var sortOrder = sortingOrder.HasValue ? PaginHelpers.GetStationSortOrder(sortingOrder.Value) : StationSortOrder.Id;
+            var stations = GetAllStationsUseCase.Execute(countryCode, sortingOrder, pagingParameters);
+
+
+            var pagingResponse = new PagingResponse<Station>
+            {
+                Items = stations,
+                MetaData = stations.MetaData
+            };
+
+			//https://codewithmukesh.com/blog/pagination-in-aspnet-core-webapi/
+			return Ok(pagingResponse);
         }
 
         [HttpGet("countries")]

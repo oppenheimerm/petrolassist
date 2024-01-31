@@ -74,7 +74,7 @@ aside .content-wrap {
 .main-content-inner .main-content-wrap {
     width: calc( 100% - 300px);
     display: flex;
-    height: 999px;
+    height: 100%;
     padding: 0.5rem;
     flex-direction: column;
     z-index: 8

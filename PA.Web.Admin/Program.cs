@@ -28,6 +28,16 @@ builder.Services.AddServerSideBlazor();
 
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 
+//  30/01/2024
+builder.Services.AddCors(policy =>
+{
+	policy.AddPolicy("CorsPolicy", opt => opt
+	.AllowAnyOrigin()
+	.AllowAnyHeader()
+	.AllowAnyMethod()
+	.WithExposedHeaders("X-Pagination"));
+});
+
 //  21/01/2024
 builder.Services.AddControllers();
 
@@ -55,6 +65,7 @@ builder.Services.AddTransient<IGetAllCountriesUseCase, GetAllCountriesUseCase>()
 builder.Services.AddTransient<IGetAllVendorsUseCase, GetAllVendorsUseCase>();
 builder.Services.AddTransient<IGetAllStationsUseCase, GetAllStationsUseCase>();
 builder.Services.AddTransient<IGetAllPetrolStationsFlatUseCase, GetAllPetrolStationsFlatUseCase>();
+builder.Services.AddTransient<IGetCountryByIdUseCase, GetCountryByIdUseCase>();
 
 var app = builder.Build();
 
