@@ -337,6 +337,8 @@ namespace PA.Datastore.EFCore.Repositories
         {
             return await Context.PetrolStations
                 .Include(v => v.Vendor)
+                .Include(r => r.StationRatings)
+                .Include(h => h.CustomerHistory)
                 .AsNoTracking().FirstOrDefaultAsync(s => s.Id == id);
         }
 

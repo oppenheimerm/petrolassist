@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PA.Web.Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PA.Web.Admin.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <div id="app">
+        <div class="main-content">
+            <div class="main-content-inner">
+
+                <partial name="_NavMenuPartial" />
+
+                <div class="main-content-wrap">
+
+                    <!-- main content navbar / breadcrumb  -->
+                    <nav class="top-nav-wrapper">
+                        <div class="nav-content">
+                            <div class="bread-crumb-wrap">
+                                @RenderSection("Breadcrumbs", required: false)
+                            </div>
+                            <div class="icon-wrap">
+                                <span class="material-symbols-sharp">
+                                    search
+                                </span>
+                                <span class="material-symbols-sharp">
+                                    apps
+                                </span>
+                                <span class="material-symbols-sharp">
+                                    expand_content
+                                </span>
+                                <div class="notification">
+                                    <span class="material-symbols-sharp">
+                                        notifications
+                                    </span>
+                                    <span class="notifications-count">1</span>
+                                </div>
+                                <div class="user">
+                                    <div class="user-wrap">
+                                        <img src="@Url.Content("~/img/assets/img-user.jpg")" />
+                                    </div>
+                                    <span>James</span>
+                                </div>
+                                <span class="material-symbols-sharp">
+                                    settings
+                                </span>
+                            </div>
+                        </div>
+                    </nav>
+                    <!-- main content navbar / breadcrumb ends -->
+                    
+
+                    <div class="page-content">
+                        <div class="container">
+                            @RenderBody()
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="footer">
+            <div class="container">
+                <div class="footer-wrap">
+                    <div class="lhs">
+                        <span>PETROLASSIST.COM</span>
+                    </div>
+                    <div class="rhs">
+                        ** FOOTER LINKS HERE **
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <script src="~/js/app.js" asp-append-version="true"></script>
+
+    <script type="text/javascript">
+        const layoutPage = app();
+        let submenu_stations = document.getElementById("submenu-stations");
+        let submenu_users = document.getElementById("submenu-users");
+
+        //  Arrary to hold all of our sumbmenu items
+        const submenuItems = [];
+        submenuItems.push(submenu_stations);
+        submenuItems.push(submenu_users);
+
+		document.addEventListener("DOMContentLoaded", () => {
+            initMainMenu()
+		});
+
+        function handleSubMenuClick(target) {
+
+            switch (target.id) {
+                case 'submenu-stations':
+                        console.log("id: " + target.id);
+                    //	subpage of stations open it's submenu
+                    layoutPage.targetDropDown(target);
+                    break;
+                case 'submenu-users':
+                    console.log("id: " + target.id);
+                    layoutPage.targetDropDown(target);
+                    break;
+                default:
+                    console.log("not valid click");
+
+            }
+        }
+
+        function initMainMenu() {
+            //  the actual page in a submuen item should not be affected, as
+            //  this script runs before the Script section.
+            submenuItems.forEach((element) => console.log(element));
+
+        }
+
+        function showSubMenuHover(link) {
+            var running
+            if (running == true) {
+                return;
+            } else {
+                running = true;
+                console.log(link.id);
+                running = false;
+            }
+            
+        }
+
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

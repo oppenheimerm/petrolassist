@@ -81,6 +81,7 @@
     padding: 0;
     list-style: none;
     justify-content: center;
+    color: var(--pa-white);
 }
 
 .pagination .page-item,
@@ -93,7 +94,21 @@
     cursor: pointer;
 }
 
-.page-item.disabled{
+.page-item.active a,
+.page-item a {
+    color: var(--pa-white);
+}
+
+.page-item.active a{
+    background: var(--pa-white);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    color: var(--hightlight-colour);
+}
+
+.page-item.disabled,
+.page-item.disabled a{
     cursor: not-allowed;
     background: transparent;
     color: var(--input-disabled);

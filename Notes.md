@@ -17,6 +17,9 @@
 [Blazing Pizza](https://github.com/dotnet-presentations/blazor-workshop/tree/main/docs)
 [React Admin Dashboard Tutorial | Responsive React Admin Panel UI Design Course](https://www.youtube.com/watch?v=fq7k_gVV5x8&t=27s)
 [Project GitHub reference](https://github.com/dotnet-presentations/blazor-workshop/blob/main/docs/01-components-and-layout.md)
+[OnInitializedAsync is being called twice](https://stackoverflow.com/questions/76451978/oninitializedasync-is-being-called-twice    )
+[Vanilla JS + CSS - Modal Popup (Dialog) Tutorial with Example](https://jasonwatmore.com/post/2023/01/04/vanilla-js-css-modal-popup-dialog-tutorial-with-example)
+[Vanilla JavaScript Modal with multiple open/close handlers](https://dev.to/dantewebmaster/vanilla-javascript-modal-with-multiple-open-close-handlers-47lp)
 
 [Let's Build - Issue Tracker in React](https://www.youtube.com/watch?v=3Q_QqpG-VvA)
 [How to Build A Reusable Dialog With Blazor](https://dev.to/rasheedmozaffar/how-to-build-a-reusable-dialog-with-blazor-and-plain-css-1pc)
@@ -40,4 +43,4 @@
 [Pure JavaScript Pagination: Real Life Implementation](https://www.youtube.com/watch?v=accGIMdeMt8)
 [Blazor WebAssembly Pagination with ASP.NET Core Web API](https://code-maze.com/blazor-webassembly-pagination/)
 [Paging, Searching And Sorting In ASP.NET MVC 5](https://www.c-sharpcorner.com/UploadFile/4b0136/perform-paging-searching-sorting-in-Asp-Net-mvc-5/)
-
+[Reveling Module Pattern](https://gist.github.com/zcaceres/bb0eec99c02dda6aac0e041d0d4d7bf2)

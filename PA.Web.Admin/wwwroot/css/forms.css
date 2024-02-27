@@ -1,7 +1,16 @@
 ﻿
+.min-width-label{
+    min-width: 154px;
+}
 
+.pa-form {
+    padding-top: 4px;
+}
+
+.pa-form .item-line,
 .dialog-fieldset .item-line,
-.item-line .form-control-chkbx {
+.item-line .form-control-chkbx,
+.details-column .item-line {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -12,10 +21,20 @@
     margin-bottom: 0.25rem;
 }
 
+.pa-form .item-line:last-of-type{
+    padding-bottom: 16px;
+}
+
 .item-line .form-label {
     font-weight: 600;
     margin-bottom: var(--mb-0-5);
     font-size: 12px;
+}
+
+.item-line .vendor-logo{
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
 }
 
 .item-line input.form-control,
@@ -27,6 +46,13 @@
     padding: 8px;
     border-radius: 8px;
     background: var(--input-background);
+}
+
+.item-line input.form-control:disabled,
+.item-line input.form-control:read-only
+{
+    background: var(--input-disabled);
+    color: var(--pa-white);
 }
 
 /* Checkbox */

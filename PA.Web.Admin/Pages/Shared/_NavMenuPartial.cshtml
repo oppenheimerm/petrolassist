@@ -1,0 +1,110 @@
+﻿<aside>
+    <div class="content-wrap">
+<div class="side-menu">
+
+    <div class="logo">
+        <img src="@Url.Content("~/img/assets/logo-colour.png")"  >
+        <span>PetrolAssist</span>
+    </div>
+
+    <div class="menu-items-wrap">
+
+        <div class="top-items">
+            <div class="item">
+                <span class="title">MAIN</span>
+                        <a class="list-item" asp-area="" asp-page="/Index">
+                    <span class="material-symbols-sharp">
+                        home
+                    </span>
+                    <span class="list-item-title" aria-hidden="true"></span> Home
+                </a>
+                <a class="list-item" asp-area="" asp-page="/Index">
+                    <span class="material-symbols-sharp">
+                        account_circle
+                    </span>
+                    <span class="list-item-title" aria-hidden="true"></span> Account
+                </a>
+            </div>
+
+
+            <div class="item">
+                <div id="submenu-stations" class="sub-menu closed" onclick="handleSubMenuClick(this)">
+                    <a href="#stations">
+                        <span class="material-symbols-sharp">
+                            local_gas_station
+                        </span>
+                        <span class="subtitle">Stations</span>
+                        <div id="icon-down" class="menu-icon">
+                            <span class="material-symbols-sharp">
+                                expand_more
+                            </span>
+                        </div>
+                    </a>
+                    <ul>
+                        <li>
+                            <a class="list-item" asp-area="" asp-page="/Stations/Index">
+                                <span class="list-item-title" aria-hidden="true"></span> All
+                            </a>
+                        </li>
+
+
+                        <li><a href='#settings'>Account</a></li>
+                        <li><a href='#settings'>Profile</a></li>
+                        <li><a href='#settings'>Secruity &amp; Privacy</a></li>
+                        <li><a href='#settings'>Password</a></li>
+                        <li><a href='#settings'>Notification</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="item">
+                <a class="list-item" asp-area="" asp-page="/Index">
+                    <span class="list-item-title" aria-hidden="true"></span> Directory
+                    <span class="material-symbols-sharp">
+                        person_search
+                    </span>
+                </a>
+            </div>
+
+            <div class="item">
+                <div id="submenu-users" class="sub-menu closed" onclick="handleSubMenuClick(this)">
+                    <a href="#users">
+                        <span class="material-symbols-sharp">
+                            groups
+                        </span>
+                        <span class="subtitle">Users</span>
+                        <div id="icon-down" class="menu-icon">
+                            <span class="material-symbols-sharp">
+                                expand_more
+                            </span>
+                        </div>
+                    </a>
+                    <ul>
+                        <li>
+                            <a class="list-item" asp-area="" asp-page="/Users/Index">
+                                <span class="list-item-title" aria-hidden="true"></span> All
+                            </a>
+                        </li>
+
+                        <li><a href='#settings'>Account</a></li>
+                        <li><a href='#settings'>Profile</a></li>
+                        <li><a href='#settings'>Secruity &amp; Privacy</a></li>
+                        <li><a href='#settings'>Password</a></li>
+                        <li><a href='#settings'>Notification</a></li>
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="bottom-tems">
+            <h1>Bottom Items</h1>
+        </div>
+
+    </div>
+
+</div>
+    </div>
+</aside>
+
