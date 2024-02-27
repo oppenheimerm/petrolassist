@@ -98,9 +98,20 @@ h4 {
     font-size: var(--h4-font-size);
 }
 
+
+.top-padding-small {
+    padding-top: var(--mb-0-75);
+}
+
 .disabled {
     background: var(--input-disabled);
     cursor: not-allowed;
+}
+
+.text-danger {
+    color: var(--error-colour);
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .btn {
@@ -186,3 +197,45 @@ h4 {
     background: var(--hightlight-colour-hover); /* highlight colour hover*/
 }
 
+
+/* 
+    Breadcrumb
+
+*/
+.pa-breadcrumb {
+    padding: 4px;
+    list-style: none;
+    /*
+        transition: color,background-color,border-color;
+    */
+}
+
+.pa-breadcrumb li,
+.pa-breadcrumb li a,
+.pa-breadcrumb li a .current-page{
+    display: inline;
+    font-size: 14px;
+    color: var(--pa-white);
+    font-weight: bold;
+    transition: color;
+}
+
+.pa-breadcrumb li a:hover {
+    color: var(--hightlight-colour-hover);
+    text-decoration: none;
+    transition: background-color var(--ease-in-out-2-sec);
+}
+
+
+.pa-breadcrumb > :nth-child(n+2):before {
+    content: "/";
+    display: inline-block;
+    margin: 0 12px 0 calc(12px - 8px);
+    font-size: 14px;
+    color: #999;
+}
+
+
+.pa-breadcrumb li .current-page{
+    color: var(--hightlight-colour-hover);
+}

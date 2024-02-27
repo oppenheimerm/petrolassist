@@ -1,0 +1,276 @@
+﻿@page "/Stations"
+@using System.Globalization
+@using PA.Core.Helpers
+@using PA.Core.Helpers.Paging
+@using PA.Web.Admin.Helpers
+
+@model PA.Web.Admin.Pages.Stations.IndexModel
+@{
+	ViewData["Title"] = "View all Stations";
+}
+
+<div class="stations">
+	<input type="hidden" id="mapHolder" />
+
+	<div class="table-wrap">
+
+		<div class="table-head">
+			<div class="tbl-head-inner">
+				<span class="table-title">Stations</span>				
+				<a asp-page="Create" class="btn btn-default btn-primary">Add a new Station</a>
+			</div>
+		</div>
+
+		<!--
+		Use simple paging
+		https://www.c-sharpcorner.com/UploadFile/4b0136/perform-paging-searching-sorting-in-Asp-Net-mvc-5/
+		-->
+
+		<table class="std-table">
+			<thead>
+				<tr>
+					<th>
+						Id
+					</th>
+					<th class="col-sortable">
+						<a asp-page="Index" asp-route-sortOrder="1" asp-route-pageNumber="@Model.IndexPagingParameters.PageNumber">Name</a>
+					</th>
+					<th>PostCode</th>
+					<th>
+						<a asp-page="Index" asp-route-sortOrder="2" asp-route-pageNumber="@Model.IndexPagingParameters.PageNumber">Added</a>					
+					</th>
+					<th>Logo</th>
+					<th>Station Online</th>
+					<th>Actions</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model.PagedStationList.Items)
+				{
+					<tr>
+						<td>
+							@item.Id
+						</td>
+						<td>
+							@StringHelpers.ShortenAndFormatText(item.StationName, 20)
+						</td>
+						<td>@item.StationPostcode</td>
+						<td>@item.Added.Value.ToString("yyyy-MM-dd", CultureInfo.CreateSpecificCulture("en-GB"))</td>
+						<td>
+							<img class="tbl-img-logo" src="@VendorLogoHelper.GetVendorLogo(@item.Vendor.VendorLogo, VendorLogoSize.Small) " />
+						</td>
+						<td class="center-col">
+							@if (@item.StationOnline)
+							{
+								<span class="material-symbols-sharp">
+									done
+								</span>
+							}
+							else
+							{
+								<span class="material-symbols-sharp">
+									close
+								</span>
+							}
+						</td>
+						<td>
+							<div class="table-actions-wrap">
+								<button class="btn btn-default btn-primary btn-icon" onclick="previewStation(@ViewHelpers.StationAsJson(item))">
+									<span class="material-symbols-sharp">
+										visibility
+									</span>
+								</button>
+								<button class="btn btn-default btn-warning btn-icon">
+									<span class="material-symbols-sharp">
+										delete
+									</span>
+								</button>
+							</div>
+						</td>
+
+					</tr>
+				}
+			</tbody>
+		</table>
+
+		<div class="pagination-wrap">
+
+			<nav aria-label="Page navigation">
+				<ul class="pagination">
+					@{
+						if(Model.Links != null)
+						{
+											@foreach (var link in Model.Links)
+							{
+								var linkString = $"/stations?countryCode{@Model.CountryCode}&sortOrderr={Model.SortOrder}&pageNumber={link.Text}";
+
+
+												<li class="page-item @(link.Enabled ? null : "disabled") @(link.Active ? "active" : null)">
+													<a href="@linkString">
+														<span class="page-link" href="#">@link.Text</span>
+													</a>								
+												</li>
+							}
+						}
+						else
+						{
+											<span> **PAGING LINKS ERRROR** </span>
+						}
+					}
+					
+				</ul>
+			</nav>
+		</div>
+
+	</div>
+
+</div>
+
+
+<div id="index-overlay" class="overlay-hide">
+	<div class="dialog">
+		<div class="dialog-header">
+			<h2 class="dialog-title">
+				<span id="dialog_title"></span>
+			</h2>
+
+			<div class="dialog-close-btn-wrap">
+				<button class="btn btn-primary close" onclick="closeDialog()">
+					<span class="material-symbols-sharp">
+						close
+					</span>
+				</button>
+			</div>
+		</div>
+
+		<div class="dialog-body">
+			<div class="dialog-row dialog-fieldset">
+				<div class="dialog-row-column">
+
+					<div class="item-line">
+						<label class="form-label">
+							Station
+						</label>
+						<input class="form-control disabled" type="text" value="STATION NAME" disabled id="dialog_stationName" />
+					</div>
+
+					<div class="item-line">
+						<label class="form-label">
+							Id
+						</label>
+						<input class="form-control disabled" type="text" value="STATION ID" disabled id="dialog_stationId" />
+					</div>
+
+					<div class="item-line">
+						<label class="form-label">
+							Address
+						</label>
+						<input class="form-control disabled" type="text" value="STATION ADDRESS" disabled id="dialog_stationAddress" />
+					</div>
+
+
+					<div class="item-line">
+						<label class="form-label">
+							Added
+						</label>
+						<input class="form-control disabled" type="text" value="STATION DATE" disabled id="dialog_stationAddedDate" />
+					</div>
+
+				</div>
+
+
+				<div class="dialog-row-column">
+					<div class="item-line">
+						<label class="form-label">
+							PostCode
+						</label>
+						<input class="form-control disabled" type="text" value="Station.StationPostcode" disabled id="dialog_stationPostCode" />
+					</div>
+
+					<div class="item-line">
+						<label class="form-label">
+							Lattitude
+						</label>
+						<input class="form-control disabled" type="text" value="Station.Latitude.ToString()" disabled id="dialog_stationLattitude" />
+					</div>
+
+					<div class="item-line">
+						<label class="form-label">
+							Longitude
+						</label>
+						<input class="form-control disabled" type="text" value="Station.Longitude.ToString()" disabled id="dialog_stationLongitude" />
+					</div>
+
+					<div class="item-line">
+						<div class="form-control-chkbx">
+							<label class="form-label">
+								Currently online
+							</label>
+							<input class="form-control-chkbx" type="checkbox" checked="stationOnLineIsChecked" oninput="IsOnlineCheckboxChanged" disabled id="dialog_stationOnline">
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+
+			<div class="dialog-row">
+				<div class="dialog-form-actions-wrap">
+					<a class="btn btn-default btn-primary" onclick="goToDetails()">View Full Details</a>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+
+
+@section Scripts {
+
+	<script type="text/javascript">
+
+		const indexPage = app();
+		var currentClickedSubmenuItem;
+		var overlay;
+
+		document.addEventListener("DOMContentLoaded", () => {
+
+			overlay = document.getElementById("index-overlay");
+			/* Our drop down menu */
+			let dropdowntarget = document.getElementById("submenu-stations");
+			indexPage.displaySubMenu(dropdowntarget);
+			//	subpage of stations open it's submenu
+			//indexPage.targetDropDown(dropdowntarget);
+		});
+
+
+		
+
+		//	Until this method is clicked, stringStation will be null / undefined
+		function previewStation(stringStation) {
+			if (stringStation === "undefined") {
+				return;
+			} else {
+				indexPage.previewStation(stringStation, overlay, "overlay-hide", "overlay");
+				//console.log(stringStation);
+			}
+		}
+
+
+		function closeDialog(){
+			overlay.classList.remove("overlay");
+			overlay.classList.add("overlay-hide");
+		}
+
+		function goToDetails() {
+			var id = document.getElementById("dialog_stationId").value;
+			var newURl = "stations/details/" + id;
+			window.location.href = newURl;
+			console.log("Station Id: " + id );
+		}
+
+	</script>
+
+}

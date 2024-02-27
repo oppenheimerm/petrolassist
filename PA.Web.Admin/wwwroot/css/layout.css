@@ -6,7 +6,7 @@ body {
 
 html,
 #app {
-    height: 100%;
+    height: 100vh;
 }
 
 body, #app {
@@ -15,6 +15,19 @@ body, #app {
     min-height: 100%;
     display: flex;
     flex-direction: column;
+}
+
+.add-column,
+.add-row{
+    display: flex;
+}
+
+.add-column {
+    flex-direction: column;
+}
+
+.add-row{
+    flex-direction: row;
 }
 
 a:link {
@@ -85,15 +98,28 @@ aside .content-wrap {
 @media (max-width: 500px) {
 }
 
-
-.container {
-    padding: 0.5rem;
+.top-nav-wrapper,
+.page-content .container {
+    width: 98%;
+    margin-left: auto;
+    margin-right: auto;
 }
-
-.page-content{
+.page-content {
     display: flex;
     flex-direction: column;
     flex-basis: 100%;
+}
+
+
+.page-content .container{
+    padding: 0.5rem;
+    height: 100%;
+}
+
+.container .container-header-wrap h3 {
+    color: var(--pa-white);
+    font-size: 16px;
+    margin-bottom: var(--mb-0-75);
 }
 
 .footer {
@@ -114,9 +140,116 @@ aside .content-wrap {
 }
 
 /*
-    Dialogs
+    Page Content
 */
 
+.content-column,
+.content-row {
+    width: 100%;
+    display: flex;
+    height: 100%
+}
+
+.content-row {
+    flex-direction: row;
+    /* 
+        sets whether flex items are forced onto one line or can wrap onto 
+        multiple lines. If wrapping is allowed, it sets the direction that 
+        lines are stacked. 
+    */
+    flex-wrap: wrap
+}
+.content-column{
+    flex-direction: column;
+}
+
+.column-left,
+.column-right {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    flex: 1;
+    height: 100%;
+}
+
+.card-outer {
+    background: rgba(189,195,199, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 20px 27px 0 rgba(0,0,0,.05);
+}
+
+/*
+    <!-- main content navbar / breadcrumb  -->
+
+*/
+
+.top-nav-wrapper {
+    border-radius: 8px;
+    margin-left: auto;
+    margin-right: auto;
+    position: sticky;
+    position: -webkit-sticky; /* Safari */
+    top: 0;
+    z-index: 8;
+    box-shadow: var(--light-box-shadow);
+    background-color: var(--light-black);
+    padding: var(--mb-0-5);
+    margin-bottom: var(--mb-1);
+    margin-top: var(--mb-1);
+}
+
+.nav-content {
+    display: flex;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-content .bread-crumb-wrap,
+.nav-content .icon-wrap {
+    display: flex;
+    align-items: center;
+}
+
+.nav-content .icon-wrap {
+    gap: 20px;
+}
+
+.icon-wrap .notification {
+    position: relative;
+}
+
+.icon-wrap .notifications-count {
+    background: var(--info-colour);
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: absolute;
+    top: -16px;
+    right: -16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.nav-content .icon-wrap .user img {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    object-fit: contain;
+}
+
+/*
+    <!-- main content navbar / breadcrumb  --> ends
+
+*/
+/*
+    Dialogs
+*/
 .overlay {
     position: fixed;
     width: 100%;
@@ -130,6 +263,10 @@ aside .content-wrap {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     z-index: 100;
+}
+
+.overlay-hide{
+    display: none!important;
 }
 
 .dialog {
@@ -168,7 +305,6 @@ aside .content-wrap {
     flex-direction: column;
     min-width: 100%;
 }
-
 .dialog-body .dialog-row {
     display: flex;
     flex-direction: row;
@@ -176,9 +312,15 @@ aside .content-wrap {
     min-width: 100%;
 }
 
+.details-column,
 .dialog-row-column{
     flex: 1 1 50%;
     min-height: 40px;
+}
+
+.details-column{
+    padding-top: 4px;
+    flex: 1 1 100%;
 }
 
 
@@ -190,3 +332,4 @@ aside .content-wrap {
     justify-content: center;
     cursor: pointer;
 }
+

@@ -1,0 +1,145 @@
+﻿@page
+@model PA.Web.Admin.Pages.Stations.CreateModel
+
+@{
+	ViewData["Title"] = "Add new station";
+}
+
+<div class="card-outer">
+	<div class="content-column top-padding-small">
+
+		<form method="post" class="pa-form">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+			<div class="item-line">
+				<label asp-for="NewStation.StationName" class="form-label"></label>
+				<input asp-for="NewStation.StationName" class="form-control" type="text" aria-label="Station name" />
+				<span asp-validation-for="NewStation.StationName" class="text-danger"></span>
+			</div>
+
+			<div class="item-line">
+				<label asp-for="NewStation.StationAddress" class="form-label"></label>
+				<input asp-for="NewStation.StationAddress" class="form-control" type="text" aria-label="Station address" />
+				<span asp-validation-for="NewStation.StationAddress" class="text-danger"></span>
+			</div>
+
+			<div class="item-line">
+				<label asp-for="NewStation.StationPostcode" class="form-label"></label>
+				<input asp-for="NewStation.StationPostcode" class="form-control" type="text" aria-label="Station postcode" id="new_station_postcode" />
+				<span asp-validation-for="NewStation.StationPostcode" class="text-danger"></span>
+			</div>
+
+			<div class="item-line">
+				<label asp-for="NewStation.CountryId" class="form-label"></label>
+				<select asp-for="NewStation.CountryId" class="form-select-list" asp-items="new SelectList(Model.Countries,
+                    nameof(PA.Core.Models.Country.Id), nameof(PA.Core.Models.Country.CountryName))">
+					<option>Please Select</option>
+				</select>
+				<span asp-validation-for="NewStation.CountryId" class="text-danger"></span>
+			</div>
+
+			<div class="item-line">
+				<label asp-for="NewStation.Latitude" class="form-label"></label>
+				<input asp-for="NewStation.Latitude" class="form-control disabled" type="text" aria-label="auto generated input disabled." readonly="readonly" id="NewStation_Latitude" value="" />
+				<span asp-validation-for="NewStation.Latitude" class="text-danger"></span>
+			</div>
+
+			<div class="item-line">
+				<label asp-for="NewStation.Longitude" class="form-label"></label>
+				<input asp-for="NewStation.Longitude" class="form-control disabled" type="text" aria-label="auto generated input disabled." readonly="readonly" id="NewStation_Longitude" />
+				<span asp-validation-for="NewStation.Longitude" class="text-danger"></span>
+			</div>
+
+			<div class="item-line">
+				<label asp-for="NewStation.VendorId" class="form-label"></label>
+				<select asp-for="NewStation.VendorId" class="form-select-list" asp-items="new SelectList(Model.Vendors,
+                    nameof(PA.Core.Models.Vendor.Id), nameof(PA.Core.Models.Vendor.VendorName))">
+					<option>Please Select</option>
+				</select>
+				<span asp-validation-for="NewStation.CountryId" class="text-danger"></span>
+			</div>
+
+			<div class="item-line">
+				<div class="form-control-chkbx">
+					<label class="form-label min-width-label">
+						Accesible toliets nearby
+					</label>
+					<input asp-for="NewStation.AccessibleToiletNearby" class="form-control-chkbx" type="checkbox" aria-label="accessible toliets nearby">
+				</div>
+			</div>
+
+			<div class="item-line">
+				<div class="form-control-chkbx">
+					<label class="form-label min-width-label">
+						Pay via app
+					</label>
+					<input asp-for="NewStation.PayAtPump" class="form-control-chkbx" type="checkbox">					
+				</div>
+			</div>
+
+			<div class="item-line">
+				<div class="form-control-chkbx">
+					<label class="form-label min-width-label">
+						Pay at pump
+					</label>
+					<input asp-for="NewStation.PayAtPump" class="form-control-chkbx" type="checkbox">
+				</div>
+			</div>
+
+			<div class="item-line">
+				<input type="submit" valuse="SUBMIT" class="btn btn-default btn-primary" />
+			</div>
+			
+
+		</form>
+		
+	</div>
+</div>
+
+@section Breadcrumbs {
+	<nav aria-label="Breadcrumb">
+		<ul class="pa-breadcrumb">
+			<li><a asp-page="./Index">Home</a></li>
+			<li>
+				<span class="current-page">
+					Add new station
+				</span>
+			</li>
+
+		</ul>
+	</nav>
+}
+
+@section Scripts{
+
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@Model.GoogleAPIKey.ToString().ToString()">
+	</script>
+
+	<script type="text/javascript">
+		const createPage = app();
+
+		document.addEventListener("DOMContentLoaded", () => {
+			document.getElementById("new_station_postcode").onblur = function () {
+				doGeoCode()
+			}
+			/* Our drop down menu */
+			let dropdowntarget = document.getElementById("submenu-stations");
+			createPage.displaySubMenu(dropdowntarget);
+			//	subpage of stations open it's submenu
+			createPage.targetDropDown(dropdowntarget);
+
+		});
+
+		async function doGeoCode() {
+			var address = document.getElementById("new_station_postcode").value;
+			var lat = document.getElementById("NewStation_Latitude");
+			var long = document.getElementById("NewStation_Longitude");
+			var result = await createPage.getCoordinates(address);
+
+			console.log("Lattitude: " + result.latitude + " Longitude: " + result.longitude)
+			lat.value = result.latitude;
+			long.value = result.longitude;
+		}
+	</script>	
+
+}

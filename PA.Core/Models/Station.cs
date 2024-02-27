@@ -44,9 +44,6 @@ namespace PA.Core.Models
 		[Required]
 		public int? CountryId { get; set; }
 
-		[Required]
-		[MaxLength(3, ErrorMessage = "Country code must be 3 characters long"), MinLength(3)]
-		public string? CountryCode { get; set; } = string.Empty;
 
 		public DateTime? Added { get; set; }
 

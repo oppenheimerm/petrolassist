@@ -1,0 +1,187 @@
+﻿@page "{id:int}"
+@model PA.Web.Admin.Pages.Stations.DetailsModel
+@using PA.Web.Admin.Helpers
+
+<div class="content-row card-outer">
+	<input type="hidden" id="mapHolder" />
+	<div class="column-left">
+		<div class="inner">
+			<div id="google-map-content">
+			</div>
+
+		</div>
+	</div>
+	<div class="column-right">
+		<div class="inner add-column">
+			<div class="details-column">
+
+				<div class="item-line">
+					<label class="form-label">
+						Name
+					</label>
+					<input class="form-control disabled" type="text" value="@Model.Station.StationName" disabled />
+				</div>
+
+				<div class="item-line">
+					<label class="form-label">
+						Address
+					</label>
+					<input class="form-control disabled" type="text" value="@Model.Station!.StationAddress" disabled />
+				</div>
+
+				<div class="item-line">
+					<label class="form-label">
+						Postcode
+					</label>
+					<input class="form-control disabled" type="text" value="@Model.Station!.StationPostcode" disabled />
+				</div>
+
+				<div class="item-line">
+					<label class="form-label">
+						Country
+					</label>
+					<input class="form-control disabled" type="text" value="@Model.Country!.CountryName" disabled />
+				</div>
+
+				<div class="item-line">
+					<label class="form-label">
+						Latitude
+					</label>
+					<input class="form-control disabled" type="text" value="@Model.Station!.Latitude" disabled />
+				</div>
+
+				<div class="item-line">
+					<label class="form-label">
+						Longitude
+					</label>
+					<input class="form-control disabled" type="text" value="@Model.Station!.Longitude" disabled />
+				</div>
+
+				<div class="item-line">
+					<label class="form-label">
+						Vendor
+					</label>
+					<input class="form-control disabled" type="text" value="@Model.Station.Vendor.VendorName" disabled />
+				</div>
+
+				<div class="item-line">
+					<label class="form-label">
+						Logo
+					</label>
+					<img class="vendor-logo" src="@ViewHelpers.GetVendorLogo(Model.Station.Vendor.VendorLogo, VendorLogoSize.Small) " />
+				</div>
+
+				<div class="item-line">
+					<label class="form-label">
+						Pay At Pump
+					</label>
+					@{
+								@if (Model.Station.PayByApp)
+						{
+
+									<span class="material-symbols-sharp">
+										local_gas_station
+									</span>
+						}
+						else
+						{
+									<span class="material-symbols-sharp">
+										block
+									</span>
+						}
+					}
+
+				</div>
+
+				<div class="item-line">
+					<label class="form-label">
+						Pay By App
+					</label>
+					@{
+								@if (Model.Station.PayByApp)
+						{
+
+									<span class="material-symbols-sharp">
+										phone_iphone
+									</span>
+						}
+						else
+						{
+									<span class="material-symbols-sharp">
+										block
+									</span>
+						}
+					}
+
+				</div>
+
+			</div>
+
+
+		</div>
+
+	</div>
+</div>
+
+
+
+
+
+
+
+<div class="add-row">
+	<h5>Reviews</h5>
+</div>
+
+@section Breadcrumbs{
+	<nav aria-label="Breadcrumb">
+		<ul class="pa-breadcrumb">
+			<li><a asp-page="./Index">Home</a></li>
+			<li>
+				<span class="current-page">
+					Details
+				</span>
+			</li>
+			
+		</ul>
+	</nav>
+}
+
+@section Scripts {
+
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@Model.GoogleAPIKey.ToString().ToString()">
+	</script>
+
+	<script type="text/javascript">
+
+		//
+
+		//	the DOMContentLoaded event fires once the DOM has loaded – it doesn't wait for stylesheets and images.
+		const detailsPage = app();
+		document.addEventListener("DOMContentLoaded", () => {
+
+			
+			var lat = @Model.Station.Latitude;
+			var long = @Model.Station.Longitude;
+			var mapId = "@Model.GoogleMapId"
+			var googleApiLey = "@Model.GoogleAPIKey";
+			var stationName = "@Model.Station.StationName";
+
+			initMap(lat, long, mapId, stationName);
+
+		});
+
+		function initMap(
+			lat,
+			long,
+			googleMapId,
+			stationName
+		) {
+			detailsPage.initMapForPetrolStation(lat, long, googleMapId, stationName)
+		}
+
+
+
+	</script>
+
+}

@@ -21,6 +21,6 @@ namespace PA.Core.Helpers
 
 	public static class Constants
 	{
-		public const string VendorLogoUrlPrefix = "/img/logos/";
+		public const string VendorLogoUrlPrefix = "/img/assets/logos/";
 	}
 }
