@@ -1,5 +1,4 @@
-﻿
-var app = function () {
+﻿var app = function () {
 
     var subMenuItemOpene = false;
 
@@ -104,12 +103,12 @@ var app = function () {
     }
 
     /**
-     * Dispaly station details in popup
-     * @param {any} stringStation
-     * @param {any} overlayElement
-     * @param {any} classRemove
-     * @param {any} classHide
-     */
+ * Dispaly station details in popup
+ * @param {any} stringStation
+ * @param {any} overlayElement
+ * @param {any} classRemove
+ * @param {any} classHide
+ */
     function previewStation(stringStation, overlayElement, classRemove, classHide) {
 
         // Not in json format
@@ -139,8 +138,9 @@ var app = function () {
             overlayElement.classList.remove(classRemove);
             overlayElement.classList.add(classHide);
             //console.log(stringStation);
-        }        
+        }
     }
+
 
     /**
      * Target / respond to menu drop down click events.
@@ -165,7 +165,7 @@ var app = function () {
             return;
         }
     }
-    
+
 
     return {
         /*initMap: initMap,*/

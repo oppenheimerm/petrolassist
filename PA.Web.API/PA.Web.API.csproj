@@ -28,4 +28,9 @@
     <ProjectReference Include="..\PA.UtilityLibary\PA.UtilityLibary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ModelHelpers\" />
+    <Folder Include="Services\Email\" />
+  </ItemGroup>
+
 </Project>

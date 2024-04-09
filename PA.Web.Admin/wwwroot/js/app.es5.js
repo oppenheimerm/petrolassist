@@ -122,12 +122,12 @@ var app = function app() {
     }
 
     /**
-     * Dispaly station details in popup
-     * @param {any} stringStation
-     * @param {any} overlayElement
-     * @param {any} classRemove
-     * @param {any} classHide
-     */
+    * Dispaly station details in popup
+    * @param {any} stringStation
+    * @param {any} overlayElement
+    * @param {any} classRemove
+    * @param {any} classHide
+    */
     function previewStation(stringStation, overlayElement, classRemove, classHide) {
 
         // Not in json format

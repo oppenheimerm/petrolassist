@@ -1,6 +1,6 @@
-﻿using PA.Datastore.EFCore.Interfaces;
-using PA.Web.API.Authorization.Interfaces;
-using PA.Web.API.Repositories.Interfaces;
+﻿using PA.Datastore.EFCore.Authorisation.Interfaces;
+using PA.Datastore.EFCore.Interfaces;
+
 
 namespace PA.Web.API.Authorization.MiddleWare
 {

@@ -11,7 +11,7 @@ using System.Text;
 
 namespace PA.Web.API.Authorization
 {
-    public class JwtUtils : IJwtUtils
+    /*public class JwtUtils : IJwtUtils
     {
         private readonly ApplicationManagmentDbContext Context;
         private readonly IConfiguration Configuration;
@@ -99,5 +99,5 @@ namespace PA.Web.API.Authorization
                 return token;
             }
         }
-    }
+    }*/
 }
