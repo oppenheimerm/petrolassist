@@ -15,7 +15,7 @@ namespace PA.UseCases.MemberUseCase
             MembersRepository = membersRepository;
         }
 
-        public async Task<(bool Success, string ErrorMessage)>ExecuteAsync(RegisterRequest request, string origin)
+        public async Task<(bool Success, string ErrorMessage, int ErrorCode)>ExecuteAsync(RegisterRequest request, string origin)
         {
             var response =  await MembersRepository.RegisterAsync(request, origin);
             return (response);

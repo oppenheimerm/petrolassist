@@ -1,4 +1,7 @@
 ﻿
+using System.Diagnostics;
+using System.Globalization;
+
 namespace PA.Core.Helpers
 {
 	public static class StringHelpers
@@ -42,6 +45,23 @@ namespace PA.Core.Helpers
 			{
 				return val;
 			}
+		}
+
+		/// <summary>
+		/// Helper methid to convert string to title case
+		/// </summary>
+		/// <param name="target"></param>
+		/// <returns></returns>
+		[DebuggerStepThrough]
+		public static string ConvertToTitleCase(this string target)
+		{
+			var lowerCase = target.ToLowerInvariant();
+			var trimCase = lowerCase.Trim();
+
+			// Creates a TextInfo based on the "en-US" culture.
+			TextInfo textInfo = new CultureInfo("en-GB", false).TextInfo;
+
+			return textInfo.ToTitleCase(trimCase);
 		}
 	}
 }

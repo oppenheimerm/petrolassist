@@ -231,12 +231,12 @@
 
 	<script type="text/javascript">
 
-		const indexPage = app();
+		var indexPage;
 		var currentClickedSubmenuItem;
 		var overlay;
 
 		document.addEventListener("DOMContentLoaded", () => {
-
+			indexPage = app();
 			overlay = document.getElementById("index-overlay");
 			/* Our drop down menu */
 			let dropdowntarget = document.getElementById("submenu-stations");
@@ -245,8 +245,6 @@
 			//indexPage.targetDropDown(dropdowntarget);
 		});
 
-
-		
 
 		//	Until this method is clicked, stringStation will be null / undefined
 		function previewStation(stringStation) {
@@ -259,7 +257,7 @@
 		}
 
 
-		function closeDialog(){
+		function closeDialog() {
 			overlay.classList.remove("overlay");
 			overlay.classList.add("overlay-hide");
 		}
@@ -268,7 +266,7 @@
 			var id = document.getElementById("dialog_stationId").value;
 			var newURl = "stations/details/" + id;
 			window.location.href = newURl;
-			console.log("Station Id: " + id );
+			console.log("Station Id: " + id);
 		}
 
 	</script>

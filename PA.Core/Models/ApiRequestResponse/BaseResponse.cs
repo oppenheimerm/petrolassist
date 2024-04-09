@@ -5,5 +5,6 @@ namespace PA.Core.Models.ApiRequestResponse
 	{
 		public int StatusCode { get; set; } = 401;
 		public string Message { get; set; } = string.Empty;
+		public bool Success { get; set; } = false;
 	}
 }

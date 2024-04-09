@@ -5,6 +5,6 @@ namespace PA.UseCases.Interfaces
 {
     public interface IMemberRegisterUseCase
     {
-        Task<(bool Success, string ErrorMessage)> ExecuteAsync(RegisterRequest request, string origin);
+		Task<(bool Success, string ErrorMessage, int ErrorCode)> ExecuteAsync(RegisterRequest request, string origin);
     }
 }

@@ -4,11 +4,11 @@ using PA.Core.Models;
 using PA.Datastore.EFCore.Interfaces;
 using PA.Datastore.EFCore;
 using PA.UtilityLibary;
-using PA.Web.API.Authorization.Interfaces;
 using PA.Core.Helpers;
 using PA.Core.Models.ApiRequestResponse;
 using PA.Web.API.ModelHelpers;
 using System.Net;
+using PA.Datastore.EFCore.Authorisation.Interfaces;
 
 
 namespace PA.Web.API.Repositories
@@ -36,15 +36,17 @@ namespace PA.Web.API.Repositories
 
         public async Task<(bool Success, string ErrorMessage)> RegisterAsync(RegisterRequest model, string origin)
         {
-            // validate
-            if (Context.Members.Any(x => x.EmailAddress == model.EmailAddress.ToLowerInvariant()))
-            {
-                //  TODO
-                // send already registered error in email to prevent account enumeration
-                //sendAlreadyRegisteredEmail(model.Email, origin);
-                //  See: sendAlreadyRegisteredEmail(string email, string origin)
-                return (false, "User already registered");
-            }
+
+
+			// validate
+			if (Context.Members.Any(x => x.EmailAddress == model.EmailAddress.ToLowerInvariant()))
+        {
+            //  TODO
+            // send already registered error in email to prevent account enumeration
+            //sendAlreadyRegisteredEmail(model.Email, origin);
+            //  See: sendAlreadyRegisteredEmail(string email, string origin)
+            return (false, "User already registered");
+        }
 
             if (Context.Members.Any(x => x.MobileNumber == model.MobileNumber))
             {
@@ -67,9 +69,7 @@ namespace PA.Web.API.Repositories
 
             account.MemberPhoto = string.Empty;
 
-            // TODO
-            //  REMOVE FOR PRODUCTION
-            account.Verified = DateTime.UtcNow;
+
 
             //  TODO https://www.tutorialspoint.com/Chash-program-to-check-the-validity-of-a-Password
 
@@ -100,6 +100,7 @@ namespace PA.Web.API.Repositories
                 Logger.LogError($"Failed login attempt failed for Email: {model.EmailAddress} at the following IPAddress: {ipAddress}. Timestamp : {DateTime.UtcNow}");
                 rsp.StatusCode = (int)HttpStatusCode.NotFound;
                 rsp.Message = errorMessage;
+                rsp.Success = false;
                 return rsp;
             }
 
@@ -109,8 +110,9 @@ namespace PA.Web.API.Repositories
                 //  Account not verified
                 errorMessage = "Please verify your eamail address";
                 Logger.LogError($" User {user.EmailAddress} attempted to login without email verfication. Timestamp : {DateTime.UtcNow}");
-                rsp.StatusCode = (int)HttpStatusCode.NotFound;
-                rsp.Message = errorMessage;
+                rsp.StatusCode = (int)HttpStatusCode.Unauthorized;
+                rsp.Message = TextStrings.EmailNotVerified;
+                rsp.Success = false;
                 return rsp;
             }
 
@@ -122,9 +124,9 @@ namespace PA.Web.API.Repositories
                 errorMessage = "Email or password is incorrect";
                 rsp.StatusCode = (int)HttpStatusCode.Unauthorized;
                 rsp.Message = errorMessage;
+                rsp.Success = false;
                 return rsp;
             };
-
 
 
             // authentication successful so generate jwt and refresh tokens
@@ -148,7 +150,8 @@ namespace PA.Web.API.Repositories
                 user,
                 jwtToken,
                 refreshToken.Token,
-                (int)HttpStatusCode.OK
+                (int)HttpStatusCode.OK,
+                true
                 );
 
             return userResponse;
@@ -211,8 +214,36 @@ namespace PA.Web.API.Repositories
         }
 
 
+		public async Task<(bool Success, string Message)> VerifyEmailAsync(string token)
+		{
+			if (token == null)
+			{
+				var error = $"Failed validation, no token found. TimeStamp: {DateTime.UtcNow}";
+				Logger.LogError(error);
+				return (false, error);
+			}
 
-        public IQueryable<Member> GetAll()
+			var account = await Context.Members.SingleOrDefaultAsync(x => x.VerificationToken == token);
+
+			if (account == null)
+			{
+				var error = $"Account verification failed. TimeStamp: {DateTime.UtcNow}";
+				Logger.LogError(error);
+				return (false, error);
+			}
+
+			account.Verified = DateTime.UtcNow;
+			account.VerificationToken = string.Empty;
+
+			Context.Members.Update(account);
+			await Context.SaveChangesAsync();
+			var msg = $"Succesfuly validated account. TimeStamp: {DateTime.UtcNow}";
+			return (true, msg);
+		}
+
+
+
+		public IQueryable<Member> GetAll()
         {
             return Context.Members.AsNoTracking().OrderBy(m => m.LasttName);
         }
@@ -289,7 +320,7 @@ namespace PA.Web.API.Repositories
                 x.Created.AddDays(int.Parse(Configuration["WebApiSecurity:RefreshTokenTTL"])) <= DateTime.UtcNow);
         }
 
-        private AuthenticateResponse GetAuthenticatedResponse(Member user, string jwtToken, string newRefreshToken, int statusCode)
+        private AuthenticateResponse GetAuthenticatedResponse(Member user, string jwtToken, string newRefreshToken, int statusCode, bool success = false)
         {
             return new AuthenticateResponse()
             {

@@ -6,13 +6,13 @@ namespace PA.Datastore.EFCore.Interfaces
 {
     public interface IMembersRepository
     {
-        /// <summary>
-        /// <see cref="Member"/> Registration.  Returns true o
-        /// </summary>
-        /// <param name="model"></param>
-        /// <param name="origin"></param>
-        /// <returns></returns>
-        Task<(bool Success, string ErrorMessage)> RegisterAsync(RegisterRequest model, string origin);
+		/// <summary>
+		/// <see cref="Member"/> Registration.  Returns true o
+		/// </summary>
+		/// <param name="model"></param>
+		/// <param name="origin"></param>
+		/// <returns></returns>
+		Task<(bool Success, string ErrorMessage, int ErrorCode)> RegisterAsync(RegisterRequest model, string origin);
         /// <summary>
         /// Authenticate a <see cref="Member"/>. Returns a <see cref="AuthenticateResponse"/>.
         /// </summary>
@@ -33,7 +33,28 @@ namespace PA.Datastore.EFCore.Interfaces
         /// <param name="Id"></param>
         /// <returns></returns>
         Task<Member?> GetMemberByIdAsync(Guid Id);
-        IQueryable<Member> GetAll();
+        /// <summary>
+        /// Get user by eamil
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        Task<Member?> GetMemberByEmail(string email);
+
+		IQueryable<Member> GetAll();
         Task<(Member? member, bool Success, string ErrorMessage)> UpdateUserPhoto(Member? member, string photoName);
-    }
+        /// <summary>
+        /// Account token verification token
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        Task<(bool Success, string Message, int httpCode)> VerifyAccountToken(string token);
+
+		/// <summary>
+		/// Checks if <see cref="Member"/> has verified their email and has a valid account
+		/// </summary>
+		/// <param name="email"></param>
+		/// <returns></returns>
+		Task<(bool Verified, bool hasAccount, Member? member)> MemberEmailVerified(string email);
+
+	}
 }

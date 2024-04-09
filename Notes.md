@@ -2,6 +2,18 @@
 
 ## Dependencies
 
+### Ethereal.email
+
+https://ethereal.email/
+
+Name	Michaela Marquardt
+Username	michaela.marquardt0@ethereal.email
+Password	8E9kC1ResSxtA1XQgW
+
+"Service","Name","Username","Password","Hostname","Port","Security"
+"SMTP","Michaela Marquardt","michaela.marquardt0@ethereal.email","8E9kC1ResSxtA1XQgW","smtp.ethereal.email",587,"STARTTLS"
+"IMAP","Michaela Marquardt","michaela.marquardt0@ethereal.email","8E9kC1ResSxtA1XQgW","imap.ethereal.email",993,"TLS"
+"POP3","Michaela Marquardt","michaela.marquardt0@ethereal.email","8E9kC1ResSxtA1XQgW","pop3.ethereal.email",995,"TLS"
 
 #### Removed Blazor error html div
 

@@ -86,24 +86,28 @@
     <script src="~/js/app.js" asp-append-version="true"></script>
 
     <script type="text/javascript">
-        const layoutPage = app();
-        let submenu_stations = document.getElementById("submenu-stations");
-        let submenu_users = document.getElementById("submenu-users");
 
-        //  Arrary to hold all of our sumbmenu items
-        const submenuItems = [];
-        submenuItems.push(submenu_stations);
-        submenuItems.push(submenu_users);
 
-		document.addEventListener("DOMContentLoaded", () => {
-            initMainMenu()
-		});
+        var layoutPage;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            layoutPage = app();
+            let submenu_stations = document.getElementById("submenu-stations");
+            let submenu_users = document.getElementById("submenu-users");
+
+            //  Arrary to hold all of our sumbmenu items
+            const submenuItems = [];
+            submenuItems.push(submenu_stations);
+            submenuItems.push(submenu_users);
+
+            
+        });
 
         function handleSubMenuClick(target) {
 
             switch (target.id) {
                 case 'submenu-stations':
-                        console.log("id: " + target.id);
+                    console.log("id: " + target.id);
                     //	subpage of stations open it's submenu
                     layoutPage.targetDropDown(target);
                     break;
@@ -116,6 +120,7 @@
 
             }
         }
+        
 
         function initMainMenu() {
             //  the actual page in a submuen item should not be affected, as
@@ -133,8 +138,10 @@
                 console.log(link.id);
                 running = false;
             }
-            
+
         }
+        
+
 
     </script>
 

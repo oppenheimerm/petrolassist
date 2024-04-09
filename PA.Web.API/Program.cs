@@ -13,11 +13,11 @@ using PA.UseCases.PetrolStationUseCase;
 using PA.UtilityLibary;
 using PA.UtilityLibary.FIleService;
 using PA.UtilityLibary.ImageService;
-using PA.Web.API.Authorization;
-using PA.Web.API.Authorization.Interfaces;
 using PA.Web.API.Authorization.MiddleWare;
 using PA.Web.API.Filters;
-using PA.Web.API.Repositories;
+using PA.Core.Interfaces.Services.Email;
+using PA.Datastore.EFCore.Authorisation;
+using PA.Datastore.EFCore.Authorisation.Interfaces;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -120,7 +120,6 @@ builder.Services.AddSingleton<ImageProcessor>();
 builder.Services.AddScoped<IPetrolStationRepository, PetrolStationRepository>();
 builder.Services.AddScoped<IMembersRepository, MembersRepository>();
 //builder.Services.AddScoped<IWebApiUserRepository, WebApiUserRepository>();
-builder.Services.AddScoped<IMembersRepository, MembersRepository>();
 
 //builder.Services.AddTransient<,>();
 
@@ -130,9 +129,12 @@ builder.Services.AddTransient<IGetAllStationNearLatLongPoint, GetAllStationNearL
 builder.Services.AddTransient<IMemberRegisterUseCase, MemberRegisterUseCase>();
 builder.Services.AddTransient<IMemberAuthenticateUserCase, MemberAuthenticateUserCase>();
 builder.Services.AddTransient<IMemberGetByRefreshTokenUseCase,  MemberGetByRefreshTokenUseCase>();
+builder.Services.AddTransient<IMemberVerifyEmailUseCase, MemberAccountVerificationTokenUseCase>();
+builder.Services.AddTransient<IIsMemberEmailVerfiedUseCase,  IsMemberEmailVerfiedUseCase>();
 
 
 builder.Services.AddScoped<IPhotoFileRepository, PhotoFileRepository>();
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 
 var app = builder.Build();

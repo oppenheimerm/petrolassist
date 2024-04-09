@@ -1,15 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PA.Web.API.Authorization.Interfaces;
 using PA.Web.API.Repositories.Interfaces;
 using PA.Core.Models;
 using PA.Datastore.EFCore;
-using PA.Web.API.ModelHelpers;
 using PA.Core.Helpers;
 using BC = BCrypt.Net.BCrypt;
 using PA.Core.Models.ApiRequestResponse;
 using System.Net;
 using PA.UtilityLibary;
 using PA.UtilityLibary.FIleService;
+using PA.Datastore.EFCore.Authorisation.Interfaces;
 
 
 namespace PA.Web.API.Repositories
@@ -238,11 +237,7 @@ namespace PA.Web.API.Repositories
         }
 
 
-        //  Our test function to mock getting user profile
-
-
-
-        public async Task<(bool Success, string ErrorMessage)> VerifyEmailAsync(string token)
+		public async Task<(bool Success, string ErrorMessage)> VerifyEmailAsync(string token)
         {
             if (token == null)
             {
