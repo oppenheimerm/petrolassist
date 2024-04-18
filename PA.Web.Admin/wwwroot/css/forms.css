@@ -1,10 +1,20 @@
 ﻿
+
 .min-width-label{
     min-width: 154px;
 }
 
 .pa-form {
     padding-top: 4px;
+    margin-top: 16px;
+}
+
+.form-legend{
+    width: 100%;
+    padding: 0;
+    font-size: 24px;
+    line-height: 1.4;
+    font-weight: 600;
 }
 
 .pa-form .item-line,
@@ -29,6 +39,7 @@
     font-weight: 600;
     margin-bottom: var(--mb-0-5);
     font-size: 12px;
+    color: var(--pa-white);
 }
 
 .item-line .vendor-logo{
@@ -96,3 +107,27 @@
     justify-content:flex-start;
 }
 
+/*
+    Validation errors
+*/
+
+.text-danger.field-validation-error {
+    padding: 16px 8px;
+    background: var(--error-colour);
+    color: var(--black-1);
+    border-radius: 8px;
+}
+
+
+/*-------------------------------------
+Mode themes
+---------------------------------------*/
+@media (prefers-color-scheme: light) {
+    .item-line input.form-control{
+     border: 1px solid var(--pa-primary-accent-dust);
+ }
+    .item-line .form-label {
+        color: var(--black-1);
+    }
+
+}

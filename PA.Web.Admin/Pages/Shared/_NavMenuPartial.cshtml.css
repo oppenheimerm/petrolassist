@@ -9,12 +9,16 @@
     align-items: center;
     gap: 8px;
     margin-bottom: var(--mb-1);
+    justify-content: space-between;
 }
 
 .side-menu .logo img {
-    width: 56px;
-    height: 56px;
+    width: 48px;
+    height: 48px;
 }
+
+.side-menu-logo-light{ display: none; }
+.side-menu-logo-dark{ display: block; position: relative; }
 
 .side-menu .logo span {
     font-size: var(--h3-font-size);
@@ -42,7 +46,7 @@
 .menu-items-wrap .top-items .item .title {
     font-size: 12px;
     font-weight: 200;
-    color: var(--soft-color);
+    color: green;
     margin-top: var(--mb-1);
     margin-bottom: var(--mb-1);
 }
@@ -64,7 +68,7 @@
 
 .sub-menu:hover,
 .top-items ::deep .item a.list-item:hover {
-    background-color: var(--black-1);
+    background-color: var(--black-2);
     box-shadow: -8px -8px 20px rgba(255,255,255,.04), 8px 8px 20px rgba(0,0,0,.25);
     border-radius: 8px;
 }
@@ -82,7 +86,7 @@
 
 .side-menu ::deep .item .sub-menu ul {
     list-style: none;
-    background-color: var(--black-1);
+    background-color: var(--black-2);
     box-shadow: -8px -8px 20px rgba(255,255,255,.04), 8px 8px 20px rgba(0,0,0,.25);
     border-radius: 8px;
 }
@@ -127,5 +131,75 @@
 }
 
 
-@media (min-width: 641px) {
+/*-------------------------------------
+Responsive
+---------------------------------------*/
+
+/** Ignore mobile phone */
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (max-width: 600px) {
+
+    .main-content-inner,
+    .main-content-inner aside {
+        width: 64px!important;
+    }
+
+    aside .content-wrap {
+        width: 64px;
+        padding-left: 4px;
+        padding-right: 4px;
+    }
+
+    .content-wrap .side-menu {
+        width: 48px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+ 
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+ 
+}
+
+/*-------------------------------------
+Mode themes
+---------------------------------------*/
+
+@media (prefers-color-scheme: light) {
+    .side-menu-logo-light{ display: block; position: relative; }
+    .side-menu-logo-dark { display: none;}
+
+
+    .top-items ::deep .item a.list-item,
+    ::deep .item .sub-menu a {
+        color: var(--black-1);
+        font-weight: 500;
+    }
+    .side-menu ::deep .item .sub-menu ul {
+        /* --pa-primary-accent-dust-active with opacity */
+        background-color: var(--pa-primary-accent-dust-active);
+    }
+
+
+
+
+    .sub-menu:hover,
+    .top-items ::deep .item a.list-item:hover {
+        background-color: var(--pa-primary-accent-dust);
+    }
+    .top-items ::deep .item a.list-item:hover{
+        box-shadow: none;
+    }
+    ::deep .item .sub-menu ul li:hover {
+        background-color: var(--pa-primary-accent-dust-active);
+    }
 }

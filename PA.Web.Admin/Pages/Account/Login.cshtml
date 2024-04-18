@@ -1,0 +1,60 @@
+﻿@page
+@model PA.Web.Admin.Pages.Account.LoginModel
+@{
+	Layout = "_LayoutLogin";
+	ViewData["Title"] = "Login";
+}
+
+<div class="container">
+	<!-- login wrap starts-->
+	<div id="login-wrap" >
+		<div class="section-small">
+			<div class="form-legend">Login</div>
+			<div class="login-header-wrap">
+				<span class="login-title">Please Login</span>
+				<img class="login-img-dark" src="~/img/web/pa-logo-dark.png" />
+				<img class="login-img-light" src="~/img/web/pa-logo-light.png" />
+			</div>
+			<form method="post" class="pa-form">
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+				<div class="item-line">
+					<label asp-for="LoginRequest.Email" class="form-label"></label>
+					<input asp-for="LoginRequest.Email" class="form-control" type="text" aria-label="Username" />
+					<span asp-validation-for="LoginRequest.Email" class="text-danger"></span>
+				</div>
+
+				<div class="item-line">
+					<label asp-for="LoginRequest.Password" class="form-label"></label>
+					<input asp-for="LoginRequest.Password" class="form-control" type="text" aria-label="Password" />
+					<span asp-validation-for="LoginRequest.Password" class="text-danger"></span>
+				</div>
+
+				<div class="item-line">
+					<label asp-for="LoginRequest.Pin" class="form-label"></label>
+					<input asp-for="LoginRequest.Pin" class="form-control" type="text" aria-label="Pin" />
+					<span asp-validation-for="LoginRequest.Pin" class="text-danger"></span>
+				</div>
+
+
+				<div class="item-line">
+					<input type="submit" valuse="SUBMIT" class="btn btn-default btn-primary" />
+				</div>
+
+
+			</form>
+		</div>
+		<div class="section-small">
+			<div class="login-img-wrap">
+				<img src="~/img/web/login-cover.png" alt="PetrolAssist.com" />
+			</div>
+
+		</div>
+	</div>
+	<!-- login wrap ends-->
+
+</div>
+
+@section Scripts{
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js" integrity="sha512-WMEKGZ7L5LWgaPeJtw9MBM4i5w5OSBlSjTjCtSnvFJGSVD26gE5+Td12qN5pvWXhuWaWcVwF++F7aqu9cvqP0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+}

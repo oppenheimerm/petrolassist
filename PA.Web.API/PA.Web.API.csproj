@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ModelHelpers\**" />
+    <Content Remove="ModelHelpers\**" />
+    <EmbeddedResource Remove="ModelHelpers\**" />
+    <None Remove="ModelHelpers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1" />
@@ -29,7 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ModelHelpers\" />
     <Folder Include="Services\Email\" />
   </ItemGroup>
 

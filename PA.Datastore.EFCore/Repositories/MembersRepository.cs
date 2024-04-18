@@ -161,7 +161,8 @@ namespace PA.Datastore.EFCore.Repositories
 				var responeError = new AuthenticateResponse()
 				{
 					Message = "valid toke not found",
-					StatusCode = 401
+					StatusCode = 401,
+					Success = false
 				};
 				return responeError;
 			}
@@ -195,6 +196,7 @@ namespace PA.Datastore.EFCore.Repositories
 				// generate new jwt
 				var jwtToken = JwtUtilis.GenerateJwtToken(response.user);
 				var authResponse = GetAuthenticatedResponse(response.user, jwtToken, newRefreshToken.Token, (int)HttpStatusCode.OK);
+				authResponse.Success = true;
 
 				return authResponse;
 			}
@@ -354,6 +356,7 @@ namespace PA.Datastore.EFCore.Repositories
 				StatusCode = statusCode,
 				MobileNumber = user.MobileNumber,
 				DistanceUnit = user.DistanceUnit,
+				Success = success
 			};
 		}
 

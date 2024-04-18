@@ -5,143 +5,222 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - PA.Web.Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp" rel="stylesheet" />
-    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
+        rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/primary.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/PA.Web.Admin.styles.css" asp-append-version="true" />
 </head>
-<body>
-    <div id="app">
-        <div class="main-content">
-            <div class="main-content-inner">
+<body id="app">
 
-                <partial name="_NavMenuPartial" />
+    <!-- wrapped starts -->
+    <div class="wrapper">
+        <!-- sidebar starts -->
+        <aside id="sidebar">
+            <div class="d-flex">
+                <button id="toggle-btn">
+                    <span class="material-symbols-sharp">
+                        dashboard
+                    </span>
+                </button>
+                <div class="sidebar-logo">
+                    <img class="side-menu-logo-dark" src="@Url.Content("~/img/web/pa-logo-dark.png")">
+                    <img class="side-menu-logo-light" src="@Url.Content("~/img/web/pa-logo-light.png")">
+                    <span>PetrolAssist.com</span>
+                </div>
 
-                <div class="main-content-wrap">
+            </div>
+            <ul class="sidebar-nav">
 
-                    <!-- main content navbar / breadcrumb  -->
-                    <nav class="top-nav-wrapper">
-                        <div class="nav-content">
-                            <div class="bread-crumb-wrap">
-                                @RenderSection("Breadcrumbs", required: false)
-                            </div>
-                            <div class="icon-wrap">
-                                <span class="material-symbols-sharp">
-                                    search
-                                </span>
-                                <span class="material-symbols-sharp">
-                                    apps
-                                </span>
-                                <span class="material-symbols-sharp">
-                                    expand_content
-                                </span>
-                                <div class="notification">
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link">
+                        <span class="material-symbols-sharp">
+                            local_gas_station
+                        </span>
+                        <span class="menu-lbl">Stations</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item">
+                    <a href="/" class="sidebar-link">
+                        <span class="material-symbols-sharp">
+                            view_agenda
+                        </span>
+                        <span class="menu-lbl">Agenda</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#auth" 
+                        aria-expanded="false" aria-controls="auth">
+                        <span class="material-symbols-sharp">
+                            verified_user
+                        </span>
+                        <span class="menu-lbl">Auth</span>
+                    </a>
+                    <ul id="auth" class="sidebar-dropdown list-unstyled collapse"  data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link">Login</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link">Register</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="sidebar-item">
+                    <a class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#multi"
+                       aria-expanded="false" aria-controls="multi">
+                        <span class="material-symbols-sharp">
+                            dashboard_customize
+                        </span>
+                        <span class="menu-lbl">Multi Level</span>
+                   </a>
+                    <ul id="multi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
+                            data-bs-target="#multi-two" aria-expanded="false" aria-controls="multi-two">
+                               Two Links
+                            </a>
+                            <ul id="multi-two" class="sidebar-dropdown list-unstyled collapse">
+                                <li class="sidebar-item">
+                                    <a href="#" class="sidebar-link">
+                                        Link 1
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="#" class="sidebar-link">
+                                        Link 2
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                   </ul>
+                </li>
+
+                <li>
+                    <a href="#" class="sidebar-link">
+                        <span class="material-symbols-sharp">
+                            notifications
+                        </span>
+                        <span class="menu-lbl"> Notifications</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" class="sidebar-link">
+                        <span class="material-symbols-sharp">
+                            settings
+                        </span>
+                        <span class="menu-lbl"> Settings</span>
+                    </a>
+                </li>
+
+            </ul>
+            <div class="sidebar-footer">
+                <a href="#" class="sidebar-link">
+                    <span class="material-symbols-sharp">
+                        logout
+                    </span>
+                    <span class="menu-lbl">Logout</span>
+                </a>
+            </div>
+        </aside>
+        <!-- sidebar ends -->
+        <!-- main starts -->
+        <div class="main">
+            <!-- navbar starts -->
+            <nav class="navbar navbar-expand px-4 py-3">
+                <form action="#" class="d-none d-sm-inline-block">
+                    <div class="input-group input-group-nabbar">
+                        <input type="text" class="form-control border-0 rounded-8" placeholder="search...   " />
+                        <button class="btn border-0 rounder-8" type="button">Search</button>
+                    </div>
+                </form>
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-icon"  data-bs-toggle="dropdown">
+                                <img src="@Url.Content("~/img/assets/img-user.jpg")" class="avatar img-fluid" alt="" />                                
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end rounded">
+                                <a href="#" class="dropdown-item">
                                     <span class="material-symbols-sharp">
-                                        notifications
+                                        schedule
                                     </span>
-                                    <span class="notifications-count">1</span>
-                                </div>
-                                <div class="user">
-                                    <div class="user-wrap">
-                                        <img src="@Url.Content("~/img/assets/img-user.jpg")" />
-                                    </div>
-                                    <span>James</span>
-                                </div>
-                                <span class="material-symbols-sharp">
-                                    settings
-                                </span>
+                                    <span>Schedule</span>
+                                </a>
+                                <a href="#" class="dropdown-item">
+                                    <span class="material-symbols-sharp">
+                                        monitoring
+                                    </span>
+                                    <span>Analytics</span>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a href="#" class="dropdown-item">
+                                    <span class="material-symbols-sharp">
+                                        help
+                                    </span>
+                                    <span>Help</span>
+                                </a>
                             </div>
-                        </div>
-                    </nav>
-                    <!-- main content navbar / breadcrumb ends -->
-                    
-
-                    <div class="page-content">
-                        <div class="container">
-                            @RenderBody()
-                        </div>
-                    </div>
-
-
+                        </li>
+                    </ul>
                 </div>
-            </div>
-        </div>
-
-
-        <div class="footer">
-            <div class="container">
-                <div class="footer-wrap">
-                    <div class="lhs">
-                        <span>PETROLASSIST.COM</span>
-                    </div>
-                    <div class="rhs">
-                        ** FOOTER LINKS HERE **
+            </nav>
+            <!-- navbar ends -->
+            <!-- contnet starts -->
+            <main class="content px-3 py-4">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>                
+            </main>
+            <!-- contentn ends -->
+            <!-- footer starts -->
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row text-body-secondary">
+                        <div class="col-6 text-staart">
+                            <a href="#" class="text-body-secondary">
+                                <strong>PetrolAssist.com</strong>
+                            </a>
+                        </div>
+                        <div class="col-6 text-end text-body-secondary d-none d-md-block">
+                            <ul class="list-inline mb-0">
+                                <li class="list-inline-itme">
+                                    <a href="#" class="text-body-secondary">Contact</a>
+                                </li>
+                                <li class="list-inline-itme">
+                                    <a href="#" class="text-body-secondary">About Us</a>
+                                </li>
+                                <li class="list-inline-itme">
+                                    <a href="#" class="text-body-secondary">Terms & Conditions</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </footer>
+            <!-- footer ends -->
         </div>
-
+        <!-- main ends -->
     </div>
+    <!-- wrapped ends -->
 
 
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     <script src="~/js/app.js" asp-append-version="true"></script>
 
-    <script type="text/javascript">
+    <script type="text/javascript">       
 
+        const hamburger = document.querySelector("#toggle-btn");
 
-        var layoutPage;
-
-        document.addEventListener("DOMContentLoaded", () => {
-            layoutPage = app();
-            let submenu_stations = document.getElementById("submenu-stations");
-            let submenu_users = document.getElementById("submenu-users");
-
-            //  Arrary to hold all of our sumbmenu items
-            const submenuItems = [];
-            submenuItems.push(submenu_stations);
-            submenuItems.push(submenu_users);
-
-            
+        hamburger.addEventListener("click", function () { 
+            document.querySelector("#sidebar").classList.toggle("expand");
         });
-
-        function handleSubMenuClick(target) {
-
-            switch (target.id) {
-                case 'submenu-stations':
-                    console.log("id: " + target.id);
-                    //	subpage of stations open it's submenu
-                    layoutPage.targetDropDown(target);
-                    break;
-                case 'submenu-users':
-                    console.log("id: " + target.id);
-                    layoutPage.targetDropDown(target);
-                    break;
-                default:
-                    console.log("not valid click");
-
-            }
-        }
-        
-
-        function initMainMenu() {
-            //  the actual page in a submuen item should not be affected, as
-            //  this script runs before the Script section.
-            submenuItems.forEach((element) => console.log(element));
-
-        }
-
-        function showSubMenuHover(link) {
-            var running
-            if (running == true) {
-                return;
-            } else {
-                running = true;
-                console.log(link.id);
-                running = false;
-            }
-
-        }
-        
-
 
     </script>
 
