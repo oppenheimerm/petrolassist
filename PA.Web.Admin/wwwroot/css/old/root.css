@@ -19,9 +19,23 @@
     /*========== 
         Colours
      ==========*/
+    --pa-white: #FAF7F7;
+    --pa-primary-colour: #A1D18E;
+    --pa-primary-colour-active: #9EE6A6;
+    --pa-primary-accent-dust: #CDCCC6;
+    --pa-primary-accent-dust-active: #BABAB6;
+    --black-1: #303030;
+    --black-2: #141516;
+    --input-background: #BDC3C7;
+    --input-disabled: rgba(255, 205, 2, 0.4);
+    --info-colour: #6093AC;
+    --info-colour-hover: #537E94;
+    --warning-colour: #C0392B;
+    --warning-colour-hover: #9e291c;
+    --error-colour: #b37872;
     /* backgrounds */
-    --black-1: #151a1d; 
-    --black-2: #202326;
+    /*--black-1: #303030;
+    --black-2: #141516;
     --light-black: #2f2f2f;
     --grey-colour: #3C3F40;
     --hightlight-colour: #13AE70;
@@ -33,11 +47,11 @@
     --info-colour-hover: #2b82bd;
     --warning-colour: #C0392B;
     --warning-colour-hover: #9e291c;
-    --error-colour: #C0392B;
+    --error-colour: #965a54;
     --dialog-colour: #7F8C8D;
     --disabled-colour: #f8f8f8;
-    --input-background: #BDC3C7;
-    --input-disabled: rgba(255, 205, 2, 0.4); /*#FFCD02*/
+    --input-background: #E9E9E6;
+    --input-disabled: rgba(255, 205, 2, 0.4);*/ /*#FFCD02*/
     /*========== 
         Margins Bottom 
     ==========*/
@@ -79,8 +93,19 @@ html, body {
 }
 
 body {
+    font-family: var(--body-font);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    background: var(--black-1);
+    font-family: var(--body-font);
     line-height: 1.2;
+    min-height: 100%;
 }
+
+/*-------------------------------------
+Typography
+---------------------------------------*/
 
 h1 {
     font-size: var(--h1-font-size);
@@ -98,6 +123,56 @@ h4 {
     font-size: var(--h4-font-size);
 }
 
+/*-------------------------------------
+Main layout
+---------------------------------------*/
+
+.main-content {
+    /*  grow - by 1, in relation to other flex items.  The flex item can grow when free 
+            space is availale.
+        shrink - The amout the flex item can shrink, in relation to other flex items, 
+            when there is not enough space available
+        flex-basis - the basis size the flex item is sized to.
+    */
+    flex: 1 0 auto;
+    border: 1px solid yellow;
+}
+
+.main-content-inner {
+    display: flex;
+    height: 100%;
+    flex-direction: row;
+    border: 1px solid blue;
+}
+
+.main-content, .main-content-inner{
+    min-height: 100%;
+
+}
+
+.main-content-inner aside {
+    flex: 1 0 300px;
+    overflow: hidden;
+}
+
+aside .content-wrap {
+    height: 100%;
+    overflow-y: auto;
+    padding: 0.5rem; /* 4px */
+    background-color: var(--light-black);
+    border-right: 2px solid var(--light-box-shadow);
+    display: flex;
+    flex-direction:column;
+}
+
+.main-content-inner .main-content-wrap {
+    width: calc( 100% - 300px);
+    display: flex;
+    height: 100%;
+    padding: 0.5rem;
+    flex-direction: column;
+    z-index: 8
+}
 
 .top-padding-small {
     padding-top: var(--mb-0-75);
@@ -239,3 +314,69 @@ h4 {
 .pa-breadcrumb li .current-page{
     color: var(--hightlight-colour-hover);
 }
+
+/*-------------------------------------
+Mode themes
+---------------------------------------*/
+
+@media (prefers-color-scheme: light) {
+    /* HEADER / NAV */
+    html, body {
+        color: var(--black-1);
+        background: var(--pa-primary-accent-dust);
+    }
+    .login-img-dark {
+        display: none;
+    }
+    .login-img-light{
+        display: inline-block;
+        position: relative;
+    }
+
+    
+    /* BUTTONS */
+    .btn {
+        box-shadow: 0 20px 27px 0 rgba(0,0,0,.07);
+    }
+
+    /* FORMS */
+
+
+
+}
+
+/*-------------------------------------
+Responsive
+---------------------------------------*/
+
+/** Ignore mobile phone */
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (max-width: 600px) {
+   
+}
+
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    /*-------------------------------------
+    Re-useable elements
+    ---------------------------------------*/
+    .container {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+    /*-------------------------------------
+    Pages
+    ---------------------------------------*/
+    /* Login */
+    #login-wrap {
+        flex-direction: row;
+    }
+
+    #login-wrap .section-small {
+        flex: 1 0 50%; /* grow:1, shrink:1, basis: 50 */
+        padding: 4px;
+    }
+}
+

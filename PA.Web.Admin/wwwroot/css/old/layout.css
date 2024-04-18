@@ -1,21 +1,4 @@
-﻿html,
-body {
-    margin: 0;
-    padding: 0;
-}
-
-html,
-#app {
-    height: 100vh;
-}
-
-body, #app {
-    font-family: var(--body-font);
-    color: #fff;
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-}
+﻿
 
 .add-column,
 .add-row{
@@ -53,45 +36,6 @@ aside .content-wrap::-webkit-scrollbar {
 
 
 
-.main-content {
-    /*  grow - by 1, in relation to other flex items.  The flex item can grow when free 
-            space is availale.
-        shrink - The amout the flex item can shrink, in relation to other flex items, 
-            when there is not enough space available
-        flex-basis - the basis size the flex item is sized to.
-    */
-    flex: 1 0 auto;
-}
-
-.main-content-inner {
-    display: flex;
-    height: 100%;
-    flex-direction: row;
-}
-
-.main-content-inner aside {
-    flex: 1 0 300px;
-    overflow: hidden;
-}
-
-aside .content-wrap {
-    height: 100%;
-    overflow-y: auto;
-    padding: 0.5rem; /* 4px */
-    background-color: var(--light-black);
-    border-right: 2px solid var(--light-box-shadow);
-    display: flex;
-    flex-direction:column;
-}
-
-.main-content-inner .main-content-wrap {
-    width: calc( 100% - 300px);
-    display: flex;
-    height: 100%;
-    padding: 0.5rem;
-    flex-direction: column;
-    z-index: 8
-}
 
 
 /* Responsive */

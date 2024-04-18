@@ -127,17 +127,25 @@ namespace PA.Web.API.Controllers
             if (response.StatusCode == 401)
             {
                 return Unauthorized();
+
+            }else if(response.StatusCode == 404)
+            {
+                return NotFound();
+
+            }else if(response.StatusCode == 200)
+            {
+                return Ok(response);
             }
             else {
-                return Ok(response);
+                return Unauthorized();
             }
         }
 
 		[AllowAnonymous]
 		[HttpPost("verify-email")]
-		public async Task<IActionResult> VerifyEmail(string email)
+		public async Task<IActionResult> VerifyEmail(string token)
 		{
-            var request = await MemberVerifyEmailUC.ExecuteAsync(email);
+            var request = await MemberVerifyEmailUC.ExecuteAsync(token);
             if (request.Success)
             {
                 return Ok(new { message = request.Message });
@@ -160,8 +168,8 @@ namespace PA.Web.API.Controllers
 		}
 
         [AllowAnonymous]
-        [HttpGet("resend-email")]
-        public async Task<IActionResult>ResendEmail(string email)
+        [HttpGet("resend-verification-token")]
+        public async Task<IActionResult>ResendVerificationToken(string email)
         {
             //  Test
             //  non account - OK

@@ -40,9 +40,14 @@ Password	8E9kC1ResSxtA1XQgW
 [QuickGrid for Blazor](https://aspnet.github.io/quickgridsamples/)
 [Charts css](https://chartscss.org/examples/line/)
 [Blazor Line Chart](https://demos.blazorbootstrap.com/charts/line-chart)
-[MudBlazor](https://mudblazor.com/)
+
+### Inspiration
+[Sentimental Bikes](https://sentimental.bike/)
+Form
+[form idea](https://colorlib.com/etc/regform/colorlib-regform-7/)
 
 #### Templates
+[Bootstrap 5 Responsive Admin Dashboard Bootstrap](https://www.youtube.com/watch?v=CzQhzULD5GA&t=18s)
 [Admin template 1](https://prium.github.io/phoenix/v1.14.0/modules/tables/advance-tables.html)
 [Admin template 2](https://demos.creative-tim.com/marketplace/soft-ui-dashboard-pro/pages/applications/datatables.html)
 [Admin template 3](https://seantheme.com/color-admin/admin/html/index_v3.html)
