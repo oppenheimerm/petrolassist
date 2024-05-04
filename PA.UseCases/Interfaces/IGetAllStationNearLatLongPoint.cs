@@ -8,7 +8,7 @@ namespace PA.UseCases.Interfaces
 {
     public interface IGetAllStationNearLatLongPoint
     {
-        PagedList<StationLite> Execute(double fromLat, double fromLongt, int countryId,
-                    DistanceUnit units, [FromQuery] PagingParameters pagingParms);
+        List<StationLite> Execute(double fromLat, double fromLongt, int countryId,
+                    DistanceUnit units);
     }
 }

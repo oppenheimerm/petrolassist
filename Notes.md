@@ -48,6 +48,8 @@ Form
 
 #### Templates
 [Bootstrap 5 Responsive Admin Dashboard Bootstrap](https://www.youtube.com/watch?v=CzQhzULD5GA&t=18s)
+
+[Modernize bootstrap template theme](https://bootstrapdemos.adminmart.com/modernize/dist/dark/table-dark-basic.html)
 [Admin template 1](https://prium.github.io/phoenix/v1.14.0/modules/tables/advance-tables.html)
 [Admin template 2](https://demos.creative-tim.com/marketplace/soft-ui-dashboard-pro/pages/applications/datatables.html)
 [Admin template 3](https://seantheme.com/color-admin/admin/html/index_v3.html)
@@ -61,3 +63,7 @@ Form
 [Blazor WebAssembly Pagination with ASP.NET Core Web API](https://code-maze.com/blazor-webassembly-pagination/)
 [Paging, Searching And Sorting In ASP.NET MVC 5](https://www.c-sharpcorner.com/UploadFile/4b0136/perform-paging-searching-sorting-in-Asp-Net-mvc-5/)
 [Reveling Module Pattern](https://gist.github.com/zcaceres/bb0eec99c02dda6aac0e041d0d4d7bf2)
+
+
+paging: 
+https://www.youtube.com/@CodeWithGopi/videos

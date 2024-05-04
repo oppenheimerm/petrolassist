@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using NetTopologySuite;
+using PA.Core.Helpers;
 using PA.Core.Models;
 using PA.Core.Models.ApiRequestResponse;
 using PA.UseCases.Interfaces;
@@ -51,7 +53,9 @@ namespace PA.Web.Admin.Pages.Stations
 			}
 			else
 			{
-				var status = await AddPetrolStationUseCase.ExecuteAsync(ModelHelper.ToStation(NewStation));
+				//	geometryFactory with srid equal to 4326 (WGS 84). This is the standard in cartography and GPS systems.
+				var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
+				var status = await AddPetrolStationUseCase.ExecuteAsync(ModelHelper.ToStation(NewStation, geometryFactory));
 				if (status.Success!.Value)
 				{
 					return RedirectToPage($"Stations/Details/{status.Station!.Id}");

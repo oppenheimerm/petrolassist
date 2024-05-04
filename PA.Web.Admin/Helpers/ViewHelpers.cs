@@ -23,10 +23,10 @@ namespace PA.Web.Admin.Helpers
 			return logoName;
 		}
 
-		public static string StationAsJson(Station station)
+		/*public static string StationAsJson(Station station)
 		{
 			var vm = ModelHelper.ToStationLite(station);
 			return JsonConvert.SerializeObject(vm);
-		}
+		}*/
 	}
 }

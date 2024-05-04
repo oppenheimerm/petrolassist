@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"];
 builder.Services.AddDbContext<ApplicationManagmentDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(connectionString, x => x.UseNetTopologySuite()));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -84,6 +84,7 @@ builder.Services.AddScoped<IPetrolStationRepository, PetrolStationRepository>();
 builder.Services.AddScoped<IVendorRepository, VendorRepository>();
 builder.Services.AddScoped<ICountryRepository, CountryRepository>();
 
+//  Development only
 //builder.Services.AddTransient<IInitRepository , InitRepository>();
 
 
@@ -91,7 +92,7 @@ builder.Services.AddScoped<ICountryRepository, CountryRepository>();
 builder.Services.AddTransient<IGetAllCountriesUseCase, GetAllCountriesUseCase>();
 builder.Services.AddTransient<IGetAllVendorsUseCase, GetAllVendorsUseCase>();
 builder.Services.AddTransient<IGetAllStationsUseCase, GetAllStationsUseCase>();
-builder.Services.AddTransient<IGetAllPetrolStationsFlatUseCase, GetAllPetrolStationsFlatUseCase>();
+//builder.Services.AddTransient<IGetAllPetrolStationsFlatUseCase, GetAllPetrolStationsFlatUseCase>();
 builder.Services.AddTransient<IGetCountryByIdUseCase, GetCountryByIdUseCase>();
 builder.Services.AddTransient<IGetPetrolStationByIdUseCase, GetPetrolStationByIdUseCase>();
 builder.Services.AddTransient<IAddPetrolStationUseCase, AddPetrolStationUseCase>();

@@ -1,14 +1,14 @@
 ﻿
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using NetTopologySuite;
+using NetTopologySuite.Geometries;
 using PA.Core.Helpers;
 using PA.Core.Helpers.Paging;
 using PA.Core.Models;
 using PA.Core.Models.ApiRequestResponse;
-using PA.Datastore.EFCore.Helpers.Geospatial;
 using PA.Datastore.EFCore.Interfaces;
 
 namespace PA.Datastore.EFCore.Repositories
@@ -141,7 +141,34 @@ namespace PA.Datastore.EFCore.Repositories
             
         }
 
-        public PagedList<StationLite> GetAllFlat(int? countryId, int? sortingOrder, PagingParameters pagingParameters)
+		/*public List<StationLite> GetAllFlat()
+		{
+			var query = from station in Context.PetrolStations
+						join country in Context.Countries on station.CountryId equals country.Id
+						join vendor in Context.PetrolVendors on station.VendorId equals vendor.Id
+						select new StationLite
+						{
+							Id = station.Id,
+							StationName = station.StationName,
+							StationAddress = station.StationAddress,
+							StationPostcode = station.StationPostcode,
+                            Latitude = station.GeoLocation.Coordinate.Y,
+                            Longitude = station.GeoLocation.Coordinate.X,
+							//GeoLocation = station.GeoLocation,
+							StationOnline = station.StationOnline,
+							VendorName = vendor.VendorName,
+							Country = country.CountryName,
+							Logo = vendor.VendorLogo,
+							PayAtPump = station.PayAtPump,
+							PayByApp = station.PayByApp,
+							AccessibleToiletNearby = station.AccessibleToiletNearby,
+							Added = station.Added
+						};
+
+            return query.ToList();
+		}*/
+
+		/*public PagedList<StationLite> GetAllFlat(int? countryId, int? sortingOrder, PagingParameters pagingParameters)
         {
 			// Get Enum sort type
 			var sortOrder = sortingOrder.HasValue ? PaginHelpers.GetStationSortOrder(sortingOrder.Value) : StationSortOrder.Id;
@@ -156,8 +183,9 @@ namespace PA.Datastore.EFCore.Repositories
                                 StationName = station.StationName,
                                 StationAddress = station.StationAddress,
                                 StationPostcode = station.StationPostcode,
-                                Latitude = station.Latitude,
-                                Longitude = station.Longitude,
+                                Latitude = station.GeoLocation.Coordinate.Y,
+                                Longitude = station.GeoLocation.Coordinate.X,
+                                //GeoLocation = station.GeoLocation,
                                 StationOnline = station.StationOnline,
                                 VendorName = vendor.VendorName,
                                 Country = country.CountryName,
@@ -202,8 +230,9 @@ namespace PA.Datastore.EFCore.Repositories
 								StationName = station.StationName,
 								StationAddress = station.StationAddress,
 								StationPostcode = station.StationPostcode,
-								Latitude = station.Latitude,
-								Longitude = station.Longitude,
+                                Latitude = station.GeoLocation.Coordinate.Y,
+                                Longitude = station.GeoLocation.Coordinate.X,
+                                //GeoLocation = station.GeoLocation,
 								StationOnline = station.StationOnline,
 								VendorName = vendor.VendorName,
 								Country = country.CountryName,
@@ -236,10 +265,66 @@ namespace PA.Datastore.EFCore.Repositories
 				return PagedList<StationLite>.ToPagedList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
 			}
 
-		}
+		}*/
 
-        // Paged nearest stations
-        public PagedList<StationLite> GetAllStationsNearLocation(double fromLat, double fromLongt, int countryId,
+
+        // Paged nearest stations using HaversineDistance, without paginh
+        public List<StationLite> GetStationsNearLocation(double fromLat, double fromLongt, int countryId,
+            DistanceUnit units)
+
+        {
+            var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
+			var usersLocation = geometryFactory.CreatePoint(new Coordinate(fromLongt, fromLat));
+            //double maxDistance = 0.0;
+            
+
+
+			var query = from station in Context.PetrolStations
+                        join country in Context.Countries on station.CountryId equals country.Id
+                        join vendor in Context.PetrolVendors on station.VendorId equals vendor.Id
+                        orderby station.GeoLocation.IsWithinDistance(usersLocation, 20000)/* 20km */
+                        where country.Id == countryId
+                        select new StationLite
+                        {
+                            Id = station.StationIdentifier.ToString(),
+                            StationName = station.StationName,
+                            StationAddress = station.StationAddress,
+                            StationPostcode = station.StationPostcode,
+                            //GeoLocation = station.GeoLocation,
+                            Latitude = station.GeoLocation.Coordinate.Y,
+                            Longitude = station.GeoLocation.Coordinate.X,
+                            StationOnline = station.StationOnline,
+                            VendorName = vendor.VendorName,
+                            Country = country.CountryName,
+                            Logo = vendor.VendorLogo,
+                            PayAtPump = station.PayAtPump,
+                            PayByApp = station.PayByApp,
+                            SIUnit = units,
+                            AccessibleToiletNearby = station.AccessibleToiletNearby,
+                            Distance = (units == DistanceUnit.Kilometers) ? ( (station.GeoLocation.Distance(usersLocation)) / 1000)  : ((station.GeoLocation.Distance(usersLocation)) * 0.00062137)
+						};
+
+
+            
+            
+            
+
+            var stations = query
+                .OrderBy(s => s.Distance)
+                .Where(d => d.Distance <= 20.00)
+                .Take(20)
+                .ToList();
+
+
+            //Logger.LogInformation($"Found {stations.Count} near user.");
+
+            return stations;
+
+        }
+
+        //  WORKS But want same without paging
+        // Paged nearest stations using HaversineDistance
+        /*public PagedList<StationLite> GetAllStationsNearLocation(double fromLat, double fromLongt, int countryId,
             DistanceUnit units, [FromQuery] PagingParameters pagingParms)
         {
             var query = from station in Context.PetrolStations
@@ -261,36 +346,36 @@ namespace PA.Datastore.EFCore.Repositories
                             PayAtPump = station.PayAtPump,
                             PayByApp = station.PayByApp,
                             AccessibleToiletNearby = station.AccessibleToiletNearby
-                        };
+                        };*/
 
-            //  Execution of the query is deferred until the query variable is iterated over in a foreach,
-            //  For Each loop or ToList(). 
+        //  Execution of the query is deferred until the query variable is iterated over in a foreach,
+        //  For Each loop or ToList(). 
 
 
 
-            /*return PagedList<Owner>.ToPagedList(FindAll().OrderBy(on => on.Name),
-                ownerParameters.PageNumber,
-                ownerParameters.PageSize);*/
+        /*return PagedList<Owner>.ToPagedList(FindAll().OrderBy(on => on.Name),
+            ownerParameters.PageNumber,
+            ownerParameters.PageSize);*/
 
-            var stations = PagedList<StationLite>.ToPagedList(query, pagingParms.PageNumber, pagingParms.PageSize);
-            for (int i = 0; i < stations.Count; i++)
-            {
+        /*var stations = PagedList<StationLite>.ToPagedList(query, pagingParms.PageNumber, pagingParms.PageSize);
+        for (int i = 0; i < stations.Count; i++)
+        {
 
-                stations[i].Distance = Math.Round(GeoHelpers.HaversineDistance(fromLat, fromLongt, stations[i], units), 2);
-            }
-            if (stations != null)
-            {
-                Logger.LogInformation($" Returned {stations.Count} items for query near this geo location at: {DateTime.UtcNow}");
-            }
-            else
-            {
-                Logger.LogInformation($" Could not find any locations near this geolocation. TimeStampe: {DateTime.UtcNow}");
-            }
-            return stations;
+            stations[i].Distance = Math.Round(GeoHelpers.HaversineDistance(fromLat, fromLongt, stations[i], units), 2);
         }
+        if (stations != null)
+        {
+            Logger.LogInformation($" Returned {stations.Count} items for query near this geo location at: {DateTime.UtcNow}");
+        }
+        else
+        {
+            Logger.LogInformation($" Could not find any locations near this geolocation. TimeStampe: {DateTime.UtcNow}");
+        }
+        return stations;
+    }*/
 
 
-        public List<StationLite> GetStationsNearUser(double fromLat, double fromLongt, int countryId,
+        /*public List<StationLite> GetStationsNearUser(double fromLat, double fromLongt, int countryId,
            DistanceUnit units)
         {
             var latAsFloat = float.Parse(fromLat.ToString());
@@ -307,8 +392,8 @@ namespace PA.Datastore.EFCore.Repositories
                             StationName = station.StationName,
                             StationAddress = station.StationAddress,
                             StationPostcode = station.StationPostcode,
-                            Latitude = station.Latitude,
-                            Longitude = station.Longitude,
+                            Latitude = station.GeoLocation.Coordinate.Y,
+                            Longitude = station.GeoLocation.Coordinate.X,
                             StationOnline = station.StationOnline,
                             VendorName = vendor.VendorName,
                             Country = country.CountryName,
@@ -316,22 +401,18 @@ namespace PA.Datastore.EFCore.Repositories
                             PayAtPump = station.PayAtPump,
                             PayByApp = station.PayByApp,
                             AccessibleToiletNearby = station.AccessibleToiletNearby,
-                            Distance = Context.HaversineDistance(latAsFloat, longAsFloat,
-                            (float)station.Latitude.Value,
-                            (float)station.Longitude.Value,
-                            (int)units)
                         };
 
 
-            var stations = table
+            /*var stations = table
                 .OrderBy(s => s.Distance)
                 .Take(20)
-                .ToList();
+                .ToList();*/
 
-            Logger.LogInformation($"Found {stations.Count} near user.");
+            /*Logger.LogInformation($"Found {table.Count()} near user.");
 
-            return stations;
-        }
+            return table.ToList();
+        }*/
 
         public async Task<Station?> GetStationById(int id)
         {
@@ -362,5 +443,5 @@ namespace PA.Datastore.EFCore.Repositories
             }
         }
 
-    }
+	}
 }

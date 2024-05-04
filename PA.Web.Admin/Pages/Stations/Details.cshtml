@@ -47,14 +47,16 @@
 					<label class="form-label">
 						Latitude
 					</label>
-					<input class="form-control disabled" type="text" value="@Model.Station!.Latitude" disabled />
+					<!-- Remember for Coordinate(Long(x), lat(y)) -->
+					<input class="form-control disabled" type="text" value="@Model.Station!.GeoLocation.Coordinate.Y" disabled />
 				</div>
 
 				<div class="item-line">
 					<label class="form-label">
 						Longitude
 					</label>
-					<input class="form-control disabled" type="text" value="@Model.Station!.Longitude" disabled />
+					<!-- Remember for Coordinate(Long(x), lat(y)) -->
+					<input class="form-control disabled" type="text" value="@Model.Station!.GeoLocation.Coordinate.X" disabled />
 				</div>
 
 				<div class="item-line">
@@ -160,9 +162,9 @@
 		const detailsPage = app();
 		document.addEventListener("DOMContentLoaded", () => {
 
-			
-			var lat = @Model.Station.Latitude;
-			var long = @Model.Station.Longitude;
+			// Remember oordinate(Long(x), lat(y))
+			var lat = @Model.Station.GeoLocation.Coordinate.Y;
+			var long = @Model.Station.GeoLocation.Coordinate.X;
 			var mapId = "@Model.GoogleMapId"
 			var googleApiLey = "@Model.GoogleAPIKey";
 			var stationName = "@Model.Station.StationName";
