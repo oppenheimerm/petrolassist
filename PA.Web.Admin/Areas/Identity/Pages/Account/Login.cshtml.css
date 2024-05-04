@@ -1,3 +1,17 @@
 ﻿::deep.bg-white {
     background: var(--pa-white) !important;
 }
+
+.lhs {
+    background: var(--pa-primary-colour);
+}
+
+.login-header{
+    font-weight: 600;
+}
+
+/*-------------------------------------
+Mode themes
+---------------------------------------*/
+@media (prefers-color-scheme: light) {
+}

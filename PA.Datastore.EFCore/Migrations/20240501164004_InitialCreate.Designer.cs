@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NetTopologySuite.Geometries;
 using PA.Datastore.EFCore;
 
 #nullable disable
@@ -12,7 +13,7 @@ using PA.Datastore.EFCore;
 namespace PA.Datastore.EFCore.Migrations
 {
     [DbContext(typeof(ApplicationManagmentDbContext))]
-    [Migration("20240219151431_InitialCreate")]
+    [Migration("20240501164004_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,7 +21,7 @@ namespace PA.Datastore.EFCore.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.1")
+                .HasAnnotation("ProductVersion", "8.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -390,13 +391,9 @@ namespace PA.Datastore.EFCore.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<double?>("Latitude")
+                    b.Property<Point>("GeoLocation")
                         .IsRequired()
-                        .HasColumnType("float");
-
-                    b.Property<double?>("Longitude")
-                        .IsRequired()
-                        .HasColumnType("float");
+                        .HasColumnType("geography");
 
                     b.Property<bool>("PayAtPump")
                         .HasColumnType("bit");

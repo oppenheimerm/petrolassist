@@ -21,6 +21,13 @@ namespace PA.Datastore.EFCore
         public DbSet<CustomerHistory> StationCustomerHistory { get; set; }
 
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+        }
+
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -30,24 +37,8 @@ namespace PA.Datastore.EFCore
                 .HasIndex(c => c.VendorCode)
                 .IsUnique();
 
-            modelBuilder.HasDbFunction(typeof(ApplicationManagmentDbContext)
-                .GetMethod(nameof(HaversineDistance),
-                new[] { typeof(float), typeof(float), typeof(float), typeof(float), typeof(int) })!)/* 0 = Kilometers, 1 = Miles */
-                .HasName("HaversineDistance");
-
         }
 
 
-        /// <summary>
-        /// Where distance unit: Kilometers = 0, Miles = 1
-        /// </summary>
-        /// <param name="lat1"></param>
-        /// <param name="long1"></param>
-        /// <param name="lat2"></param>
-        /// <param name="lon2g"></param>
-        /// <param name="distanceUnit"></param>
-        /// <returns></returns>
-        /// <exception cref="NotSupportedException"></exception>
-        public float HaversineDistance(float lat1, float long1, float lat2, float lon2g, int distanceUnit) => throw new NotSupportedException();
     }
 }

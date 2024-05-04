@@ -1,4 +1,7 @@
 ﻿
+using NetTopologySuite.Geometries;
+using PA.Core.Helpers;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace PA.Core.Models.ApiRequestResponse
@@ -8,7 +11,8 @@ namespace PA.Core.Models.ApiRequestResponse
 	/// </summary>
 	public class StationLite
 	{
-		public int Id { get; set; }
+		//	We use the StationIdentifer for all external request
+		public string Id { get; set; }
 
 		public string StationName { get; set; } = string.Empty;
 
@@ -18,9 +22,14 @@ namespace PA.Core.Models.ApiRequestResponse
 
 		public string StationPostcode { get; set; } = string.Empty;
 
+		//public Point? GeoLocation { get; set; }
+		[Required]
 		public double? Latitude { get; set; }
 
+		[Required]
 		public double? Longitude { get; set; }
+
+		public double? Distance { get; set; }
 
 		public bool StationOnline { get; set; } = false;
 
@@ -36,8 +45,9 @@ namespace PA.Core.Models.ApiRequestResponse
 		public string? Logo { get; set; }
 		//[JsonIgnore]
 		//public string VendorLogo { get; set; } = string.Empty;
-		public double? Distance { get; set; }
 		public bool AccessibleToiletNearby { get; set; } = false;
+
+		public DistanceUnit SIUnit { get; set; } = DistanceUnit.Kilometers;
 
 	}
 }

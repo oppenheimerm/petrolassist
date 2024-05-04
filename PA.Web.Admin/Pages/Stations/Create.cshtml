@@ -5,110 +5,120 @@
 	ViewData["Title"] = "Add new station";
 }
 
-<div class="card-outer">
-	<div class="content-column top-padding-small">
-
-		<form method="post" class="pa-form">
-			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-			<div class="item-line">
-				<label asp-for="NewStation.StationName" class="form-label"></label>
-				<input asp-for="NewStation.StationName" class="form-control" type="text" aria-label="Station name" />
-				<span asp-validation-for="NewStation.StationName" class="text-danger"></span>
+<!-- card starts -->
+<div class="card card-nohover">
+	<!-- card body starts -->
+	<div class="card-body">
+		<div class="mb-3">
+			<!-- header / breadcrumb -->
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#">Stations</a></li>
+								<li class="breadcrumb-item active" aria-current="page">New</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
 			</div>
+			<!-- header / breadcrumb ends -->
 
-			<div class="item-line">
-				<label asp-for="NewStation.StationAddress" class="form-label"></label>
-				<input asp-for="NewStation.StationAddress" class="form-control" type="text" aria-label="Station address" />
-				<span asp-validation-for="NewStation.StationAddress" class="text-danger"></span>
-			</div>
 
-			<div class="item-line">
-				<label asp-for="NewStation.StationPostcode" class="form-label"></label>
-				<input asp-for="NewStation.StationPostcode" class="form-control" type="text" aria-label="Station postcode" id="new_station_postcode" />
-				<span asp-validation-for="NewStation.StationPostcode" class="text-danger"></span>
-			</div>
+			<form method="post" class="pa-form">
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-			<div class="item-line">
-				<label asp-for="NewStation.CountryId" class="form-label"></label>
-				<select asp-for="NewStation.CountryId" class="form-select-list" asp-items="new SelectList(Model.Countries,
+				<div class="item-line">
+					<label asp-for="NewStation.StationName" class="form-label"></label>
+					<input asp-for="NewStation.StationName" class="form-control" type="text" aria-label="Station name" />
+					<span asp-validation-for="NewStation.StationName" class="text-danger"></span>
+				</div>
+
+				<div class="item-line">
+					<label asp-for="NewStation.StationAddress" class="form-label"></label>
+					<input asp-for="NewStation.StationAddress" class="form-control" type="text" aria-label="Station address" />
+					<span asp-validation-for="NewStation.StationAddress" class="text-danger"></span>
+				</div>
+
+				<div class="item-line">
+					<label asp-for="NewStation.StationPostcode" class="form-label"></label>
+					<input asp-for="NewStation.StationPostcode" class="form-control" type="text" aria-label="Station postcode" id="new_station_postcode" />
+					<span asp-validation-for="NewStation.StationPostcode" class="text-danger"></span>
+				</div>
+
+				<div class="item-line">
+					<label asp-for="NewStation.CountryId" class="form-label"></label>
+					<select asp-for="NewStation.CountryId" class="form-select-list" asp-items="new SelectList(Model.Countries,
                     nameof(PA.Core.Models.Country.Id), nameof(PA.Core.Models.Country.CountryName))">
-					<option>Please Select</option>
-				</select>
-				<span asp-validation-for="NewStation.CountryId" class="text-danger"></span>
-			</div>
+						<option>Please Select</option>
+					</select>
+					<span asp-validation-for="NewStation.CountryId" class="text-danger"></span>
+				</div>
 
-			<div class="item-line">
-				<label asp-for="NewStation.Latitude" class="form-label"></label>
-				<input asp-for="NewStation.Latitude" class="form-control disabled" type="text" aria-label="auto generated input disabled." readonly="readonly" id="NewStation_Latitude" value="" />
-				<span asp-validation-for="NewStation.Latitude" class="text-danger"></span>
-			</div>
+				<div class="item-line">
+					<label asp-for="NewStation.Latitude" class="form-label"></label>
+					<input asp-for="NewStation.Latitude" class="form-control disabled" type="text" aria-label="auto generated input disabled." readonly="readonly" id="NewStation_Latitude" value="" />
+					<span asp-validation-for="NewStation.Latitude" class="text-danger"></span>
+				</div>
 
-			<div class="item-line">
-				<label asp-for="NewStation.Longitude" class="form-label"></label>
-				<input asp-for="NewStation.Longitude" class="form-control disabled" type="text" aria-label="auto generated input disabled." readonly="readonly" id="NewStation_Longitude" />
-				<span asp-validation-for="NewStation.Longitude" class="text-danger"></span>
-			</div>
+				<div class="item-line">
+					<label asp-for="NewStation.Longitude" class="form-label"></label>
+					<input asp-for="NewStation.Longitude" class="form-control disabled" type="text" aria-label="auto generated input disabled." readonly="readonly" id="NewStation_Longitude" />
+					<span asp-validation-for="NewStation.Longitude" class="text-danger"></span>
+				</div>
 
-			<div class="item-line">
-				<label asp-for="NewStation.VendorId" class="form-label"></label>
-				<select asp-for="NewStation.VendorId" class="form-select-list" asp-items="new SelectList(Model.Vendors,
+				<div class="item-line">
+					<label asp-for="NewStation.VendorId" class="form-label"></label>
+					<select asp-for="NewStation.VendorId" class="form-select-list" asp-items="new SelectList(Model.Vendors,
                     nameof(PA.Core.Models.Vendor.Id), nameof(PA.Core.Models.Vendor.VendorName))">
-					<option>Please Select</option>
-				</select>
-				<span asp-validation-for="NewStation.CountryId" class="text-danger"></span>
-			</div>
-
-			<div class="item-line">
-				<div class="form-control-chkbx">
-					<label class="form-label min-width-label">
-						Accesible toliets nearby
-					</label>
-					<input asp-for="NewStation.AccessibleToiletNearby" class="form-control-chkbx" type="checkbox" aria-label="accessible toliets nearby">
+						<option>Please Select</option>
+					</select>
+					<span asp-validation-for="NewStation.CountryId" class="text-danger"></span>
 				</div>
-			</div>
 
-			<div class="item-line">
-				<div class="form-control-chkbx">
-					<label class="form-label min-width-label">
-						Pay via app
-					</label>
-					<input asp-for="NewStation.PayAtPump" class="form-control-chkbx" type="checkbox">					
+				<div class="item-line">
+					<div class="form-control-chkbx">
+						<label class="form-label min-width-label">
+							Accesible toliets nearby
+						</label>
+						<input asp-for="NewStation.AccessibleToiletNearby" class="form-control-chkbx" type="checkbox" aria-label="accessible toliets nearby">
+					</div>
 				</div>
-			</div>
 
-			<div class="item-line">
-				<div class="form-control-chkbx">
-					<label class="form-label min-width-label">
-						Pay at pump
-					</label>
-					<input asp-for="NewStation.PayAtPump" class="form-control-chkbx" type="checkbox">
+				<div class="item-line">
+					<div class="form-control-chkbx">
+						<label class="form-label min-width-label">
+							Pay via app
+						</label>
+						<input asp-for="NewStation.PayAtPump" class="form-control-chkbx" type="checkbox">
+					</div>
 				</div>
-			</div>
 
-			<div class="item-line">
-				<input type="submit" valuse="SUBMIT" class="btn btn-default btn-primary" />
-			</div>
-			
+				<div class="item-line">
+					<div class="form-control-chkbx">
+						<label class="form-label min-width-label">
+							Pay at pump
+						</label>
+						<input asp-for="NewStation.PayAtPump" class="form-control-chkbx" type="checkbox">
+					</div>
+				</div>
 
-		</form>
-		
+				<div class="item-line">
+					<input type="submit" valuse="SUBMIT" class="btn btn-default btn-primary" />
+				</div>
+
+
+			</form>
+		</div>
+
 	</div>
+	<!-- card body ends -->
 </div>
+<!-- card ends -->
 
-@section Breadcrumbs {
-	<nav aria-label="Breadcrumb">
-		<ul class="pa-breadcrumb">
-			<li><a asp-page="./Index">Home</a></li>
-			<li>
-				<span class="current-page">
-					Add new station
-				</span>
-			</li>
 
-		</ul>
-	</nav>
-}
+
 
 @section Scripts{
 

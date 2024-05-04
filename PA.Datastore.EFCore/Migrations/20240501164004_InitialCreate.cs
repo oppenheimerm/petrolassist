@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using NetTopologySuite.Geometries;
 
 #nullable disable
 
@@ -264,8 +265,7 @@ namespace PA.Datastore.EFCore.Migrations
                     StationName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     StationAddress = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     StationPostcode = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
-                    Latitude = table.Column<double>(type: "float", nullable: false),
-                    Longitude = table.Column<double>(type: "float", nullable: false),
+                    GeoLocation = table.Column<Point>(type: "geography", nullable: false),
                     StationOnline = table.Column<bool>(type: "bit", nullable: false),
                     VendorId = table.Column<int>(type: "int", nullable: false),
                     CountryId = table.Column<int>(type: "int", nullable: false),

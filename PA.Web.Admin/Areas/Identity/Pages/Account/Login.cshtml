@@ -6,23 +6,19 @@
     Layout = "_LayoutNoNav";
 }
 
-<div class="row border rounded-5 p-3 bg-white shadow box-area position-form">
+<div class="row border rounded-5 p-3 bg-white shadow box-area position-form mb-">
     <!-- LHS-->
-    <div class="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column lhs" style="background:#103CBE;">
+    <div class="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column lhs">
+        <h2 class="text-black login-header">PetrolAssist.com</h2>
         <dlv class="login-image mb-3">
-            <img src="~/img/web/login-cover.png" class="img-fluid" style="width:250px;" />
+            <img src="~/img/web/desktop-security-access-img.png" class="img-fluid" style="width:488px;" asp-append-version="true" />
         </dlv>
-        <p class="text-white fs-2" atyle="font-weight: 600!important;">Please login</p>
-        <small class="text-white text-wrap text-center">petrolassist.com</small>
     </div>
     <!-- RHS-->
     <div class="col-md-6 rhs">
         <div class="row align-items-center">
-            <div class="headed-text mb-4">
-                Welcome back
-            </div>
             <form id="account" method="post">
-                <h2>Use a local account to log in.</h2>
+                <h2>Please login.</h2>
                 <hr />
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                 <div class="form-floating mb-3">

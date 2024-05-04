@@ -1,7 +1,10 @@
 ﻿using Azure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyCSharp.HttpUserAgentParser;
+using MyCSharp.HttpUserAgentParser.Providers;
 using NuGet.Protocol;
+using NuGet.Protocol.Core.Types;
 using PA.Core.Helpers;
 using PA.Core.Interfaces.Services.Email;
 using PA.Core.Models;
@@ -9,6 +12,7 @@ using PA.Core.Models.ApiRequestResponse;
 using PA.UseCases.Interfaces;
 using System.Net;
 using System.Text.Json;
+
 
 
 namespace PA.Web.API.Controllers
@@ -25,10 +29,11 @@ namespace PA.Web.API.Controllers
         private readonly IMemberVerifyEmailUseCase MemberVerifyEmailUC;
         private readonly IIsMemberEmailVerfiedUseCase MemberEmailVerifiedUC;
         private readonly IEmailService EmailService;
+        private IHttpUserAgentParserProvider _parserProvider;
 
-		public AccountController(IMemberRegisterUseCase memberRegisterUseCase, IMemberAuthenticateUserCase memberAuthenticateUserCase,
+        public AccountController(IMemberRegisterUseCase memberRegisterUseCase, IMemberAuthenticateUserCase memberAuthenticateUserCase,
             IMemberGetByRefreshTokenUseCase memberRefreshTokenUC, IMemberVerifyEmailUseCase memberVerifyEmailUseCase,
-			IIsMemberEmailVerfiedUseCase emailVerfiedUseCase, IEmailService emailService)
+			IIsMemberEmailVerfiedUseCase emailVerfiedUseCase, IEmailService emailService, IHttpUserAgentParserProvider parserProvider)
         {
             MemberRegisterUC = memberRegisterUseCase;
             MemberAuthenticateUC = memberAuthenticateUserCase;
@@ -36,6 +41,7 @@ namespace PA.Web.API.Controllers
             MemberVerifyEmailUC = memberVerifyEmailUseCase;
             MemberEmailVerifiedUC = emailVerfiedUseCase;
             EmailService = emailService;
+            _parserProvider = parserProvider;
         }
 
 
@@ -98,7 +104,11 @@ namespace PA.Web.API.Controllers
         [HttpPost("authenticate")]
         public async Task<IActionResult> Authenticate(AuthenticateRequest model)
         {
-
+            var userAgent = Request.Headers.UserAgent.ToString();
+            if(!string.IsNullOrEmpty(userAgent))
+            {
+                var metaData = GetRequestMetaData(userAgent);
+            }            
             var response = await MemberAuthenticateUC.ExecuteAsync(model, ipAddress());
             setTokenCookie(response.RefreshToken);
             if (response.StatusCode == 200)//OK
@@ -213,6 +223,21 @@ namespace PA.Web.API.Controllers
                 return Request.Headers["X-Forwarded-For"];
             else
                 return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+        }
+
+
+        private MetaDataRequest? GetRequestMetaData(string userAgent)
+        {
+            MetaDataRequest metaDataRequest = new MetaDataRequest();
+            HttpUserAgentInformation? info = _parserProvider.Parse(userAgent);
+            if (info != null)
+            {
+                metaDataRequest.MobileDeviceType = info.Value.MobileDeviceType ?? string.Empty;
+                metaDataRequest.UserAgent = info.Value.UserAgent ?? string.Empty;
+                metaDataRequest.Platform = info.Value.Platform.ToString() ?? string.Empty;
+                metaDataRequest.Date = DateTime.Now;
+            }
+            return metaDataRequest;
         }
 
         /// <summary>

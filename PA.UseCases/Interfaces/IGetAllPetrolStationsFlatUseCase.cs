@@ -7,9 +7,9 @@ namespace PA.UseCases.Interfaces
     public interface IGetAllPetrolStationsFlatUseCase
     {
 		/// <summary>
-		/// Usecase for returning a <see cref="PagedList"/> list of <see cref="StationLite"/>.
+		/// Usecase for returning a list of all <see cref="StationLite"/>. Stations
 		/// </summary>
 		/// <returns></returns>
-		PagedList<StationLite> Execute(int? countryId, int? sortingOrder, PagingParameters pagingParameters);
+		PagedList<StationLite> Execute();
     }
 }

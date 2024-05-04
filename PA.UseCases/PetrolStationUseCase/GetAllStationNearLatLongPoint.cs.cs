@@ -17,10 +17,10 @@ namespace PA.UseCases.PetrolStationUseCase
             PetrolStationRepository = petrolStationRepository;
         }
 
-        public PagedList<StationLite> Execute(double fromLat, double fromLongt, int countryId,
-            DistanceUnit units, [FromQuery] PagingParameters pagingParms)
+        public List<StationLite> Execute(double fromLat, double fromLongt, int countryId,
+            DistanceUnit units)
         {
-            return PetrolStationRepository.GetAllStationsNearLocation(fromLat, fromLongt, countryId, units, pagingParms);
+            return PetrolStationRepository.GetStationsNearLocation(fromLat, fromLongt, countryId, units);
         }
     }
 }

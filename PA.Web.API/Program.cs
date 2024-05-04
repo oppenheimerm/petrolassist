@@ -18,6 +18,10 @@ using PA.Web.API.Filters;
 using PA.Core.Interfaces.Services.Email;
 using PA.Datastore.EFCore.Authorisation;
 using PA.Datastore.EFCore.Authorisation.Interfaces;
+using MyCSharp.HttpUserAgentParser.Providers;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using MyCSharp.HttpUserAgentParser.DependencyInjection;
+using PA.Web.API.Middleware;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,15 +41,19 @@ builder.Services.AddControllers(config => {
     config.Filters.Add(new ValidateModelAttribute());
 });
 
+//  01/05/24 UseNetTopologySuite() added
 builder.Services.AddDbContext<ApplicationManagmentDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(connectionString, x => x.UseNetTopologySuite()));
+
 //  Add nuget Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore to PS.Datastore.EFCore
 //  https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.databasedeveloperpageexceptionfilterserviceextensions.adddatabasedeveloperpageexceptionfilter?view=aspnetcore-7.0
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddCors();
 builder.Services.AddControllers()
     .AddJsonOptions(x => x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull);
+
 
 /*builder.Services.AddApiVersioning(x =>
 {
@@ -114,6 +122,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddScoped<IJwtUtils, JwtUtils>();
 
 builder.Services.AddSingleton<ImageProcessor>();
+builder.Services.AddHttpUserAgentParser();
 
 
 //  Repositories
@@ -124,13 +133,14 @@ builder.Services.AddScoped<IMembersRepository, MembersRepository>();
 //builder.Services.AddTransient<,>();
 
 //  UseCases
-builder.Services.AddTransient<IGetAllPetrolStationsFlatUseCase, GetAllPetrolStationsFlatUseCase>();
+//builder.Services.AddTransient<IGetAllPetrolStationsFlatUseCase, GetAllPetrolStationsFlatUseCase>();
 builder.Services.AddTransient<IGetAllStationNearLatLongPoint, GetAllStationNearLatLongPoint>();
 builder.Services.AddTransient<IMemberRegisterUseCase, MemberRegisterUseCase>();
 builder.Services.AddTransient<IMemberAuthenticateUserCase, MemberAuthenticateUserCase>();
 builder.Services.AddTransient<IMemberGetByRefreshTokenUseCase,  MemberGetByRefreshTokenUseCase>();
 builder.Services.AddTransient<IMemberVerifyEmailUseCase, MemberAccountVerificationTokenUseCase>();
 builder.Services.AddTransient<IIsMemberEmailVerfiedUseCase,  IsMemberEmailVerfiedUseCase>();
+
 
 
 builder.Services.AddScoped<IPhotoFileRepository, PhotoFileRepository>();
@@ -205,4 +215,7 @@ app.UseDirectoryBrowser(new DirectoryBrowserOptions()
 
     app.MapControllers();
 }
-app.Run();
+
+app.UseRequestUserAgent();
+
+    app.Run();

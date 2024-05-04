@@ -31,41 +31,40 @@ namespace PA.Datastore.EFCore.Interfaces
 		/// <returns></returns>
 		PagedList<Station> GetAll(int? countryId, int? sortingOrder, PagingParameters pagingParameters);
 
+        //  TODO - Removoe from production, for testing only
 		/// <summary>
 		/// Returns  <see cref="PagedList"/>y collection of <see cref="StationLite"/> with sort and paging functionality
-		/// </summary>
-		/// <param name="countryId"></param>
-		/// <param name="sortingOrder"></param>
-		/// <param name="pagingParameters"></param>
+		
 		/// <returns></returns>
-		PagedList<StationLite> GetAllFlat(int? countryId, int? sortingOrder, PagingParameters pagingParameters);
-        /// <summary>
-        /// Returns a <see cref="PagedList{T}"/> of <see cref="StationLite"/> objects ordered by distance
-        /// </summary>
-        /// <param name="fromLat"></param>
-        /// <param name="fromLongt"></param>
-        /// <param name="countryId"></param>
-        /// <param name="units"></param>
-        /// <param name="pagingParms"></param>
-        /// <returns></returns>
-        PagedList<StationLite> GetAllStationsNearLocation(double fromLat, double fromLongt, int countryId,
-                    DistanceUnit units, [FromQuery] PagingParameters pagingParms);
+		//List<StationLite> GetAllFlat();
+		/// <summary>
+		/// Returns a <see cref="PagedList{T}"/> of <see cref="StationLite"/> objects ordered by distance
+		/// </summary>
+		/// <param name="fromLat"></param>
+		/// <param name="fromLongt"></param>
+		/// <param name="countryId"></param>
+		/// <param name="units"></param>
+		/// <returns></returns>
+		/// 
 
-        /// <summary>
-        /// Get stations near user. Not paged.
-        /// </summary>
-        /// <param name="fromLat"></param>
-        /// <param name="fromLongt"></param>
-        /// <param name="countryId"></param>
-        /// <param name="units"></param>
-        /// <returns></returns>
-        List<StationLite> GetStationsNearUser(double fromLat, double fromLongt, int countryId,
-                   DistanceUnit units);
-        /// <summary>
-        /// Get <see cref="Station"/> by id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        Task<Station?> GetStationById(int id);
+		//public List<StationLite> GetStationsNearLocation(double fromLat, double fromLongt, int countryId,
+		//    DistanceUnit units);
+
+		/// <summary>
+		/// Get stations near user. Not paged.
+		/// </summary>
+		/// <param name="fromLat"></param>
+		/// <param name="fromLongt"></param>
+		/// <param name="countryId"></param>
+		/// <param name="units"></param>
+		/// <returns></returns>
+		List<StationLite> GetStationsNearLocation(double fromLat, double fromLongt, int countryId,
+					DistanceUnit units);
+		/// <summary>
+		/// Get <see cref="Station"/> by id
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		Task<Station?> GetStationById(int id);
     }
 }

@@ -7,16 +7,17 @@ namespace PA.UseCases.PetrolStationUseCase
 {
     public class GetAllPetrolStationsFlatUseCase : IGetAllPetrolStationsFlatUseCase
     {
-        private readonly IPetrolStationRepository PetrolStationRepository;
+        private readonly IGetAllPetrolStationsFlatUseCase PetrolStationsAllUC;
 
-        public GetAllPetrolStationsFlatUseCase(IPetrolStationRepository petrolStationRepository)
+        public GetAllPetrolStationsFlatUseCase(IGetAllPetrolStationsFlatUseCase getAllPetrolStationsFlatUseCase)
         {
-            PetrolStationRepository = petrolStationRepository;
-        }
+			PetrolStationsAllUC = getAllPetrolStationsFlatUseCase;
 
-        public PagedList<StationLite> Execute(int? countryId, int? sortingOrder, PagingParameters pagingParameters)
+		}
+
+        public PagedList<StationLite> Execute()
         {
-            return PetrolStationRepository.GetAllFlat(countryId, sortingOrder, pagingParameters);
+            return PetrolStationsAllUC.Execute();
         }
     }
 }

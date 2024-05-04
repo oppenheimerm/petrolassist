@@ -1,4 +1,5 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100;9..40,200;9..40,300;9..40,400;9..40,700;9..40,900&display=swap');
+@import url('tables.css');
 
 :root {
     /*========== 
@@ -88,8 +89,8 @@ body {
     transition: all .25s ease-in-out;
     display: var(--display-flex);
     flex-direction: var(--flex-column);
-    background-color: var(--pa-primary-colour);
-    color: black;
+    background-color: var(--pa-primary-accent-dust);
+    color: var(--black-1);
     border-right: 2px solid rgba(205,204,198,0.06);
 }
 
@@ -107,12 +108,14 @@ body {
 
 #toggle-btn span{
     font-size: 1.5rem;
-    color: purple;
+    color: var(--black-1);
 }
+
+.header-nav-logo{ width: 24px;}
 
 #sidebar:not(.expand) .sidebar-logo,
 #sidebar:not(.expand) .sidebar-logo span,
-#sidebar:not(.expand) a.sidebar-link span.menu-lbl{
+#sidebar:not(.expand) a.sidebar-link span.menu-lbl {
     display: none;
     animation: fadeIn .25s ease;
 }
@@ -138,8 +141,8 @@ body {
 
 .sidebar-link:hover {
     color: var(--black-2);
-    background-color: green;
-    border-left: 3px solid blue;
+    background-color: var(--pa-primary-accent-dust-active);
+    border-left: 3px solid var(--pa-primary-colour);
     transition: color var(--ease-in-out-2-sec);
 }
 
@@ -147,18 +150,13 @@ body {
     position: relative;
 }
 
-.sidebar-logo .side-menu-logo-light,
-.sidebar-logo .side-menu-logo-dark{
-    margin: 12px auto;
-    width: 40px;
-    height: 40px;
-
+.sidebar-logo{
+    margin-top: 14px;
 }
 
-.sidebar-logo .side-menu-logo-light {
-    display: none;
+.sidebar-logo img{
+    width: 140px;
 }
-
 
 #sidebar:not(.expand) .sidebar-item .sidebar-dropdown {
     position: absolute;
@@ -202,7 +200,7 @@ body {
     color: var(--pa-white);
 }
 
-.navbar-expand . navbar-collapse{
+.navbar-expand .navbar-collapse{
     min-width: 200px;
 }
 
@@ -222,18 +220,91 @@ footer {
     color: var(--pa-white);
 }
 
+.breadcrumb-wrap{
+    padding: 8px 12px;
+    background: var(--pa-primary-colour);
+    border-radius: 24px;
+    margin-bottom: 8px
+}
+
+.breadcrumb {
+    margin: 8px auto 8px 8px;
+}
 /*-------------------------------------
 Typography
 ---------------------------------------*/
-
 .text-success {
-    background-color: var(--pa-primary-colour)!important;
+    background-color: var(--pa-primary-colour) !important;
     padding: 4px 8px;
     font-size: 12px;
     font-weight: 500;
-    color: var(--black-1)!important;
+    color: var(--black-1) !important;
     border-radius: 8px;
 }
+
+/*-------------------------------------
+Buttons
+---------------------------------------*/
+
+.btn {
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 4px 12px;
+    vertical-align: middle;
+    font-size: 16px;
+    text-align: center;
+    line-height: 38px;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color,background-color,border-color;
+}
+
+.btn-default {
+    background-color: transparent;
+    border: 1px solid var(--pa-white);
+    color: var(--black-1);
+}
+
+.btn-primary {
+    background-color: var(--info-colour);
+    border: 1px solid var(--info-colour);
+    color: var(--black-1);
+}
+
+.btn-warning {
+    background-color: var(--warning-colour);
+    border: 1px solid var(--warning-colour);
+    color: var(--black-1);
+}
+
+.btn-primary:hover {
+    background-color: var(--info-colour-hover);
+    border: 1px solid var(--info-colour);
+    color: var(--black-1);
+    transition: background-color var(--ease-in-out-2-sec);
+}
+
+.btn-warning:hover {
+    background-color: var(--warning-colour-hover);
+    border: 1px solid var(--warning-colour);
+    color: var(--black-1);
+    transition: background-color var(--ease-in-out-2-sec);
+}
+
+.btn-disabled,
+.btn-disabled:hover {
+    background-color: var(--disabled-colour);
+    border: 1px solid #e5e5e5;
+    color: #999;
+}
+
+
+.btn-icon span {
+    font-size: 24px;
+    margin-top: 6px;
+    padding: 4px;
+}
+
 
 /*-------------------------------------
 Tables
@@ -266,10 +337,16 @@ Reuseable classes
     transition: box-shadow var(--ease-in-out-2-sec);
 }
 
+.card-nohover:hover {
+    box-shadow: var(--std-box-shadow-dark);
+    box-shadow: none;
+    transform: none;
+    transition: none;
+}
 /*-------------------------------------
 Mode themes
 ---------------------------------------*/
-@media (prefers-color-scheme: light) {
+/*@media (prefers-color-scheme: light) {
     body {
         font-family: var(--body-font);
         background-color: var(--pa-primary-accent-dust);
@@ -314,7 +391,7 @@ Mode themes
         transform: translateY(3px);
         transition: box-shadow, background-color var(--ease-in-out-2-sec);
     }
-}
+}*/
 
 /*-------------------------------------
 Responsive

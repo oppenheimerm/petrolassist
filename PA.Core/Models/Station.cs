@@ -1,5 +1,6 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
+using NetTopologySuite.Geometries;
 
 namespace PA.Core.Models
 {
@@ -30,10 +31,8 @@ namespace PA.Core.Models
 		public string StationPostcode { get; set; } = string.Empty;
 
 		[Required]
-		public double? Latitude { get; set; }
+		public Point? GeoLocation { get; set; }
 
-		[Required]
-		public double? Longitude { get; set; }
 
 		public bool StationOnline { get; set; } = false;
 
