@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PA.Core.Helpers.Paging;
 using PA.Core.Models;
@@ -6,8 +5,8 @@ using PA.UseCases.Interfaces;
 
 namespace PA.Web.Admin.Pages.Stations
 {
-    public class IndexModel : PageModel
-    {
+	public class IndexModel : PageModel
+	{
 		readonly IConfiguration Configuration;
 
 
@@ -18,7 +17,7 @@ namespace PA.Web.Admin.Pages.Stations
 		public MetaData? StationMetaData { get; set; }
 		int? Spread { get; set; }
 		public int? CountryCode { get; set; } // Leave null for all for now
-		//var sortOrder = sortingOrder.HasValue ? PaginHelpers.GetStationSortOrder(sortingOrder.Value) : StationSortOrder.Id;
+											  //var sortOrder = sortingOrder.HasValue ? PaginHelpers.GetStationSortOrder(sortingOrder.Value) : StationSortOrder.Id;
 		public StationSortOrder SortOrder { get; set; }
 		public PagingParameters? IndexPagingParameters { get; set; }
 
@@ -80,5 +79,4 @@ namespace PA.Web.Admin.Pages.Stations
 			Links.Add(new PagingLink(StationMetaData.CurrentPage + 1, StationMetaData.HasNext, ">"));
 		}
 	}
-
 }

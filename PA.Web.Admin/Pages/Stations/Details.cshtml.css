@@ -1,17 +1,10 @@
-﻿.google-map-wrap {
-    min-width: 98%;
-    padding: 12px;
+﻿.ratings-wrap{
+    border: none;
+    float: left;
 }
 
-.column-left .inner,
-.column-right .inner {
-    padding: 8px;
-    height: 100%;
-    color: var(--pa-white);
+.ratings-wrap .checked {
+    color: var(--pa-primary-colour);
 }
 
 
-#google-map-content {
-    width: 100%;
-    min-height: 500px;
-}

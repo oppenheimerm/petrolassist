@@ -1,0 +1,105 @@
+﻿@page "{Id:int}"
+@model PA.Web.Admin.Pages.Vendors.EditModel
+@{
+	var vendorName = Model.Vendor.VendorName;
+	ViewData["Title"] = "Edit vendor: " + vendorName;
+}
+
+
+<!-- card card-nohover starts -->
+<div class="card card-nohover">
+	<!-- card-body starts -->
+	<div class="card-body">
+		<div class="mb-3">
+			<!-- header / breadcrumb -->
+			<div class="container-fluid">
+				<div class="row px-2 py-4">
+					<div class="col-sm">
+						<div class="breadcrumb-wrap">
+
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item">
+										<a asp-area="" asp-page="/Index">Home</a>
+									</li>
+									<li class="breadcrumb-item">
+										<a asp-area ="" asp-page="/Vendors/Index">
+										Vendors
+										</a>
+									</li>
+									<li class="breadcrumb-item active" aria-current="page">Edit</li>
+								</ol>
+							</nav>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<!-- edit form starts -->
+			<div class="row">
+				<div class="col-12">
+					<form method="post">
+						<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+						<div class="form-group">
+							<label asp-for="Vendor.VendorName" class=""></label>
+							<input asp-for="Vendor.VendorAddress" class="form-control" type="text" aria-describedby="vendor name" placeholder="Vendor name" />
+							<span asp-validation-for="Vendor.VendorName" class="text-danger"></span>
+						</div>
+
+						<div class="form-group">
+							<label asp-for="Vendor.VendorAddress" class=""></label>
+							<input asp-for="Vendor.VendorAddress" class="form-control" type="text" aria-describedby="vendor address" placeholder="Vendor address" />
+							<span asp-validation-for="Vendor.VendorAddress" class="text-danger"></span>
+						</div>
+
+						<div class="form-group">
+							<label asp-for="Vendor.VendorPostcode" class=""></label>
+							<input asp-for="Vendor.VendorPostcode" class="form-control" type="text" aria-describedby="vendor postcode" placeholder="Vendor postcode" />
+							<span asp-validation-for="Vendor.VendorPostcode" class="text-danger"></span>
+						</div>
+
+
+						<div class="form-group">
+							<label asp-for="Vendor.CountryId" class=""></label>
+							<select asp-for="Vendor.CountryId" class="form-control" asp-items="new SelectList(Model.Countries,
+                    nameof(PA.Core.Models.Country.Id), nameof(PA.Core.Models.Country.CountryName))">
+								<option>Please Select</option>
+							</select>
+							<span asp-validation-for="Vendor.CountryId" class="text-danger"></span>
+						</div>
+
+						<div class="form-group">
+							<label asp-for="Vendor.VendorCode" class=""></label>
+							<input asp-for="Vendor.VendorCode" class="form-control" type="text" aria-describedby="vendor code" placeholder="Vendor code" />
+							<span asp-validation-for="Vendor.VendorCode" class="text-danger"></span>
+						</div>
+
+						<div class="form-group mb-3">
+							<label asp-for="Vendor.VendorLogo" class=""></label>
+							<input asp-for="Vendor.VendorLogo" class="form-control" type="text" aria-describedby="vendor logo" placeholder="Vendor logo" />
+							<span asp-validation-for="Vendor.VendorLogo" class="text-danger"></span>
+						</div>
+
+
+
+						<button type="submit" class="btn btn-primary">Submit</button>
+
+					</form>
+				</div>
+			</div>
+			<!-- edit form ends -->
+		</div>
+	</div>
+	<!-- card-body ends -->
+</div>
+<!-- card card-nohover ends -->
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}
+

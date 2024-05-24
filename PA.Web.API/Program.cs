@@ -22,6 +22,7 @@ using MyCSharp.HttpUserAgentParser.Providers;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using MyCSharp.HttpUserAgentParser.DependencyInjection;
 using PA.Web.API.Middleware;
+using PA.UseCases.VendorsUseCase;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -128,18 +129,21 @@ builder.Services.AddHttpUserAgentParser();
 //  Repositories
 builder.Services.AddScoped<IPetrolStationRepository, PetrolStationRepository>();
 builder.Services.AddScoped<IMembersRepository, MembersRepository>();
+builder.Services.AddScoped<IVendorRepository, VendorRepository>();  
 //builder.Services.AddScoped<IWebApiUserRepository, WebApiUserRepository>();
 
 //builder.Services.AddTransient<,>();
 
 //  UseCases
 //builder.Services.AddTransient<IGetAllPetrolStationsFlatUseCase, GetAllPetrolStationsFlatUseCase>();
-builder.Services.AddTransient<IGetAllStationNearLatLongPoint, GetAllStationNearLatLongPoint>();
+builder.Services.AddTransient<IGetNearestStationsUseCase, GetNearestStationsUseCase>();
 builder.Services.AddTransient<IMemberRegisterUseCase, MemberRegisterUseCase>();
 builder.Services.AddTransient<IMemberAuthenticateUserCase, MemberAuthenticateUserCase>();
 builder.Services.AddTransient<IMemberGetByRefreshTokenUseCase,  MemberGetByRefreshTokenUseCase>();
 builder.Services.AddTransient<IMemberVerifyEmailUseCase, MemberAccountVerificationTokenUseCase>();
 builder.Services.AddTransient<IIsMemberEmailVerfiedUseCase,  IsMemberEmailVerfiedUseCase>();
+builder.Services.AddTransient<IGetStationByIdExternalUseCase,  GetStationByIdExternalUseCase>();
+builder.Services.AddTransient<IGetAllVendorsPagingUseCase, GetAllVendorsPagingUseCase>();
 
 
 

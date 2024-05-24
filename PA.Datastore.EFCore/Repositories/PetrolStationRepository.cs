@@ -57,7 +57,9 @@ namespace PA.Datastore.EFCore.Repositories
             {
                 station.StationPostcode = station.StationPostcode.ToUpperInvariant();
                 Context.PetrolStations.Update(station);
-                await Context.SaveChangesAsync();
+
+				Context.Entry(station).State = EntityState.Modified;
+				await Context.SaveChangesAsync();
                 Logger.LogInformation($"Station with Id: {station.Id}, and name of: {station.StationName} was updated at: {DateTime.UtcNow}");
                 return (station, true, string.Empty);
             }
@@ -269,8 +271,7 @@ namespace PA.Datastore.EFCore.Repositories
 
 
         // Paged nearest stations using HaversineDistance, without paginh
-        public List<StationLite> GetStationsNearLocation(double fromLat, double fromLongt, int countryId,
-            DistanceUnit units)
+        public List<StationLite> GetStationsNearLocation(double fromLat, double fromLongt, DistanceUnit units)
 
         {
             var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
@@ -283,14 +284,12 @@ namespace PA.Datastore.EFCore.Repositories
                         join country in Context.Countries on station.CountryId equals country.Id
                         join vendor in Context.PetrolVendors on station.VendorId equals vendor.Id
                         orderby station.GeoLocation.IsWithinDistance(usersLocation, 20000)/* 20km */
-                        where country.Id == countryId
                         select new StationLite
                         {
                             Id = station.StationIdentifier.ToString(),
                             StationName = station.StationName,
                             StationAddress = station.StationAddress,
                             StationPostcode = station.StationPostcode,
-                            //GeoLocation = station.GeoLocation,
                             Latitude = station.GeoLocation.Coordinate.Y,
                             Longitude = station.GeoLocation.Coordinate.X,
                             StationOnline = station.StationOnline,
@@ -375,44 +374,7 @@ namespace PA.Datastore.EFCore.Repositories
     }*/
 
 
-        /*public List<StationLite> GetStationsNearUser(double fromLat, double fromLongt, int countryId,
-           DistanceUnit units)
-        {
-            var latAsFloat = float.Parse(fromLat.ToString());
-            var longAsFloat = float.Parse(fromLongt.ToString());
-
-
-            var table = from station in Context.PetrolStations
-                        join country in Context.Countries on station.CountryId equals country.Id
-                        join vendor in Context.PetrolVendors on station.VendorId equals vendor.Id
-                        where country.Id == countryId
-                        select new StationLite
-                        {
-                            Id = station.Id,
-                            StationName = station.StationName,
-                            StationAddress = station.StationAddress,
-                            StationPostcode = station.StationPostcode,
-                            Latitude = station.GeoLocation.Coordinate.Y,
-                            Longitude = station.GeoLocation.Coordinate.X,
-                            StationOnline = station.StationOnline,
-                            VendorName = vendor.VendorName,
-                            Country = country.CountryName,
-                            Logo = vendor.VendorLogo,
-                            PayAtPump = station.PayAtPump,
-                            PayByApp = station.PayByApp,
-                            AccessibleToiletNearby = station.AccessibleToiletNearby,
-                        };
-
-
-            /*var stations = table
-                .OrderBy(s => s.Distance)
-                .Take(20)
-                .ToList();*/
-
-            /*Logger.LogInformation($"Found {table.Count()} near user.");
-
-            return table.ToList();
-        }*/
+        
 
         public async Task<Station?> GetStationById(int id)
         {
@@ -423,7 +385,12 @@ namespace PA.Datastore.EFCore.Repositories
                 .AsNoTracking().FirstOrDefaultAsync(s => s.Id == id);
         }
 
-        public async Task<bool> PostCodeInUseAsync(string postCode)
+		public async Task<StationLite?> GetStationByGuid(Guid id) {
+            var station =  await Context.PetrolStations.Where(s => s.StationIdentifier == id).FirstAsync();
+            return ModelHelper.ToStationLite(station);
+        }
+
+		public async Task<bool> PostCodeInUseAsync(string postCode)
         {
             // PostCodes are stored in uppercase.
             var postCodeToCompare = postCode.ToUpperInvariant();

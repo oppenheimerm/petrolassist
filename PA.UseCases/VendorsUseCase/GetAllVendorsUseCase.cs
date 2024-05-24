@@ -1,4 +1,5 @@
 ﻿
+using PA.Core.Helpers.Paging;
 using PA.Core.Models;
 using PA.Datastore.EFCore.Interfaces;
 using PA.UseCases.Interfaces;
@@ -14,9 +15,9 @@ namespace PA.UseCases.VendorsUseCase
         }
 
 
-        public IQueryable<Vendor> Execute()
-        {
-            return VendorRepository.GetAll();
-        }
-    }
+		public IQueryable<Vendor> Execute()
+		{
+			return VendorRepository.GetAll();
+		}
+	}
 }

@@ -32,5 +32,7 @@ namespace PA.Datastore.EFCore.Interfaces
         /// <returns></returns>
         Task<Country?> GetCountryFromCountryCode(string countryCode);
 
+        
+
     }
 }

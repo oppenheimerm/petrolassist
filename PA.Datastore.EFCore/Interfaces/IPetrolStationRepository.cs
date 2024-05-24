@@ -58,13 +58,19 @@ namespace PA.Datastore.EFCore.Interfaces
 		/// <param name="countryId"></param>
 		/// <param name="units"></param>
 		/// <returns></returns>
-		List<StationLite> GetStationsNearLocation(double fromLat, double fromLongt, int countryId,
-					DistanceUnit units);
+		List<StationLite> GetStationsNearLocation(double fromLat, double fromLongt, DistanceUnit units);
 		/// <summary>
 		/// Get <see cref="Station"/> by id
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
 		Task<Station?> GetStationById(int id);
-    }
+		/// <summary>
+		/// For external web api request
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		Task<StationLite?> GetStationByGuid(Guid id);
+
+	}
 }
