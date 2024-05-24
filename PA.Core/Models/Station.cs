@@ -43,14 +43,14 @@ namespace PA.Core.Models
 		[Required]
 		public int? CountryId { get; set; }
 
-
 		public DateTime? Added { get; set; }
 
 		public Guid StationIdentifier { get; private set; }
 
+		public string? StationPhoto {  get; set; }
+
 		public bool PayAtPump { get; set; } = false;
 		public bool PayByApp { get; set; } = false;
-
 		public bool AccessibleToiletNearby { get; set; } = false;
 
 		public ICollection<StationRating> StationRatings { get; set; }

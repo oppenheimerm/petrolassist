@@ -5,7 +5,9 @@ using PA.Core.Helpers.Paging;
 using PA.Core.Models;
 using PA.Core.Models.ApiRequestResponse;
 using PA.Datastore.EFCore.Interfaces;
+using PA.Datastore.EFCore.Repositories;
 using PA.UseCases.Interfaces;
+using PA.UseCases.PetrolStationUseCase;
 
 namespace PA.Web.API.Controllers.V1
 {
@@ -14,31 +16,48 @@ namespace PA.Web.API.Controllers.V1
     [Authorization.Attributes.Authorize]
     public class StationsController : ControllerBase
     {
-        readonly IGetAllStationNearLatLongPoint GetSTationNearLatLng;
-        readonly IPetrolStationRepository PetrolStationRepository;
+        readonly IGetNearestStationsUseCase GetNearestStationsUsecase;
+        readonly IGetStationByIdExternalUseCase GetStationByExternalId;
 
-		public StationsController(IGetAllStationNearLatLongPoint getSTationNearLatLng, IPetrolStationRepository petrolStationRepository)
+		public StationsController(IGetNearestStationsUseCase getNearestStationsUseCase, IGetStationByIdExternalUseCase getStationByIdExternalUseCase)
 		{
-			GetSTationNearLatLng = getSTationNearLatLng;
-			PetrolStationRepository = petrolStationRepository;
+			GetNearestStationsUsecase = getNearestStationsUseCase;
+			GetStationByExternalId = getStationByIdExternalUseCase;
 		}
 
 
 		//[HttpPost("refresh-token")]
 		[AllowAnonymous]
         [HttpGet("get-nearest-stations")]
-        public List<StationLite> GetNearestStations(double fromLat, double fromLongt, int countryId,
-            DistanceUnit units)
-        {
-            return GetSTationNearLatLng.Execute(fromLat, fromLongt, countryId, units);
+        public List<StationLite> GetNearestStations(double fromLat, double fromLongt,
+		DistanceUnit units)
+		{
+            return GetNearestStationsUsecase.Execute(fromLat, fromLongt, units);
         }
 
-		/*[AllowAnonymous]
+		[AllowAnonymous]
 		[HttpGet]
-		public List<StationLite> All()
+		public async Task<ActionResult<StationLite>> Station(Guid? id)
 		{
-			return PetrolStationRepository.GetAllFlat();
-		}*/
+			if (!id.HasValue)
+			{
+				return NotFound();
+			}
+			else
+			{
+
+				var station =  await GetStationByExternalId.ExecuteAsync(id.Value);
+				if(station == null)
+				{
+					return NotFound();
+				}
+				else
+				{
+					return station;
+				}
+			}
+			
+		}
 
 	}
 }

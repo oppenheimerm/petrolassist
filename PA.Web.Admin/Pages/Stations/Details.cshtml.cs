@@ -6,16 +6,16 @@ using PA.UseCases.Interfaces;
 
 namespace PA.Web.Admin.Pages.Stations
 {
-    public class DetailsModel : PageModel
-    {
-        readonly IGetPetrolStationByIdUseCase GetPetrolStationByIdUseCase;
-        readonly IGetCountryByIdUseCase GetCountryByIdUseCase;
-        readonly IConfiguration Configuration;
+	public class DetailsModel : PageModel
+	{
+		readonly IGetPetrolStationByIdUseCase GetPetrolStationByIdUseCase;
+		readonly IGetCountryByIdUseCase GetCountryByIdUseCase;
+		readonly IConfiguration Configuration;
 
 		public Station? Station { get; set; }
 		public Country? Country { get; set; }
-        public string GoogleAPIKey { get; set; }    
-        public string GoogleMapId { get; set; }
+		public string GoogleAPIKey { get; set; }
+		public string GoogleMapId { get; set; }
 
 		public DetailsModel(IGetPetrolStationByIdUseCase getPetrolStationByIdUseCase,
 			IGetCountryByIdUseCase getCountryByIdUseCase,
@@ -27,24 +27,24 @@ namespace PA.Web.Admin.Pages.Stations
 		}
 
 		public async Task<IActionResult> OnGetAsync(int Id)
-        {
-            var query = await GetPetrolStationByIdUseCase.ExecuteAsync(Id);
-            var queryCountry = await GetCountryByIdUseCase.ExecuteAsync(query.CountryId.Value);
-            GoogleAPIKey = Configuration["GoogleServices:ApiKey"];
+		{
+			var query = await GetPetrolStationByIdUseCase.ExecuteAsync(Id);
+			var queryCountry = await GetCountryByIdUseCase.ExecuteAsync(query.CountryId.Value);
+			GoogleAPIKey = Configuration["GoogleServices:ApiKey"];
 			GoogleMapId = Configuration["GoogleServices:MapId"];
 
 
 			if (query == null)
-            {
+			{
 				return NotFound();
-            }
-            else
-            {
-                Station = query;
-                Country = queryCountry;
-            }
+			}
+			else
+			{
+				Station = query;
+				Country = queryCountry;
+			}
 
-            return Page();
-        }
-    }
+			return Page();
+		}
+	}
 }

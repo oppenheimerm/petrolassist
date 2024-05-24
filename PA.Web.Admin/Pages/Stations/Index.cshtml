@@ -16,7 +16,7 @@
 		<div class="mb-3">
 			<!-- header / breadcrumb -->
 			<div class="container-fluid">
-				<div class="row">
+				<div class="row px-2 py-4">
 					<div class="col-sm">
 						<div class="breadcrumb-wrap">
 							<nav aria-label="breadcrumb">
@@ -27,9 +27,11 @@
 						</div>
 					</div>
 					<div class="col-sm">
-						<p>
-							<a asp-page="Create">Create New</a>
-						</p>
+						<a asp-area="" asp-page="/stations/create" class="btn btn-default btn-primary btn-icon">
+							<span class="material-symbols-sharp">
+								add
+							</span>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -40,23 +42,25 @@
 						<thead>
 							<tr class="highlight">
 								<th scope="col">Id</th>
-								<th scope="col"><a asp-page="Index" asp-route-sortOrder="1" asp-route-pageNumber="@Model.IndexPagingParameters.PageNumber">Name</a></th>
+								<th scope="col">
+									<a asp-area="" asp-page="./Index" asp-route-sortOrder="1" asp-route-pageNumber="@Model?.IndexPagingParameters?.PageNumber">Name</a>
+								</th>
 								<th scope="col">PostCode</th>
-								<th scope="col"><a asp-page="Index" asp-route-sortOrder="2" asp-route-pageNumber="@Model.IndexPagingParameters.PageNumber">Added</a>	</th>
+								<th scope="col"><a asp-page="Index" asp-route-@Model?.SortOrder="2" asp-route-pageNumber="@Model?.IndexPagingParameters?.PageNumber">Added</a>	</th>
 								<th>Logo</th>
 								<th>Online</th>
 								<th>Actions</th>
 							</tr>
 						</thead>
 						<tbody>
-							@foreach (var item in Model.PagedStationList.Items)
-							{
+				@foreach (var item in Model.PagedStationList.Items)
+				{
 								<tr>
 									<th scope="row">
-										@item.Id
+							@item.Id
 									</th>
 									<td>
-										@StringHelpers.ShortenAndFormatText(item.StationName, 20)
+							@StringHelpers.ShortenAndFormatText(item.StationName, 20)
 									</td>
 									<td>@item.StationPostcode</td>
 									<td>@item.Added.Value.ToString("yyyy-MM-dd", CultureInfo.CreateSpecificCulture("en-GB"))</td>
@@ -64,36 +68,45 @@
 										<img class="tbl-img-logo" src="@VendorLogoHelper.GetVendorLogo(@item.Vendor.VendorLogo, VendorLogoSize.Small) " />
 									</td>
 									<td class="center-col">
-										@if (@item.StationOnline)
-										{
+							@if (@item.StationOnline)
+							{
 											<span class="material-symbols-sharp">
 												done
 											</span>
-										}
-										else
-										{
+							}
+							else
+							{
 											<span class="material-symbols-sharp">
 												close
 											</span>
-										}
+							}
 									</td>
 									<td>
 										<div class="table-actions-wrap">
-											<button class="btn btn-default btn-primary btn-icon">
+
+											<a asp-area="" asp-page="/stations/details" asp-route-Id="@item.Id" class="btn btn-default btn-primary btn-icon">
 												<span class="material-symbols-sharp">
 													visibility
 												</span>
-											</button>
+											</a>
+
+											<a asp-area="" asp-page="/stations/edit" asp-route-Id="@item.Id" class="btn btn-default btn-primary btn-icon">
+												<span class="material-symbols-sharp">
+													edit
+												</span>
+											</a>
+
 											<button class="btn btn-default btn-warning btn-icon">
 												<span class="material-symbols-sharp">
 													delete
 												</span>
 											</button>
+
 										</div>
 									</td>
 
 								</tr>
-							}
+				}
 						</tbody>
 					</table>
 
@@ -101,16 +114,16 @@
 
 						<nav aria-label="Page navigation">
 							<ul class="pagination">
-								@{
-									if (Model.Links != null)
-									{
-										@foreach (var link in Model.Links)
-										{
-											var linkString = $"/stations?countryCode{@Model.CountryCode}&sortOrderr={Model.SortOrder}&pageNumber={link.Text}";
-											string[] prev_nxt = { ">", "<" };
-											if (!string.IsNullOrEmpty(link.Text))
-											{
-											
+				@{
+					if (Model.Links != null)
+					{
+						@foreach (var link in Model.Links)
+						{
+							var linkString = $"/stations?countryCode{@Model.CountryCode}&sortOrderr={Model.SortOrder}&pageNumber={link.Text}";
+							string[] prev_nxt = { ">", "<" };
+							if (!string.IsNullOrEmpty(link.Text))
+							{
+
 												<li class="page-item @(link.Enabled ? null : "disabled") @(link.Active ? "active" : null)">
 
 													<a href="@linkString">
@@ -118,15 +131,15 @@
 													</a>
 
 												</li>
-											}
+							}
 
-										}
-									}
-									else
-									{
+						}
+					}
+					else
+					{
 										<span> **PAGING LINKS ERRROR** </span>
-									}
-								}
+					}
+				}
 
 							</ul>
 						</nav>
@@ -140,12 +153,7 @@
 
 </div>
 <!-- card ends -->
-
-
-
-
-
-@section Scripts {
+				@section Scripts {
 
 	<script type="text/javascript">
 
@@ -189,4 +197,4 @@
 
 	</script>
 
-}
+				}

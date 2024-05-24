@@ -34,6 +34,8 @@ namespace PA.Core.Models.ApiRequestResponse
 		[Required]
 		public int? CountryId { get; set; }
 
+		public string? StationPhoto { get; set; }
+
 		public bool PayAtPump { get; set; } = false;
 		public bool PayByApp { get; set; } = false;
 

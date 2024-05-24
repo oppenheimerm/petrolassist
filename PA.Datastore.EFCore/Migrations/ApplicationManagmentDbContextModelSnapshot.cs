@@ -414,6 +414,9 @@ namespace PA.Datastore.EFCore.Migrations
                     b.Property<bool>("StationOnline")
                         .HasColumnType("bit");
 
+                    b.Property<string>("StationPhoto")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("StationPostcode")
                         .IsRequired()
                         .HasMaxLength(25)

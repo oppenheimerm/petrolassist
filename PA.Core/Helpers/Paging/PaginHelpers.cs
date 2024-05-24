@@ -9,6 +9,13 @@ namespace PA.Core.Helpers.Paging
 		StationPostCode
 	}
 
+	public enum VendorSortOrder
+	{
+		Id,
+		VendorName,
+		VendorCode
+	}
+
 	public static class PaginHelpers
 	{
 
@@ -28,6 +35,19 @@ namespace PA.Core.Helpers.Paging
 				1 => StationSortOrder.StationName,
 				2 => StationSortOrder.AddedDate,
 				3 => StationSortOrder.StationPostCode,
+				_ => throw new NotImplementedException(),
+			};
+
+			return sortOrder;
+		}
+
+		public static VendorSortOrder GetVendorSortOrder(int vendorSortOrder)
+		{
+			VendorSortOrder sortOrder = vendorSortOrder switch
+			{
+				0 => VendorSortOrder.Id,
+				1 => VendorSortOrder.VendorName,
+				2 => VendorSortOrder.VendorCode,
 				_ => throw new NotImplementedException(),
 			};
 

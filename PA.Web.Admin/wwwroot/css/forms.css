@@ -1,116 +1,13 @@
 ﻿
 
-.min-width-label{
-    min-width: 154px;
-}
-
-.pa-form {
-    padding-top: 4px;
-    margin-top: 16px;
-}
-
-.form-legend{
-    width: 100%;
-    padding: 0;
-    font-size: 24px;
-    line-height: 1.4;
-    font-weight: 600;
-}
-
-.pa-form .item-line,
-.dialog-fieldset .item-line,
-.item-line .form-control-chkbx,
-.details-column .item-line {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding-bottom: var(--mb-0-5);
-    width: 96%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 0.25rem;
-}
-
-.pa-form .item-line:last-of-type{
-    padding-bottom: 16px;
-}
-
-.item-line .form-label {
-    font-weight: 600;
-    margin-bottom: var(--mb-0-5);
-    font-size: 12px;
-    color: var(--pa-white);
-}
-
-.item-line .vendor-logo{
-    width: 60px;
-    height: 60px;
-    border-radius: 8px;
-}
-
-.item-line input.form-control,
-.item-line .form-select-list,
-.form-select-list option {
-    font-weight: 600;
-    margin-bottom: var(--mb-0-5);
-    font-size: 12px;
-    padding: 8px;
-    border-radius: 8px;
-    background: var(--input-background);
-}
-
-.item-line input.form-control:disabled,
-.item-line input.form-control:read-only
-{
+.form-control.disabled {
     background: var(--input-disabled);
-    color: var(--pa-white);
-}
-
-/* Checkbox */
-.item-line .form-control-chkbx{
-    display: flex;
-    flex-direction: row;
-    justify-content:flex-start;
-    align-content: center
-}
-
-.item-line .form-control-chkbx label{
-    margin-right: 16px;
-    margin-top: 4px;
-}
-
-.item-line.form-control-chkbx,
-.item-line input[type="checkbox"] {
-    border-radius: 4px;
-    width: 24px;
-    height: 24px;
-    background-color: green;
-    border: 1px solid pink;
-}
-
-.item-line .form-control-chkbx:checked,
-.item-line input[type="checkbox"]:checked{
-    background-color: var(--info-colour);
-    border-color: var(--info-colour-hover);
-}
-
-
-.item-line.form-control-chkbx:focus{
-    box-shadow: 0 0 0 0.25rem rgba(52,143,226,.25);
-    outline: none;
-}
-
-.dialog-form-actions-wrap {
-    margin: var(--mb-0-75) auto;
-    display: flex;
-    flex-direction: row;
-    justify-content:flex-start;
+    cursor:no-drop;
 }
 
 /*
     Validation errors
 */
-
 .text-danger.field-validation-error {
     padding: 16px 8px;
     background: var(--error-colour);

@@ -11,18 +11,15 @@ namespace PA.Core.Models.ApiRequestResponse
 	/// </summary>
 	public class StationLite
 	{
-		//	We use the StationIdentifer for all external request
-		public string Id { get; set; }
+		public string Id { get; set; } = string.Empty;
 
 		public string StationName { get; set; } = string.Empty;
 
 		public string StationAddress { get; set; } = string.Empty;
 
-		public DateTime? Added { get; set; }
 
 		public string StationPostcode { get; set; } = string.Empty;
 
-		//public Point? GeoLocation { get; set; }
 		[Required]
 		public double? Latitude { get; set; }
 
@@ -43,6 +40,7 @@ namespace PA.Core.Models.ApiRequestResponse
 		/// </summary>
 		public List<string>? Logos { get; set; }
 		public string? Logo { get; set; }
+
 		//[JsonIgnore]
 		//public string VendorLogo { get; set; } = string.Empty;
 		public bool AccessibleToiletNearby { get; set; } = false;

@@ -1,0 +1,195 @@
+﻿@page "{Id:int}"
+@model PA.Web.Admin.Pages.Stations.EditModel
+@{
+
+}
+
+
+<!-- card card-nohover starts -->
+<div class="card card-nohover">
+	<!-- card-body starts -->
+	<div class="card-body">
+		<div class="mb-3">
+			<!-- header / breadcrumb -->
+			<div class="container-fluid">
+				<div class="row px-2 py-4">
+					<div class="col-sm">
+						<div class="breadcrumb-wrap">
+
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item">
+										<a asp-area="" asp-page="/Index">Home</a>
+									</li>
+									<li class="breadcrumb-item">
+										<a asp-area ="" asp-page="/Stations/Index">
+										Stations
+										</a>
+									</li>
+									<li class="breadcrumb-item active" aria-current="page">Edit</li>
+								</ol>
+							</nav>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<!-- edit form starts -->
+			<div class="row">
+				<div class="col-12">
+					<form method="post">
+						<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+						<input type="hidden" id="LatEdit" name="LatEdit" value="@Model.StationLat">
+						<input type="hidden" id="LongtEdit" name="LongtEdit" value="@Model.StationLongt">
+						<input type="hidden" asp-for="Station.Id">
+
+						<div class="form-group">
+							<label asp-for="Station.StationName" class=""></label>
+							<input asp-for="Station.StationName" class="form-control" type="text" aria-describedby="station name" placeholder="Station name" />
+							<span asp-validation-for="Station.StationName" class="text-danger"></span>
+						</div>
+
+						<div class="form-group">
+							<label asp-for="Station.StationAddress" class=""></label>
+							<input asp-for="Station.StationAddress" class="form-control" type="text" aria-describedby="station address" placeholder="Station address" />
+							<span asp-validation-for="Station.StationAddress" class="text-danger"></span>
+						</div>
+
+						<div class="form-group">
+							<label asp-for="Station.StationPostcode" class=""></label>
+							<input asp-for="Station.StationPostcode" class="form-control" type="text" aria-describedby="station postcode" placeholder="Station postcode" />
+							<span asp-validation-for="Station.StationPostcode" class="text-danger"></span>
+						</div>
+
+						<div class="form-group">
+							<label asp-for="Station.CountryId" class=""></label>
+							<select asp-for="Station.CountryId" class="form-control" asp-items="new SelectList(Model.Countries,
+                    nameof(PA.Core.Models.Country.Id), nameof(PA.Core.Models.Country.CountryName))">
+								<option>Please Select</option>
+							</select>
+							<span asp-validation-for="Station.CountryId" class="text-danger"></span>
+						</div>
+
+						<div class="form-group">
+							<label for"EditStation_Latitude">Latitude</label>
+							<input type="email" class="form-control disabled" type="text"
+								   aria-label="auto generated input disabled." readonly="readonly" id="EditStation_Latitude" value="@Model.StationLat">							
+						</div>
+
+						<div class="form-group">
+							<label for"EditStation_Latitude">Longitude</label>
+							<input type="email"  class="form-control disabled" type="text"
+								   aria-label="auto generated input disabled." readonly="readonly" id="EditStation_Longitude" value="@Model.StationLongt">
+						</div>
+
+						
+
+						<div class="form-group">
+							<label asp-for="Station.VendorId" class="form-label"></label>
+							<select asp-for="Station.VendorId" class="form-control" asp-items="new SelectList(Model.Vendors,
+                    nameof(PA.Core.Models.Vendor.Id), nameof(PA.Core.Models.Vendor.VendorName))">
+								<option>Please Select</option>
+							</select>
+							<span asp-validation-for="Station.CountryId" class="text-danger"></span>
+						</div>
+
+
+						<div class="form-group">
+							<div class="form-control-chkbx">
+								<input asp-for="Station.AccessibleToiletNearby" class="form-check-input" type="checkbox" aria-label="accessible toliets nearby">
+								<label class="form-label min-width-label">
+									Accesible toliet nearby
+								</label>								
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<div class="form-control-chkbx">
+								<input asp-for="Station.PayByApp" class="form-check-input" type="checkbox" aria-label="pay by app">
+								<label class="form-label min-width-label">
+									Pay via app
+								</label>								
+							</div>
+						</div>
+
+						<div class="form-group mb-3">
+							<div class="form-control-chkbx">
+								<input asp-for="Station.PayAtPump" class="form-check-input" type="checkbox" aria-label="pay at pump">
+								<label class="form-label min-width-label">
+									Pay at pump
+								</label>
+							</div>
+						</div>
+
+
+						<button type="submit" class="btn btn-primary">Submit</button>
+
+					</form>
+				</div>
+			</div>
+			<!-- edit form ends -->
+		</div>
+	</div>
+	<!-- card-body ends -->
+</div>
+<!-- card card-nohover ends -->
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@Model.GoogleAPIKey.ToString().ToString()">
+	</script>
+
+	<script type="text/javascript">
+		const createPage = app();
+
+		document.addEventListener("DOMContentLoaded", () => {
+			document.getElementById("Station_StationPostcode").onblur = function () {
+				doGeoCode()
+			}
+
+		});
+
+		async function doGeoCode() {
+
+			let address = document.getElementById("Station_StationPostcode").value;
+
+			if (typeof address === "string" && address.length === 0) {
+				console.log("The string is empty");
+				return;
+			} else if (address === null) {
+				console.log("The string is null");
+				return;
+			}
+
+			var lat = document.getElementById("EditStation_Latitude");
+			var long = document.getElementById("EditStation_Longitude");
+			var result = await createPage.getCoordinates(address).then(
+
+				function (value) {
+					console.log("Lattitude: " + value.latitude + " Longitude: " + value.longitude);
+					lat.value = value.latitude;
+					long.value = value.longitude;
+
+					document.getElementById("LatEdit").value = lat.value;
+					document.getElementById("LongtEdit").value = long.value;
+					
+				},
+				function (error) { 
+					myDisplayer(error);
+					console.log("Error geocoding address.");
+				}
+
+				
+			);
+
+			
+		}
+	</script>
+}

@@ -12,72 +12,82 @@
 		<div class="mb-3">
 			<!-- header / breadcrumb -->
 			<div class="container-fluid">
-				<div class="row">
+				<div class="row px-2 py-4">
 					<div class="col-sm">
-						<nav aria-label="breadcrumb">
-							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="#">Stations</a></li>
-								<li class="breadcrumb-item active" aria-current="page">New</li>
-							</ol>
-						</nav>
+						<div class="breadcrumb-wrap">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item">
+										<a asp-area="" asp-page="/Index">Home</a>
+									</li>
+									<li class="breadcrumb-item">
+										<a asp-area="" asp-page="/Stations/Index">
+											Stations
+										</a>
+									</li>
+									<li class="breadcrumb-item active" aria-current="page">Create</li>
+								</ol>
+							</nav>
+						</div>
 					</div>
 				</div>
+
 			</div>
 			<!-- header / breadcrumb ends -->
-
-
+			
+			<!-- create form starts -->
 			<form method="post" class="pa-form">
 				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-				<div class="item-line">
-					<label asp-for="NewStation.StationName" class="form-label"></label>
+				<div class="form-group">
+					<label asp-for="NewStation.StationName" class=""></label>
 					<input asp-for="NewStation.StationName" class="form-control" type="text" aria-label="Station name" />
 					<span asp-validation-for="NewStation.StationName" class="text-danger"></span>
 				</div>
 
-				<div class="item-line">
+				<div class="form-group">
 					<label asp-for="NewStation.StationAddress" class="form-label"></label>
 					<input asp-for="NewStation.StationAddress" class="form-control" type="text" aria-label="Station address" />
 					<span asp-validation-for="NewStation.StationAddress" class="text-danger"></span>
 				</div>
 
-				<div class="item-line">
+				<div class="form-group">
 					<label asp-for="NewStation.StationPostcode" class="form-label"></label>
 					<input asp-for="NewStation.StationPostcode" class="form-control" type="text" aria-label="Station postcode" id="new_station_postcode" />
 					<span asp-validation-for="NewStation.StationPostcode" class="text-danger"></span>
 				</div>
 
-				<div class="item-line">
-					<label asp-for="NewStation.CountryId" class="form-label"></label>
-					<select asp-for="NewStation.CountryId" class="form-select-list" asp-items="new SelectList(Model.Countries,
-                    nameof(PA.Core.Models.Country.Id), nameof(PA.Core.Models.Country.CountryName))">
+				<div class="form-group">
+					<label asp-for="NewStation.CountryId" class=""></label>
+					<select asp-for="NewStation.CountryId" class="form-control" asp-items="new SelectList(Model.Countries,
+            nameof(PA.Core.Models.Country.Id), nameof(PA.Core.Models.Country.CountryName))">
 						<option>Please Select</option>
 					</select>
 					<span asp-validation-for="NewStation.CountryId" class="text-danger"></span>
 				</div>
 
-				<div class="item-line">
+				<div class="form-group">
 					<label asp-for="NewStation.Latitude" class="form-label"></label>
 					<input asp-for="NewStation.Latitude" class="form-control disabled" type="text" aria-label="auto generated input disabled." readonly="readonly" id="NewStation_Latitude" value="" />
 					<span asp-validation-for="NewStation.Latitude" class="text-danger"></span>
 				</div>
 
-				<div class="item-line">
+				<div class="form-group">
 					<label asp-for="NewStation.Longitude" class="form-label"></label>
 					<input asp-for="NewStation.Longitude" class="form-control disabled" type="text" aria-label="auto generated input disabled." readonly="readonly" id="NewStation_Longitude" />
 					<span asp-validation-for="NewStation.Longitude" class="text-danger"></span>
 				</div>
 
-				<div class="item-line">
+				<div class="form-group">
 					<label asp-for="NewStation.VendorId" class="form-label"></label>
-					<select asp-for="NewStation.VendorId" class="form-select-list" asp-items="new SelectList(Model.Vendors,
+					<select asp-for="NewStation.VendorId" class="form-control" asp-items="new SelectList(Model.Vendors,
                     nameof(PA.Core.Models.Vendor.Id), nameof(PA.Core.Models.Vendor.VendorName))">
 						<option>Please Select</option>
 					</select>
 					<span asp-validation-for="NewStation.CountryId" class="text-danger"></span>
 				</div>
 
-				<div class="item-line">
+				<div class="form-group">
 					<div class="form-control-chkbx">
 						<label class="form-label min-width-label">
 							Accesible toliets nearby
@@ -86,7 +96,7 @@
 					</div>
 				</div>
 
-				<div class="item-line">
+				<div class="form-group">
 					<div class="form-control-chkbx">
 						<label class="form-label min-width-label">
 							Pay via app
@@ -95,7 +105,7 @@
 					</div>
 				</div>
 
-				<div class="item-line">
+				<div class="form-group">
 					<div class="form-control-chkbx">
 						<label class="form-label min-width-label">
 							Pay at pump
@@ -104,12 +114,14 @@
 					</div>
 				</div>
 
-				<div class="item-line">
-					<input type="submit" valuse="SUBMIT" class="btn btn-default btn-primary" />
-				</div>
+				<button type="submit" class="btn btn-primary">SUBMIT</button>
+
 
 
 			</form>
+			<!-- create form ends -->
+
+
 		</div>
 
 	</div>

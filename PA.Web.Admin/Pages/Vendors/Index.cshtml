@@ -1,0 +1,142 @@
+﻿@page "/Vendors"
+@model PA.Web.Admin.Pages.Vendors.IndexModel
+
+@{
+	ViewData["Title"] = "View all Vendors";
+}
+
+
+<!-- card starts -->
+<div class="card card-nohover">
+	<div class="card-body">
+		<!-- card ody starts -->
+		<div class="mb-3">
+			<!-- header / breadcrumb -->
+			<div class="container-fluid">
+				<div class="row px-2 py-4">
+					<div class="col-sm">
+						<div class="breadcrumb-wrap">
+
+							<nav aria-label="breadcrumb">
+
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item">
+										<a href="/">Home</a>
+									</li>
+									<li class="breadcrumb-item active" aria-current="page">Index</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
+					<div class="col-sm">
+
+						<a href="/vendors/create" class="btn btn-default btn-primary btn-icon">
+							<span class="material-symbols-sharp">
+								add
+							</span>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-12">
+					<table class="table table-striped">
+						<thead>
+							<tr class="highlight">
+								<th scope="col">
+									<a asp-area="" asp-page="./Index" asp-route-@model.SortOrder="1" asp-route-pageNumber="@Model?.IndexPagingParameters?.PageNumber">
+										Id
+									</a>
+								</th>
+								<th scope="col">
+									<a asp-area="" asp-page="./Index" asp-route-@Model.SortOrder="1" asp-route-pageNumber="@Model?.IndexPagingParameters?.PageNumber">Name</a>
+								</th>
+								<th scope="col"><a asp-page="Index" asp-route-@Model?.SortOrder="2" asp-route-pageNumber="@Model?.IndexPagingParameters?.PageNumber">Code</a>	</th>
+								<th>Country</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var item in Model.PagedVendorsList.Items)
+							{
+								<tr>
+									<th scope="row">
+										@item.Id
+									</th>
+									<td>
+										@item.VendorName
+									</td>
+									<td>@item.VendorCode</td>
+									<td>@item.Country.CountryName</td>
+									<td>
+										<div class="table-actions-wrap">
+
+											<a asp-area="" asp-page="/vendors/details" asp-route-Id="@item.Id" class="btn btn-default btn-primary btn-icon">
+												<span class="material-symbols-sharp">
+													visibility
+												</span>
+											</a>
+
+											<a asp-area="" asp-page="/vendors/edit" asp-route-Id="@item.Id" class="btn btn-default btn-primary btn-icon">
+												<span class="material-symbols-sharp">
+													edit
+												</span>
+											</a>
+
+											<button class="btn btn-default btn-warning btn-icon">
+												<span class="material-symbols-sharp">
+													delete
+												</span>
+											</button>
+
+										</div>
+									</td>
+
+								</tr>
+							}
+						</tbody>
+					</table>
+
+					<div class="pagination-wrap">
+
+						<nav aria-label="Page navigation">
+							<ul class="pagination">
+								@{
+									if (Model.Links != null)
+									{
+										@foreach (var link in Model.Links)
+										{
+											var linkString = $"/vendors?id{@Model.Id}&sortOrderr={Model.SortOrder}&pageNumber={link.Text}";
+											string[] prev_nxt = { ">", "<" };
+											if (!string.IsNullOrEmpty(link.Text))
+											{
+
+												<li class="page-item @(link.Enabled ? null : "disabled") @(link.Active ? "active" : null)">
+
+													<a href="@linkString">
+														<span class="page-link" href="#">@link.Text</span>
+													</a>
+
+												</li>
+											}
+
+										}
+									}
+									else
+									{
+										<span> **PAGING LINKS ERRROR** </span>
+									}
+								}
+
+							</ul>
+						</nav>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<!-- card ody ends -->
+	</div>
+</div>
+<!-- card ends -->

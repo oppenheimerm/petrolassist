@@ -96,6 +96,13 @@ builder.Services.AddTransient<IGetAllStationsUseCase, GetAllStationsUseCase>();
 builder.Services.AddTransient<IGetCountryByIdUseCase, GetCountryByIdUseCase>();
 builder.Services.AddTransient<IGetPetrolStationByIdUseCase, GetPetrolStationByIdUseCase>();
 builder.Services.AddTransient<IAddPetrolStationUseCase, AddPetrolStationUseCase>();
+builder.Services.AddTransient<IGetAllVendorsPagingUseCase, GetAllVendorsPagingUseCase>();
+builder.Services.AddTransient<IGetAllVendorsUseCase, GetAllVendorsUseCase>();
+builder.Services.AddTransient<IEditVendorUseCase, EditVendorUseCase>();
+builder.Services.AddTransient<IGetVendorByIdUseCase, GetVendorByIdUseCase>();
+builder.Services.AddTransient<IEditPetrolStationUseCase, EditPetrolStationUseCase>();
+builder.Services.AddTransient<IAddVendorUseCase, AddVendorUseCase>();
+
 
 var app = builder.Build();
 

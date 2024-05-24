@@ -11,10 +11,11 @@ namespace PA.Web.Admin.Pages.Stations
 {
     public class CreateModel : PageModel
     {
-		IAddPetrolStationUseCase AddPetrolStationUseCase { get; set; }
-		IGetAllCountriesUseCase GetAllCountriesUseCase { get; set; }
-		IConfiguration Configuration { get; set; }
-		IGetAllVendorsUseCase GetAllVendorsUseCase { get; set; }
+		readonly IAddPetrolStationUseCase AddPetrolStationUseCase;
+        readonly IGetAllCountriesUseCase GetAllCountriesUseCase;
+		readonly IConfiguration Configuration;
+        readonly IGetAllVendorsUseCase GetAllVendorsUseCase;
+
         //private readonly IGetCountryCodeByIdUseCase GetCountryCodeByIdUseCase;
         public List<Country>? Countries;
         public List<Vendor>? Vendors;
@@ -58,12 +59,13 @@ namespace PA.Web.Admin.Pages.Stations
 				var status = await AddPetrolStationUseCase.ExecuteAsync(ModelHelper.ToStation(NewStation, geometryFactory));
 				if (status.Success!.Value)
 				{
-					return RedirectToPage($"Stations/Details/{status.Station!.Id}");
+					return RedirectToPage("Details", new { id = status.Station!.Id });
 				}
 				else
 				{
 					Countries = GetAllCountriesUseCase.Execute().ToList();
 					Vendors = GetAllVendorsUseCase.Execute().ToList();
+					ModelState.AddModelError(string.Empty, status.ErrorMessage ?? "Please correct errors");
 					return Page();
 				}
 

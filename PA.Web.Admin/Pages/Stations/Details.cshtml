@@ -2,152 +2,177 @@
 @model PA.Web.Admin.Pages.Stations.DetailsModel
 @using PA.Web.Admin.Helpers
 
-<div class="content-row card-outer">
-	<input type="hidden" id="mapHolder" />
-	<div class="column-left">
-		<div class="inner">
-			<div id="google-map-content">
-			</div>
 
-		</div>
-	</div>
-	<div class="column-right">
-		<div class="inner add-column">
-			<div class="details-column">
+<!-- card card-nohover starts -->
+<div class="card card-nohover">
+	<!-- card-body starts -->
+	<div class="card-body">
+		<div class="mb-3">
+			<!-- header / breadcrumb -->
+			<div class="container-fluid">
+				<div class="row px-2 py-4">
+					<div class="col-sm">
+						<div class="breadcrumb-wrap">
 
-				<div class="item-line">
-					<label class="form-label">
-						Name
-					</label>
-					<input class="form-control disabled" type="text" value="@Model.Station.StationName" disabled />
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item">
+										<a asp-area="" asp-page="/Stations/Index">Home</a>
+									</li>
+									<li class="breadcrumb-item active" aria-current="page">Station: @Model.Station.StationName</li>
+								</ol>
+							</nav>
+
+						</div>
+					</div>
 				</div>
-
-				<div class="item-line">
-					<label class="form-label">
-						Address
-					</label>
-					<input class="form-control disabled" type="text" value="@Model.Station!.StationAddress" disabled />
-				</div>
-
-				<div class="item-line">
-					<label class="form-label">
-						Postcode
-					</label>
-					<input class="form-control disabled" type="text" value="@Model.Station!.StationPostcode" disabled />
-				</div>
-
-				<div class="item-line">
-					<label class="form-label">
-						Country
-					</label>
-					<input class="form-control disabled" type="text" value="@Model.Country!.CountryName" disabled />
-				</div>
-
-				<div class="item-line">
-					<label class="form-label">
-						Latitude
-					</label>
-					<!-- Remember for Coordinate(Long(x), lat(y)) -->
-					<input class="form-control disabled" type="text" value="@Model.Station!.GeoLocation.Coordinate.Y" disabled />
-				</div>
-
-				<div class="item-line">
-					<label class="form-label">
-						Longitude
-					</label>
-					<!-- Remember for Coordinate(Long(x), lat(y)) -->
-					<input class="form-control disabled" type="text" value="@Model.Station!.GeoLocation.Coordinate.X" disabled />
-				</div>
-
-				<div class="item-line">
-					<label class="form-label">
-						Vendor
-					</label>
-					<input class="form-control disabled" type="text" value="@Model.Station.Vendor.VendorName" disabled />
-				</div>
-
-				<div class="item-line">
-					<label class="form-label">
-						Logo
-					</label>
-					<img class="vendor-logo" src="@ViewHelpers.GetVendorLogo(Model.Station.Vendor.VendorLogo, VendorLogoSize.Small) " />
-				</div>
-
-				<div class="item-line">
-					<label class="form-label">
-						Pay At Pump
-					</label>
-					@{
-								@if (Model.Station.PayByApp)
-						{
-
-									<span class="material-symbols-sharp">
-										local_gas_station
-									</span>
-						}
-						else
-						{
-									<span class="material-symbols-sharp">
-										block
-									</span>
-						}
-					}
-
-				</div>
-
-				<div class="item-line">
-					<label class="form-label">
-						Pay By App
-					</label>
-					@{
-								@if (Model.Station.PayByApp)
-						{
-
-									<span class="material-symbols-sharp">
-										phone_iphone
-									</span>
-						}
-						else
-						{
-									<span class="material-symbols-sharp">
-										block
-									</span>
-						}
-					}
-
-				</div>
-
 			</div>
 
 
+			<!-- station details starts -->
+			<div class="row">
+				<div class="col-12">
+					<div class="row">
+						<!-- google maps starts -->
+						<div class="col-xl-5 col-lg-6">
+							<input type="hidden" id="mapHolder" />
+							<div class="inner" style="width:100%;height:100%;">
+								<div id="google-map-content" style="height:600px;">
+								</div>
+							</div>
+						</div>
+						<!-- google maps starts -->
+						<!-- Station details column starts -->
+						<div class="col-lg-5 mx-auto">
+							<h3 class="station-details-title">
+								@Model.Station.StationName
+							</h3>
+							<div class="ratings-wrap">
+								<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+								<span class="fa fa-star checked"></span>
+								<span class="fa fa-star checked"></span>
+								<span class="fa fa-star checked"></span>
+								<span class="fa fa-star"></span>
+								<span class="fa fa-star"></span>
+							</div>
+
+							<div class=""
+
+							<div class="item-line">
+								<label class="form-label">
+									Name
+								</label>
+								<input class="form-control disabled" type="text" value="@Model.Station.StationName" disabled />
+							</div>
+
+							<div class="item-line">
+								<label class="form-label">
+									Address
+								</label>
+								<input class="form-control disabled" type="text" value="@Model.Station!.StationAddress" disabled />
+							</div>
+
+							<div class="item-line">
+								<label class="form-label">
+									Postcode
+								</label>
+								<input class="form-control disabled" type="text" value="@Model.Station!.StationPostcode" disabled />
+							</div>
+
+							<div class="item-line">
+								<label class="form-label">
+									Country
+								</label>
+								<input class="form-control disabled" type="text" value="@Model.Country!.CountryName" disabled />
+							</div>
+
+							<div class="item-line">
+								<label class="form-label">
+									Latitude
+								</label>
+								<!-- Remember for Coordinate(Long(x), lat(y)) -->
+								<input class="form-control disabled" type="text" value="@Model.Station!.GeoLocation.Coordinate.Y" disabled />
+							</div>
+
+							<div class="item-line">
+								<label class="form-label">
+									Longitude
+								</label>
+								<!-- Remember for Coordinate(Long(x), lat(y)) -->
+								<input class="form-control disabled" type="text" value="@Model.Station!.GeoLocation.Coordinate.X" disabled />
+							</div>
+
+							<div class="item-line mb-3">
+								<label class="form-label">
+									Vendor
+								</label>
+								<input class="form-control disabled" type="text" value="@Model.Station.Vendor.VendorName" disabled />
+							</div>
+
+							<div class="item-line">
+								<label class="form-label">
+									Logo
+								</label>
+								<img class="vendor-logo" src="@ViewHelpers.GetVendorLogo(Model.Station.Vendor.VendorLogo, VendorLogoSize.Small) " />
+							</div>
+
+							<div class="item-line">
+								<label class="form-label">
+									Pay At Pump
+								</label>
+								@{
+									@if (Model.Station.PayByApp)
+									{
+
+										<span class="material-symbols-sharp">
+											local_gas_station
+										</span>
+									}
+									else
+									{
+										<span class="material-symbols-sharp">
+											block
+										</span>
+									}
+								}
+
+							</div>
+
+							<div class="item-line">
+								<label class="form-label">
+									Pay By App
+								</label>
+								@{
+									@if (Model.Station.PayByApp)
+									{
+
+										<span class="material-symbols-sharp">
+											phone_iphone
+										</span>
+									}
+									else
+									{
+										<span class="material-symbols-sharp">
+											block
+										</span>
+									}
+								}
+
+							</div>
+						</div>
+						<!-- Station details column ends -->
+					</div>
+				</div>
+			</div>
+			<!-- station details ends -->
+
 		</div>
-
 	</div>
+	<!-- card-body ends -->
 </div>
+<!-- card card-nohover ends -->
 
-
-
-
-
-
-
-<div class="add-row">
-	<h5>Reviews</h5>
-</div>
-
-@section Breadcrumbs{
-	<nav aria-label="Breadcrumb">
-		<ul class="pa-breadcrumb">
-			<li><a asp-page="./Index">Home</a></li>
-			<li>
-				<span class="current-page">
-					Details
-				</span>
-			</li>
-			
-		</ul>
-	</nav>
-}
 
 @section Scripts {
 
@@ -187,3 +212,5 @@
 	</script>
 
 }
+
+
